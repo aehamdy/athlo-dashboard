@@ -1,7 +1,12 @@
 import "./App.css";
+import LoginCard from "./components/LoginCard";
 
 function App() {
-  return <h1 className="font-bold text-4xl">Hello World</h1>;
+  return (
+    <>
+      <LoginCard />
+    </>
+  );
 }
 
 export default App;
