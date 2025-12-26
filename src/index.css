@@ -59,9 +59,10 @@
   --color-neutral: #f8f8f8;
   --color-neutral-muted: #727272;
 
-  --color-accent: #88db1b;
-  --color-accent-strong: #76c017;
-  --color-accent-soft: #9eea3c;
+  --color-accent: #88db1b; /* default accent */
+  --color-accent-soft: #9eea3c; /* hover */
+  --color-accent-strong: #76c017; /* active / clicked */
+  --color-accent-focus: rgba(136, 219, 27, 0.35); /* focus / ring */
 
   --color-success: #8bcfb8;
   --color-warning: #ffc107;
