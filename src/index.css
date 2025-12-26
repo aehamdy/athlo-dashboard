@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -13,56 +15,70 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+@theme inline {
+  /* Colors */
+  --color-light: #fff;
+  --color-light-muted: #fafafa;
+  --color-light-subtle: #f4f4f5;
+
+  --color-dark: #000;
+  --color-dark-muted: #101213;
+  --color-dark-subtle: #232526;
+
+  --color-neutral: #f8f8f8;
+  --color-neutral-muted: #727272;
+
+  --color-accent: #88db1b;
+  --color-accent-strong: #76c017;
+  --color-accent-soft: #9eea3c;
+
+  --color-success: #8bcfb8;
+  --color-warning: #ffc107;
+  --color-danger: #d38181;
+  /* --color-danger: #FF5252; */
+
+  /* Font sizes */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.375rem; /* 22px */
+  --text-3xl: 1.5rem; /* 24px */
+
+  /* Spacing */
+  --space-tiny: 0.25rem; /* 4px */
+  --space-xs: 0.375rem; /* 6px */
+  --space-sm: 0.5rem; /* 8px */
+  --space-compact: 0.625rem; /* 10px */
+  --space-regular: 0.75rem; /* 12px */
+  --space-md: 0.875rem; /* 14px */
+  --space-base: 1rem; /* 16px */
+  --space-lg: 1.125rem; /* 18px */
+  --space-xl: 1.25rem; /* 20px */
+  --space-2xl: 1.375rem; /* 22px */
+  --space-3xl: 1.5rem; /* 24px */
+  --space-4xl: 1.625rem; /* 26px */
+  --space-5xl: 1.75rem; /* 28px */
+  --space-6xl: 1.875rem; /* 30px */
+  --space-7xl: 2rem; /* 32px */
+  --space-8xl: 2.5rem; /* 40px */
+  --space-9xl: 3.25rem; /* 52px */
+
+  /* Border radius */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.625rem; /* 10px */
+  --radius-xl: 0.75rem; /* 12px */
+  --radius-2xl: 0.875rem; /* 14px */
+  --radius-full: 100%;
+
+  /* Durations */
+  --transition-duration-fast: 200ms;
+  --transition-duration-normal: 300ms;
+  --transition-duration-slow: 500ms;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
 }
