@@ -1,9 +1,9 @@
 import {
-  ChartColumnIncreasing,
   LayoutDashboard,
   ListTodo,
   Shirt,
   ShoppingCart,
+  Tags,
 } from "lucide-react";
 import NavItem from "./NavItem";
 
@@ -37,15 +37,15 @@ const navItems: NavItemType[] = [
   },
   {
     id: 4,
-    label: "Orders",
-    href: "/orders",
-    icon: ShoppingCart,
+    label: "Brands",
+    href: "/brands",
+    icon: Tags,
   },
   {
     id: 5,
-    label: "Analytics",
-    href: "/analytics",
-    icon: ChartColumnIncreasing,
+    label: "Orders",
+    href: "/orders",
+    icon: ShoppingCart,
   },
 ];
 
