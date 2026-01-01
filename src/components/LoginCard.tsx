@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { API_ENDPOINTS } from "@/api/endPoints";
-import { Spinner } from "./ui/spinner";
+import Cookies from "js-cookie";
 
 const formSchema = z.object({
   username: z.string().min(3, "Username is required"),
@@ -50,6 +50,20 @@ function LoginCard() {
       const response = await axios.post(API_ENDPOINTS.auth.login, {
         userName: data.username,
         password: data.password,
+      });
+
+      const accessToken = response.data?.data?.accessToken;
+
+      if (!accessToken) {
+        setServerError("Failed to retrieve access token");
+        setIsLoading(false);
+        return;
+      }
+
+      Cookies.set("athloDashboard-accessToken", accessToken, {
+        expires: 1, // 1 day
+        secure: true, // only HTTPS
+        sameSite: "strict",
       });
 
       console.log("Login successful:", response.data);
