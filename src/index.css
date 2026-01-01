@@ -79,23 +79,23 @@
   --text-3xl: 1.5rem; /* 24px */
 
   /* Spacing */
-  --space-tiny: 0.25rem; /* 4px */
-  --space-xs: 0.375rem; /* 6px */
-  --space-sm: 0.5rem; /* 8px */
-  --space-compact: 0.625rem; /* 10px */
-  --space-regular: 0.75rem; /* 12px */
-  --space-md: 0.875rem; /* 14px */
-  --space-base: 1rem; /* 16px */
-  --space-lg: 1.125rem; /* 18px */
-  --space-xl: 1.25rem; /* 20px */
-  --space-2xl: 1.375rem; /* 22px */
-  --space-3xl: 1.5rem; /* 24px */
-  --space-4xl: 1.625rem; /* 26px */
-  --space-5xl: 1.75rem; /* 28px */
-  --space-6xl: 1.875rem; /* 30px */
-  --space-7xl: 2rem; /* 32px */
-  --space-8xl: 2.5rem; /* 40px */
-  --space-9xl: 3.25rem; /* 52px */
+  --spacing-tiny: 0.25rem; /* 4px */
+  --spacing-xs: 0.375rem; /* 6px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-compact: 0.625rem; /* 10px */
+  --spacing-regular: 0.75rem; /* 12px */
+  --spacing-md: 0.875rem; /* 14px */
+  --spacing-base: 1rem; /* 16px */
+  --spacing-lg: 1.125rem; /* 18px */
+  --spacing-xl: 1.25rem; /* 20px */
+  --spacing-2xl: 1.375rem; /* 22px */
+  --spacing-3xl: 1.5rem; /* 24px */
+  --spacing-4xl: 1.625rem; /* 26px */
+  --spacing-5xl: 1.75rem; /* 28px */
+  --spacing-6xl: 1.875rem; /* 30px */
+  --spacing-7xl: 2rem; /* 32px */
+  --spacing-8xl: 2.5rem; /* 40px */
+  --spacing-9xl: 3.25rem; /* 52px */
 
   /* Border radius */
   --radius-sm: 0.375rem; /* 6px */
@@ -103,12 +103,18 @@
   --radius-lg: 0.625rem; /* 10px */
   --radius-xl: 0.75rem; /* 12px */
   --radius-2xl: 0.875rem; /* 14px */
+  --radius-3xl: 1rem; /* 16px */
+  --radius-4xl: 1.25rem; /* 20px */
+  --radius-5xl: 1.5rem; /* 24px */
+  --radius-6xl: 1.75rem; /* 28px */
+  --radius-7xl: 1.875rem; /* 30px */
   --radius-full: 100%;
 
   /* Durations */
   --transition-duration-fast: 200ms;
   --transition-duration-normal: 300ms;
   --transition-duration-slow: 500ms;
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
