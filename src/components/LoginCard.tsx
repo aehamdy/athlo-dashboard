@@ -23,6 +23,8 @@ import { Separator } from "@/components/ui/separator";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { Spinner } from "./ui/spinner";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "@/routes/paths";
 
 const formSchema = z.object({
   username: z.string().min(3, "Username is required"),
@@ -34,6 +36,7 @@ type LoginFormData = z.infer<typeof formSchema>;
 function LoginCard() {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(formSchema),
@@ -67,7 +70,7 @@ function LoginCard() {
         sameSite: "strict",
       });
 
-      console.log("Login successful:", response.data);
+      navigate(ROUTE_PATHS.dashboard.overview, { replace: true });
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       setServerError(
