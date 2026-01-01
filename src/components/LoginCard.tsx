@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { API_ENDPOINTS } from "@/api/endPoints";
+import { Spinner } from "./ui/spinner";
 
 const formSchema = z.object({
   username: z.string().min(3, "Username is required"),
@@ -136,7 +137,11 @@ function LoginCard() {
           disabled={isLoading}
           className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
         >
-          {isLoading ? "Logging in..." : "Login"}
+          {isLoading ? (
+            <Spinner className="text-dark" />
+          ) : (
+            <p className="font-semibold text-dark">Login</p>
+          )}
         </Button>
       </CardFooter>
     </Card>
