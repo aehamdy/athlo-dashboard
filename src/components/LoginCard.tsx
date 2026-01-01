@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { API_ENDPOINTS } from "@/api/endPoints";
+import { Spinner } from "./ui/spinner";
 import Cookies from "js-cookie";
 
 const formSchema = z.object({
@@ -61,8 +62,8 @@ function LoginCard() {
       }
 
       Cookies.set("athloDashboard-accessToken", accessToken, {
-        expires: 1, // 1 day
-        secure: true, // only HTTPS
+        expires: 1,
+        secure: true,
         sameSite: "strict",
       });
 
