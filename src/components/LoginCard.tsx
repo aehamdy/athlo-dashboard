@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -22,22 +21,16 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "./ui/separator";
 
 const formSchema = z.object({
-  title: z
-    .string()
-    .min(5, "Bug title must be at least 5 characters.")
-    .max(32, "Bug title must be at most 32 characters."),
-  description: z
-    .string()
-    .min(20, "Description must be at least 20 characters.")
-    .max(100, "Description must be at most 100 characters."),
+  email: z.string().email(),
+  password: z.string(),
 });
 
 function LoginCard() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      email: "",
+      password: "",
     },
   });
 
@@ -59,82 +52,80 @@ function LoginCard() {
   // }
 
   return (
-    <section className="flex justify-center items-center w-full h-full bg-light-muted">
-      <Card className="w-full sm:max-w-md">
-        <CardHeader className="flex flex-col items-center">
-          <CardTitle>Athlo Dashboard</CardTitle>
-          <CardDescription>
-            Log in to your account to access your dashboard.
-          </CardDescription>
-        </CardHeader>
+    <Card className="w-9/10 md:w-3/4 lg:w-3/10">
+      <CardHeader className="flex flex-col items-center">
+        <CardTitle>Athlo Dashboard</CardTitle>
+        <CardDescription>
+          Log in to your account to access your dashboard.
+        </CardDescription>
+      </CardHeader>
 
-        <Separator />
+      <Separator />
 
-        <CardContent>
-          <form
-            id="form-rhf-demo"
-            // onSubmit={form.handleSubmit(onSubmit)}
+      <CardContent>
+        <form
+          id="form-rhf-demo"
+          // onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FieldGroup>
+            <Controller
+              name="email"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-title">Email</FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-rhf-demo-title"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="example@gmail.com"
+                    autoComplete="off"
+                    className="focus-visible:ring-accent-focus focus-visible:border-none"
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+            <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-rhf-demo-description">
+                    Password
+                  </FieldLabel>
+                  <Input
+                    type="password"
+                    placeholder="********"
+                    {...field}
+                    id="form-rhf-demo-description"
+                    className="focus-visible:ring-accent-focus focus-visible:border-none"
+                  />
+
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+        </form>
+      </CardContent>
+
+      <CardFooter>
+        <Field orientation="horizontal">
+          <Button
+            type="submit"
+            form="form-rhf-demo"
+            className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
           >
-            <FieldGroup>
-              <Controller
-                name="title"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-title">Email</FieldLabel>
-                    <Input
-                      {...field}
-                      id="form-rhf-demo-title"
-                      aria-invalid={fieldState.invalid}
-                      placeholder="example@gmail.com"
-                      autoComplete="off"
-                      className="focus-visible:ring-accent-focus focus-visible:border-none"
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-              <Controller
-                name="description"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="form-rhf-demo-description">
-                      Password
-                    </FieldLabel>
-                    <Input
-                      type="password"
-                      placeholder="********"
-                      {...field}
-                      id="form-rhf-demo-description"
-                      className="focus-visible:ring-accent-focus focus-visible:border-none"
-                    />
-
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          </form>
-        </CardContent>
-
-        <CardFooter>
-          <Field orientation="horizontal">
-            <Button
-              type="submit"
-              form="form-rhf-demo"
-              className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
-            >
-              Login
-            </Button>
-          </Field>
-        </CardFooter>
-      </Card>
-    </section>
+            Login
+          </Button>
+        </Field>
+      </CardFooter>
+    </Card>
   );
 }
 
