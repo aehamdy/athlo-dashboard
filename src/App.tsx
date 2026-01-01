@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound";
 import Products from "./pages/Products";
 import Categories from "./pages/Categories";
 import Brands from "./pages/Brands";
+import { ROUTE_PATHS } from "./routes/paths";
 
 function App() {
   return (
@@ -13,11 +14,19 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route element={<AppLayout />}>
-        <Route index element={<Navigate to="/overview" replace />} />
-        <Route path="/overview" element={<Overview />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/brands" element={<Brands />} />
+        <Route
+          index
+          element={
+            <Navigate to={`${ROUTE_PATHS.dashboard.overview}`} replace />
+          }
+        />
+        <Route path={ROUTE_PATHS.dashboard.overview} element={<Overview />} />
+        <Route path={ROUTE_PATHS.dashboard.products} element={<Products />} />
+        <Route
+          path={ROUTE_PATHS.dashboard.categories}
+          element={<Categories />}
+        />
+        <Route path={ROUTE_PATHS.dashboard.brands} element={<Brands />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
