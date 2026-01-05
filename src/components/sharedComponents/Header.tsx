@@ -45,7 +45,6 @@ function Header() {
                   <SheetHeader className="mb-6">
                     <SheetTitle className="text-left">
                       <Logo />
-                      <Logo />
                     </SheetTitle>
                   </SheetHeader>
 
