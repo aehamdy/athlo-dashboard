@@ -2,7 +2,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -13,6 +12,7 @@ import { Menu } from "lucide-react";
 import Nav from "../Nav";
 import Heading from "./Heading";
 import LogoutButton from "./LogoutButton";
+import Logo from "./Logo";
 
 function Header() {
   return (
@@ -44,12 +44,8 @@ function Header() {
                 >
                   <SheetHeader className="mb-6">
                     <SheetTitle className="text-left">
-                      Profile Settings
+                      <Logo />
                     </SheetTitle>
-
-                    <SheetDescription className="text-left">
-                      Manage your profile information and preferences
-                    </SheetDescription>
                   </SheetHeader>
 
                   <div className="px-base">
