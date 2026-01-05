@@ -7,6 +7,7 @@ function Sidebar() {
     <aside className="flex flex-col items-center gap-6xl py-sm pe-sm h-full">
       <div className="py-4 lg:py-1">
         <Logo />
+        <Logo />
       </div>
 
       <div className="flex flex-col justify-between w-full h-full">
