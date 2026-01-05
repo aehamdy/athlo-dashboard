@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import Nav from "../Nav";
 import Heading from "./Heading";
+import LogoutButton from "./LogoutButton";
 
 function Header() {
   return (
@@ -29,7 +30,10 @@ function Header() {
             <div className="lg:hidden">
               <Sheet>
                 <SheetTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
                     <Menu />
                   </Button>
                 </SheetTrigger>
@@ -54,7 +58,7 @@ function Header() {
 
                   <SheetFooter>
                     <SheetClose asChild>
-                      <Button variant="outline">Close</Button>
+                      <LogoutButton />
                     </SheetClose>
                   </SheetFooter>
                 </SheetContent>
