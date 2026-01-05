@@ -2,7 +2,7 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,6 +25,8 @@ import { Spinner } from "./ui/spinner";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/paths";
+import { AUTH } from "@/constants/auth";
+import http from "@/api/http";
 
 const formSchema = z.object({
   username: z.string().min(3, "Username is required"),
@@ -46,40 +48,48 @@ function LoginCard() {
     },
   });
 
-  async function onLogin(data: LoginFormData) {
+  const onSubmit = async (data: LoginFormData) => {
     try {
       setIsLoading(true);
       setServerError(null);
 
-      const response = await axios.post(API_ENDPOINTS.auth.login, {
+      const response = await http.post(API_ENDPOINTS.auth.login, {
         userName: data.username,
         password: data.password,
       });
 
-      const accessToken = response.data?.data?.accessToken;
+      console.log("Login response:", response.data);
 
-      if (!accessToken) {
-        setServerError("Failed to retrieve access token");
-        setIsLoading(false);
+      // If backend says login failed
+      if (!response.data.succeeded) {
+        setServerError(response.data.message || "Login failed");
         return;
       }
 
-      Cookies.set("athloDashboard-accessToken", accessToken, {
-        expires: 1,
-        secure: true,
-        sameSite: "strict",
+      // Save tokens in cookies
+      Cookies.set(AUTH.COOKIE.ACCESS_TOKEN, response.data.data.accessToken, {
+        path: "/",
+        expires: 1, // 1 day
       });
+      Cookies.set(
+        AUTH.COOKIE.REFRESH_TOKEN,
+        response.data.data.refreshToken.tokenString,
+        { path: "/", expires: 7 } // refresh token lasts longer
+      );
 
+      // Redirect to dashboard
       navigate(ROUTE_PATHS.dashboard.overview, { replace: true });
     } catch (error) {
-      const err = error as AxiosError<{ message?: string }>;
+      console.error("Login error:", error);
+      const axiosError = error as AxiosError<{ message?: string }>;
       setServerError(
-        err.response?.data?.message || "Invalid username or password"
+        axiosError.response?.data?.message ||
+          "An error occurred. Please try again."
       );
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="w-9/10 md:w-3/4 lg:w-3/10">
@@ -95,7 +105,7 @@ function LoginCard() {
       <CardContent>
         <form
           id="login-form"
-          onSubmit={form.handleSubmit(onLogin)}
+          onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-4"
         >
           <FieldGroup>
@@ -144,7 +154,9 @@ function LoginCard() {
           </FieldGroup>
 
           {/* Server Error */}
-          {serverError && <p className="text-sm text-red-500">{serverError}</p>}
+          {serverError && (
+            <p className="text-sm text-red-500 text-center">{serverError}</p>
+          )}
         </form>
       </CardContent>
 
@@ -155,11 +167,7 @@ function LoginCard() {
           disabled={isLoading}
           className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
         >
-          {isLoading ? (
-            <Spinner className="text-dark" />
-          ) : (
-            <p className="font-semibold text-dark">Login</p>
-          )}
+          {isLoading ? <Spinner className="text-dark" /> : "Login"}
         </Button>
       </CardFooter>
     </Card>
