@@ -1,55 +1,25 @@
 import { API_ENDPOINTS } from "@/api/endPoints";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import BrandCard, { type Brand } from "@/components/BrandCard";
+import BrandCard from "@/components/BrandCard";
 import List from "@/components/sharedComponents/List";
 import ListItem from "@/components/sharedComponents/ListItem";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Loading from "@/components/sharedComponents/Loading";
 import Error from "@/components/sharedComponents/Error";
-
-type ApiResponse<T> = {
-  data: T;
-  succeeded: boolean;
-  message?: string;
-};
+import useFetchAll from "@/hooks/useFetchAll";
+import type { Brand } from "@/types";
+import AddBrandForm from "@/components/AddBrandForm";
 
 function Brands() {
-  const [brands, setBrands] = useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { data, error, loading } = useFetchAll<Brand[]>(
+    API_ENDPOINTS.brands.getAll
+  );
 
-  useEffect(() => {
-    const fetchBrands = async () => {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      try {
-        const response = await axios.get(API_ENDPOINTS.brands.getAll);
-        setBrands(response.data.data);
-      } catch (error: unknown) {
-        if (axios.isAxiosError<ApiResponse<unknown>>(error)) {
-          const errorMessage =
-            error.response?.data?.message ||
-            error.message ||
-            "API request failed";
-          setErrorMessage(errorMessage);
-        } else {
-          setErrorMessage("An unknown error occurred");
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchBrands();
-  }, []);
-
-  if (isLoading) {
+  if (loading) {
     return <Loading size="xl" />;
   }
 
-  if (errorMessage) {
+  if (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return <Error title="Brands" message={errorMessage} />;
   }
 
@@ -58,10 +28,12 @@ function Brands() {
       title="Brands"
       buttonLabel="Add Brand"
       onButtonClick={() => {}}
+      formComponent={<AddBrandForm />}
+      description="Add new brands to your collection"
     >
       <List>
-        {brands?.map((brand: Brand) => (
-          <ListItem>
+        {data?.map((brand: Brand) => (
+          <ListItem key={brand.id}>
             <BrandCard brand={brand} />
           </ListItem>
         ))}
