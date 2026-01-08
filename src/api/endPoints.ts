@@ -13,4 +13,11 @@ export const API_ENDPOINTS = {
     update: `${BASE_URL}/Api/V1/Brand/Edit`,
     delete: (id: string) => `${BASE_URL}/Api/V1/Brand/${id}`,
   },
+  categories: {
+    getAll: `${BASE_URL}/Api/V1/Category/List`,
+    getById: (id: string) => `${BASE_URL}/Api/V1/Category/${id}`,
+    create: `${BASE_URL}/Api/V1/Category/Create`,
+    update: `${BASE_URL}/Api/V1/Category/Edit`,
+    delete: (id: string) => `${BASE_URL}/Api/V1/Category/${id}`,
+  },
 } as const;
