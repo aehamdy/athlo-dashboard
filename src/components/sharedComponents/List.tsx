@@ -6,7 +6,7 @@ type ListProps = {
 
 function List({ children }: ListProps) {
   return (
-    <ul className="grid lg:grid-cols-2 gap-base h-full overflow-y-scroll">
+    <ul className="grid lg:grid-cols-2 gap-base h-full overflow-y-scroll scrollbar-thin">
       {children}
     </ul>
   );

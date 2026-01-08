@@ -55,6 +55,8 @@
   --color-dark: #000;
   --color-dark-muted: #101213;
   --color-dark-subtle: #232526;
+  /* --color-dark-muted: #161717; */
+  /* --color-dark-subtle: #242424; */
 
   --color-neutral: #f8f8f8;
   --color-neutral-muted: #727272;
@@ -197,4 +199,8 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
 }
