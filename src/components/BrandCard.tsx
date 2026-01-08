@@ -1,9 +1,5 @@
+import type { Brand } from "@/types";
 import Heading from "./sharedComponents/Heading";
-
-export type Brand = {
-  id: number;
-  name: string;
-};
 
 function BrandCard({ brand }: { brand: Brand }) {
   return (
