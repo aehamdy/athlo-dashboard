@@ -6,6 +6,15 @@ export const API_ENDPOINTS = {
     refreshToken: `${BASE_URL}/Api/V1/Authentication/Refresh-Token`,
     validateToken: `${BASE_URL}/Api/V1/Authentication/Validate-Token`,
   },
+  products: {
+    getAll: `${BASE_URL}/Api/V1/Product/List`,
+    getById: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
+    create: `${BASE_URL}/Api/V1/Product/Create`,
+    update: `${BASE_URL}/Api/V1/Product/Edit`,
+    delete: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
+    // paginated: `${BASE_URL}/Api/V1/Product/Paginated`,
+    // withVariants: (id: string) => `${BASE_URL}/Api/V1/Product/${id}/With-Variants`,
+  },
   brands: {
     getAll: `${BASE_URL}/Api/V1/Brand/List`,
     getById: (id: string) => `${BASE_URL}/Api/V1/Brand/GetById/${id}`,
