@@ -29,4 +29,13 @@ export const API_ENDPOINTS = {
     update: `${BASE_URL}/Api/V1/Category/Edit`,
     delete: (id: string) => `${BASE_URL}/Api/V1/Category/${id}`,
   },
+  orders: {
+    getAll: `${BASE_URL}/Api/V1/Order/List`,
+    getById: (id: string) => `${BASE_URL}/Api/V1/Order/${id}`,
+    create: `${BASE_URL}/Api/V1/Order/Create`,
+    getMyOrders: `${BASE_URL}/Api/V1/Order/My-Orders`,
+    orderStatus: `${BASE_URL}/Api/V1/Order/order-status`,
+    paymentStatus: `${BASE_URL}/Api/V1/Order/payment-status`,
+    userOrder: (userId: string) => `${BASE_URL}/Api/V1/Order/user/${userId}`,
+  },
 } as const;
