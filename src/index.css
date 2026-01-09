@@ -201,6 +201,10 @@ body {
   }
 }
 
+.form-input {
+  @apply focus-visible:border-transparent focus-visible:ring-1 focus-visible:ring-accent-soft;
+}
+
 .scrollbar-thin {
   scrollbar-width: thin;
 }
