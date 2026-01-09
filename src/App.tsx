@@ -9,6 +9,7 @@ import Brands from "./pages/Brands";
 import { ROUTE_PATHS } from "./routes/paths";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             element={<Categories />}
           />
           <Route path={ROUTE_PATHS.dashboard.brands} element={<Brands />} />
+          <Route path={ROUTE_PATHS.dashboard.orders} element={<Orders />} />
         </Route>
       </Route>
 
