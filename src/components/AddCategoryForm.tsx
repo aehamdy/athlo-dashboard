@@ -1,23 +1,32 @@
 import { Input } from "./ui/input";
 
-function AddCategoryForm() {
+export type AddCategoryFormData = {
+  name: string;
+};
+
+interface AddCategoryFormProps {
+  value: AddCategoryFormData;
+  onChange: (value: AddCategoryFormData) => void;
+}
+
+function AddCategoryForm({ value, onChange }: AddCategoryFormProps) {
   return (
     <div className="grid gap-4">
-      <div className="grid gap-3">
-        <Input
-          id="english-name"
-          name="english-name"
-          placeholder="Enter category name in English"
-        />
-      </div>
+      <Input
+        name="categoryEn"
+        placeholder="Enter category name (English)"
+        value={value.name}
+        onChange={(e) => onChange({ ...value, name: e.target.value })}
+        className="form-input"
+      />
 
-      <div className="grid gap-3">
-        <Input
-          id="arabic-name"
-          name="arabic-name"
-          placeholder="أدخل اسم الفئة بالعربية"
-        />
-      </div>
+      <Input
+        name="categoryAr"
+        placeholder="ادخل اسم التصنيف (العربية)"
+        value={value.name}
+        onChange={(e) => onChange({ ...value, name: e.target.value })}
+        className="form-input"
+      />
     </div>
   );
 }
