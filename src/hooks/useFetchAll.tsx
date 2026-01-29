@@ -1,6 +1,7 @@
 import type { ApiResponse } from "@/types";
-import axios from "axios";
+import http from "@/api/http";
 import { useEffect, useState } from "react";
+import type { AxiosError } from "axios";
 
 function useFetchAll<T>(endpoint: string) {
   const [data, setData] = useState<T | null>(null);
@@ -12,14 +13,15 @@ function useFetchAll<T>(endpoint: string) {
       try {
         setLoading(true);
 
-        const response = await axios.get<ApiResponse<T>>(endpoint);
+        const response = await http.get<ApiResponse<T>>(endpoint);
 
         setData(response.data.data);
       } catch (error: unknown) {
-        if (axios.isAxiosError<ApiResponse<unknown>>(error)) {
+        if (error && typeof error === "object" && "response" in error) {
+          const axiosError = error as AxiosError<ApiResponse<unknown>>;
           const errorMessage =
-            error.response?.data?.message ||
-            error.message ||
+            axiosError.response?.data?.message ||
+            (axiosError.message as string) ||
             "API request failed";
 
           setError(new Error(errorMessage));
