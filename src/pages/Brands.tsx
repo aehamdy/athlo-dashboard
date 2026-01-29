@@ -7,32 +7,12 @@ import Loading from "@/components/sharedComponents/Loading";
 import Error from "@/components/sharedComponents/Error";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Brand } from "@/types";
-import AddBrandForm, { type AddBrandFormData } from "@/components/AddBrandForm";
-import axios from "axios";
-import Cookies from "js-cookie";
-import { AUTH } from "@/constants/auth";
+import AddBrandForm from "@/components/forms/AddBrandForm";
 
 function Brands() {
   const { data, error, loading } = useFetchAll<Brand[]>(
-    API_ENDPOINTS.brands.getAll
+    API_ENDPOINTS.brands.getAll,
   );
-
-  const addNewBrand = async (formData: AddBrandFormData) => {
-    console.log(formData);
-
-    await axios.post(
-      API_ENDPOINTS.brands.create,
-      {
-        nameEn: formData.nameEn,
-        nameAr: formData.nameAr,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${Cookies.get(AUTH.COOKIE.ACCESS_TOKEN)}`,
-        },
-      }
-    );
-  };
 
   if (loading) return <Loading size="xl" />;
 
@@ -42,13 +22,11 @@ function Brands() {
   }
 
   return (
-    <DashboardSection<AddBrandFormData>
+    <DashboardSection
       title="Brands"
       buttonLabel="Add Brand"
       description="Add new brands to your collection"
-      initialFormValue={{ nameEn: "", nameAr: "" }}
-      onSubmit={addNewBrand}
-      formComponent={(props) => <AddBrandForm {...props} />}
+      formComponent={<AddBrandForm />}
     >
       <List>
         {data?.map((brand) => (

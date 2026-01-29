@@ -1,4 +1,5 @@
 import { API_ENDPOINTS } from "@/api/endPoints";
+import AddProductForm from "@/components/forms/AddProductForm";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
 import List from "@/components/sharedComponents/List";
@@ -9,24 +10,22 @@ import type { Product } from "@/types";
 
 function Products() {
   const { data, error, loading } = useFetchAll<Product[]>(
-    API_ENDPOINTS.products.getAll
+    API_ENDPOINTS.products.getAll,
   );
 
   if (loading) return <Loading size="xl" />;
 
   if (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return <Error title="Products" message={message} />;
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return <Error title="Products" message={errorMessage} />;
   }
 
   return (
-    <DashboardSection<{ nameEn: string; nameAr: string }>
+    <DashboardSection
       title="Products"
       buttonLabel="Add Product"
       description="Add new products to your collection"
-      initialFormValue={{ nameEn: "", nameAr: "" }}
-      onSubmit={() => {}}
-      formComponent={(props) => <div>{JSON.stringify(props)}</div>}
+      formComponent={<AddProductForm />}
     >
       <List>
         {data?.map((product) => (

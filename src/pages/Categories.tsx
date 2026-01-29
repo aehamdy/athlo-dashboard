@@ -1,7 +1,5 @@
 import { API_ENDPOINTS } from "@/api/endPoints";
-import AddCategoryForm, {
-  type AddCategoryFormData,
-} from "@/components/AddCategoryForm";
+import AddCategoryForm from "@/components/forms/AddCategoryForm";
 import CategoryCard from "@/components/CategoryCard";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
@@ -10,18 +8,11 @@ import ListItem from "@/components/sharedComponents/ListItem";
 import Loading from "@/components/sharedComponents/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Category } from "@/types";
-import axios from "axios";
 
 function Categories() {
   const { data, error, loading } = useFetchAll<Category[]>(
-    API_ENDPOINTS.categories.getAll
+    API_ENDPOINTS.categories.getAll,
   );
-
-  const addNewCategory = async (formData: AddCategoryFormData) => {
-    await axios.post(API_ENDPOINTS.categories.create, {
-      name: formData.name,
-    });
-  };
 
   if (loading) return <Loading size="xl" />;
 
@@ -31,13 +22,11 @@ function Categories() {
   }
 
   return (
-    <DashboardSection<AddCategoryFormData>
+    <DashboardSection
       title="Categories"
       buttonLabel="Add Category"
       description="Add new categories to organize your products"
-      initialFormValue={{ name: "" }}
-      onSubmit={addNewCategory}
-      formComponent={(props) => <AddCategoryForm {...props} />}
+      formComponent={<AddCategoryForm />}
     >
       <List>
         {data?.map((category) => (
