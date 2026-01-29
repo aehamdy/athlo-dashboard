@@ -16,6 +16,7 @@ export type Category = {
 
 export type Order = {
   id: number;
+  orderId: number;
   fullName: string;
   city: string;
   country: string;
