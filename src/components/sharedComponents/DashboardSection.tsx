@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Heading from "./Heading";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,35 +12,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-interface DashboardSectionProps<T> {
+interface DashboardSectionProps {
   children: React.ReactNode;
   title: string;
   buttonLabel?: string;
   description: string;
-  initialFormValue: T;
-  formComponent: (props: {
-    value: T;
-    onChange: (value: T) => void;
-  }) => React.ReactNode;
-  onSubmit: (data: T) => void;
+  formComponent: React.ReactNode;
 }
 
-function DashboardSection<T>({
+function DashboardSection({
   children,
   title,
   buttonLabel,
   description,
-  initialFormValue,
   formComponent,
-  onSubmit,
-}: DashboardSectionProps<T>) {
-  const [formData, setFormData] = useState<T>(initialFormValue);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(formData);
-  };
-
+}: DashboardSectionProps) {
   return (
     <section className="flex flex-col gap-6 h-full p-compact lg:p-regular bg-light rounded-xl">
       <div className="flex justify-between items-center">
@@ -58,35 +43,23 @@ function DashboardSection<T>({
           </DialogTrigger>
 
           <DialogContent className="sm:max-w-[425px]">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <DialogHeader>
-                <DialogTitle>Add New {title}</DialogTitle>
-                <DialogDescription>{description}</DialogDescription>
-              </DialogHeader>
+            <DialogHeader>
+              <DialogTitle>Add New {title}</DialogTitle>
+              <DialogDescription>{description}</DialogDescription>
+            </DialogHeader>
 
-              {formComponent({
-                value: formData,
-                onChange: setFormData,
-              })}
+            {formComponent}
 
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button
-                    variant="outline"
-                    className="active:text-light active:bg-accent-strong cursor-pointer"
-                  >
-                    Cancel
-                  </Button>
-                </DialogClose>
-
+            <DialogFooter>
+              <DialogClose asChild>
                 <Button
-                  type="submit"
-                  className="text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
+                  variant="outline"
+                  className="w-full -mt-tiny active:text-light active:bg-accent-strong cursor-pointer"
                 >
-                  Add
+                  Cancel
                 </Button>
-              </DialogFooter>
-            </form>
+              </DialogClose>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
