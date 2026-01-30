@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import AddCategoryForm from "@/components/forms/AddCategoryForm";
 import CategoryCard from "@/components/CategoryCard";
@@ -8,11 +9,43 @@ import ListItem from "@/components/sharedComponents/ListItem";
 import Loading from "@/components/sharedComponents/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Category } from "@/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import http from "@/api/http";
 
 function Categories() {
+  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [deletingCategory, setDeletingCategory] = useState<Category | null>(
+    null,
+  );
+
   const { data, error, loading } = useFetchAll<Category[]>(
     API_ENDPOINTS.categories.getAll,
   );
+
+  const handleDelete = async () => {
+    if (!deletingCategory) return;
+
+    try {
+      await http.delete(API_ENDPOINTS.categories.delete(deletingCategory.id));
+      // console.log(`Category ${deletingCategory?.id} deleted`);
+      console.log(`Category ${deletingCategory}`);
+      setDeletingCategory(null);
+      // optionally trigger refetch or optimistic update
+    } catch (error) {
+      console.error("Delete failed:", error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeletingCategory(null);
+  };
 
   if (loading) return <Loading size="xl" />;
 
@@ -31,10 +64,73 @@ function Categories() {
       <List>
         {data?.map((category) => (
           <ListItem key={category.id}>
-            <CategoryCard category={category} />
+            <CategoryCard
+              category={category}
+              onEdit={() => setEditingCategory(category)}
+              onDelete={() => setDeletingCategory(category)}
+            />
           </ListItem>
         ))}
       </List>
+
+      {/* Edit and Delete Dialog */}
+      <Dialog
+        open={!!editingCategory || !!deletingCategory}
+        onOpenChange={(open) =>
+          (!open && setEditingCategory(null)) ||
+          (!open && setDeletingCategory(null))
+        }
+      >
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle>
+              {editingCategory
+                ? "Edit Category"
+                : deletingCategory && "Delete Category"}
+            </DialogTitle>
+          </DialogHeader>
+
+          {/* Display Delete Description */}
+          {deletingCategory && (
+            <DialogDescription>
+              Are you sure you want to delete{" "}
+              <span className="font-semibold">
+                {deletingCategory?.name || deletingCategory?.nameEn}
+              </span>{" "}
+              category?
+            </DialogDescription>
+          )}
+
+          {/* Display Edit Form */}
+          {editingCategory && (
+            <AddCategoryForm
+              mode="edit"
+              category={editingCategory}
+              onSuccess={() => setEditingCategory(null)}
+            />
+          )}
+
+          {/* Display Delete Button */}
+          {deletingCategory && (
+            <div className="flex justify-between items-center">
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                className="cursor-pointer"
+              >
+                Yes
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleCancelDelete}
+                className="cursor-pointer"
+              >
+                No
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </DashboardSection>
   );
 }

@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
-import { DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
+import type { Category } from "@/types";
 
 interface AddCategoryFormState {
   nameEn: string;
   nameAr: string;
+}
+
+interface AddCategoryFormProps {
+  mode?: "add" | "edit";
+  category?: Category;
+  onSuccess?: () => void;
 }
 
 const initialValue: AddCategoryFormState = {
@@ -15,73 +21,83 @@ const initialValue: AddCategoryFormState = {
   nameAr: "",
 };
 
-function AddCategoryForm() {
-  const [categoryFormData, setCategoryFormData] =
-    useState<AddCategoryFormState>(initialValue);
+function AddCategoryForm({
+  mode = "add",
+  category,
+  onSuccess,
+}: AddCategoryFormProps) {
+  const [formData, setFormData] = useState<AddCategoryFormState>(initialValue);
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setCategoryFormData({ ...categoryFormData, [name]: value });
-  };
-
-  const addNewCategory = async (categoryFormData: AddCategoryFormState) => {
-    try {
-      await http.post(API_ENDPOINTS.categories.create, categoryFormData);
-    } catch (error) {
-      console.error("Error creating category:", error);
-      throw error;
+  // Prefill when editing
+  useEffect(() => {
+    if (mode === "edit" && category) {
+      setFormData({
+        nameEn: category.nameEn,
+        nameAr: category.nameAr,
+      });
     }
+  }, [mode, category]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!categoryFormData.nameEn && !categoryFormData.nameAr) {
-      console.warn("Both brand names are empty");
-      return;
-    }
+    if (!formData.nameEn && !formData.nameAr) return;
+
+    setSubmitting(true);
 
     try {
-      await addNewCategory(categoryFormData);
-      // Reset form after successful submission
-      setCategoryFormData(initialValue);
+      if (mode === "edit" && category) {
+        await http.put(API_ENDPOINTS.categories.update, {
+          ...formData,
+          id: category.id,
+        });
+      } else {
+        await http.post(API_ENDPOINTS.categories.create, formData);
+        setFormData(initialValue);
+      }
+
+      onSuccess?.();
     } catch (error) {
-      console.error("Failed to create category:", error);
-      // Don't reset form on error so user can retry
+      console.error("Submit failed:", error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="w-full space-y-4">
       <div className="grid gap-4">
         <Input
-          type="text"
-          required
           name="nameEn"
           placeholder="Enter category name (English)"
-          value={categoryFormData.nameEn}
-          onChange={handleFormChange}
+          value={formData.nameEn}
+          onChange={handleChange}
+          required
           className="form-input"
         />
 
         <Input
-          type="text"
-          required
           name="nameAr"
           placeholder="ادخل اسم التصنيف (العربية)"
-          value={categoryFormData.nameAr}
-          onChange={handleFormChange}
+          value={formData.nameAr}
+          onChange={handleChange}
+          required
           className="form-input"
         />
 
-        <DialogClose asChild>
-          <Button
-            type="submit"
-            className="w-full py-tiny px-xs text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
-          >
-            Add Category
-          </Button>
-        </DialogClose>
+        <Button
+          type="submit"
+          className="w-full py-tiny px-xs text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
+          disabled={submitting}
+        >
+          {mode === "edit" ? "Update Category" : "Add Category"}
+        </Button>
       </div>
     </form>
   );
