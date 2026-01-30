@@ -6,7 +6,9 @@ export type ApiResponse<T> = {
 
 export type Brand = {
   id: number;
-  name: string;
+  name?: string;
+  nameEn: string;
+  nameAr: string;
 };
 
 export type Category = {
