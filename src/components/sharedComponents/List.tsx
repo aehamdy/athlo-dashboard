@@ -2,13 +2,16 @@ import type { ReactNode } from "react";
 
 type ListProps = {
   children: ReactNode;
+  variant?: "table";
 };
 
-function List({ children }: ListProps) {
+function List({ children, variant }: ListProps) {
   return (
-    <ul className="scrollbar-thin grid lg:grid-cols-2 auto-rows-min gap-base max-h-[414px] px-[5px] overflow-y-auto">
+    <div
+      className={`${variant === "table" ? "" : "scrollbar-thin grid grid-cols-2 auto-rows-min gap-base h-[78dvh] lg:h-[60vh] 2xl:h-[78vh] px-[5px] overflow-y-auto"}`}
+    >
       {children}
-    </ul>
+    </div>
   );
 }
 
