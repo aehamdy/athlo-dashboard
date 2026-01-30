@@ -27,7 +27,7 @@ export const API_ENDPOINTS = {
     getById: (id: string) => `${BASE_URL}/Api/V1/Category/${id}`,
     create: `${BASE_URL}/Api/V1/Category/Create`,
     update: `${BASE_URL}/Api/V1/Category/Edit`,
-    delete: (id: string) => `${BASE_URL}/Api/V1/Category/${id}`,
+    delete: (id: number) => `${BASE_URL}/Api/V1/Category/${id}`,
   },
   orders: {
     getAll: `${BASE_URL}/Api/V1/Order/List`,
