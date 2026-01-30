@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
-import { DialogClose } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
+import type { Brand } from "@/types";
+
+interface AddBrandFormProps {
+  mode?: "add" | "edit";
+  brand?: Brand;
+  onSuccess?: () => void;
+}
 
 interface AddBrandFormState {
   nameEn: string;
@@ -15,13 +21,24 @@ const initialValue: AddBrandFormState = {
   nameAr: "",
 };
 
-function AddBrandForm() {
+function AddBrandForm({ mode = "add", brand, onSuccess }: AddBrandFormProps) {
   const [brandFormData, setBrandFormData] =
     useState<AddBrandFormState>(initialValue);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Prefill when editing
+  useEffect(() => {
+    if (mode === "edit" && brand) {
+      setBrandFormData({
+        nameEn: brand.nameEn || "",
+        nameAr: brand.nameAr || "",
+      });
+    }
+  }, [mode, brand]);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setBrandFormData({ ...brandFormData, [name]: value });
+    setBrandFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const addNewBrand = async (brandFormData: AddBrandFormState) => {
@@ -33,9 +50,36 @@ function AddBrandForm() {
     }
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const updateBrand = async (brandFormData: AddBrandFormState) => {
+    if (!brand) return;
+    try {
+      const updateData = {
+        ...brandFormData,
+        id: brand.id,
+      };
+      await http.put(API_ENDPOINTS.brands.update, updateData);
+    } catch (error) {
+      console.error("Error updating brand:", error);
+      throw error;
+    }
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    addNewBrand(brandFormData);
+    setSubmitting(true);
+
+    try {
+      if (mode === "edit") {
+        await updateBrand(brandFormData);
+      } else {
+        await addNewBrand(brandFormData);
+      }
+      onSuccess?.();
+    } catch (error) {
+      console.error("Form submission failed:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -61,14 +105,17 @@ function AddBrandForm() {
           className="form-input"
         />
 
-        <DialogClose asChild>
-          <Button
-            type="submit"
-            className="w-full py-tiny px-xs text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
-          >
-            Add Brand
-          </Button>
-        </DialogClose>
+        <Button
+          type="submit"
+          className="w-full py-tiny px-xs text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
+          disabled={submitting}
+        >
+          {submitting
+            ? "Updating..."
+            : mode === "edit"
+              ? "Update Brand"
+              : "Add Brand"}
+        </Button>
       </div>
     </form>
   );
