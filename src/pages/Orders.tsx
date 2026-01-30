@@ -2,28 +2,30 @@ import { API_ENDPOINTS } from "@/api/endPoints";
 import AddOrderForm, {
   type AddOrderFormData,
 } from "@/components/forms/AddOrderForm";
+import OrdersTable from "@/components/OrdersTable";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
 import List from "@/components/sharedComponents/List";
-import ListItem from "@/components/sharedComponents/ListItem";
 import Loading from "@/components/sharedComponents/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Order } from "@/types";
 import { useState } from "react";
 
+const initialValue = {
+  fullName: "",
+  city: "",
+  country: "",
+  region: "",
+  streetAddress: "",
+  buildingNumber: "",
+  floorNumber: "",
+  apartmentNumber: "",
+  phoneNumber: "",
+  notes: "",
+};
+
 function Orders() {
-  const [formData, setFormData] = useState<AddOrderFormData>({
-    fullName: "",
-    city: "",
-    country: "",
-    region: "",
-    streetAddress: "",
-    buildingNumber: "",
-    floorNumber: "",
-    apartmentNumber: "",
-    phoneNumber: "",
-    notes: "",
-  });
+  const [formData, setFormData] = useState<AddOrderFormData>(initialValue);
 
   const { data, error, loading } = useFetchAll<Order[]>(
     API_ENDPOINTS.orders.getAll,
@@ -43,13 +45,7 @@ function Orders() {
       description="Add a new order"
       formComponent={<AddOrderForm value={formData} onChange={setFormData} />}
     >
-      <List>
-        {data?.map((order) => (
-          <ListItem key={order.orderId}>
-            <div className="">{order.fullName}</div>
-          </ListItem>
-        ))}
-      </List>
+      <List variant="table">{data && <OrdersTable data={data} />}</List>
     </DashboardSection>
   );
 }

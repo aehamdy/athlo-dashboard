@@ -1,9 +1,9 @@
 import { API_ENDPOINTS } from "@/api/endPoints";
 import AddProductForm from "@/components/forms/AddProductForm";
+import ProductsTable from "@/components/ProductsTable";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
 import List from "@/components/sharedComponents/List";
-import ListItem from "@/components/sharedComponents/ListItem";
 import Loading from "@/components/sharedComponents/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Product } from "@/types";
@@ -27,13 +27,7 @@ function Products() {
       description="Add new products to your collection"
       formComponent={<AddProductForm />}
     >
-      <List>
-        {data?.map((product) => (
-          <ListItem key={product.id}>
-            <div className="">{product.name}</div>
-          </ListItem>
-        ))}
-      </List>
+      <List variant="table">{data && <ProductsTable data={data} />}</List>
     </DashboardSection>
   );
 }
