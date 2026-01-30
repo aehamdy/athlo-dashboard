@@ -77,7 +77,23 @@ function OrdersTable({ data }: { data: Order[] }) {
               </TableCell>
 
               <TableCell className="text-center">
-                <Badge>{order.orderStatus}</Badge>
+                <Badge
+                  className={`${
+                    order.orderStatus.toLowerCase() === "pending"
+                      ? "text-yellow-600 bg-yellow-100 border-yellow-400"
+                      : order.orderStatus.toLowerCase() === "shipped"
+                        ? "text-purple-700 bg-purple-200 border-purple-400"
+                        : order.orderStatus.toLowerCase() === "paid"
+                          ? "text-blue-700 bg-blue-200 border-blue-400"
+                          : order.orderStatus.toLowerCase() === "completed"
+                            ? "text-green-700 bg-green-200 border-green-400"
+                            : order.orderStatus.toLowerCase() === "cancelled"
+                              ? "text-red-800 bg-red-200 border-red-300"
+                              : ""
+                  } border rounded-sm`}
+                >
+                  {order.orderStatus}
+                </Badge>
               </TableCell>
 
               <TableCell className="text-end">
