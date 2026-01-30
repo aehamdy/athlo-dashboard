@@ -56,7 +56,19 @@ function OrdersTable({ data }: { data: Order[] }) {
               <TableCell className="text-center">{order.userEmail}</TableCell>
 
               <TableCell className="text-center">
-                <Badge>{order.paymentStatus}</Badge>
+                <Badge
+                  className={`${
+                    order.paymentStatus.toLowerCase() === "pending"
+                      ? "text-yellow-600 bg-yellow-200"
+                      : order.paymentStatus.toLowerCase() === "completed"
+                        ? "text-green-700 bg-green-200"
+                        : order.paymentStatus.toLowerCase() === "failed"
+                          ? "text-red-600 bg-red-200"
+                          : ""
+                  } rounded-sm`}
+                >
+                  {order.paymentStatus}
+                </Badge>
               </TableCell>
 
               <TableCell className="text-center">
