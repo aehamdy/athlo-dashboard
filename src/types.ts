@@ -11,25 +11,31 @@ export type Brand = {
 
 export type Category = {
   id: number;
-  name: string;
+  name?: string;
+  nameEn: string;
+  nameAr: string;
 };
 
 export type Order = {
-  id: number;
   orderId: number;
-  fullName: string;
-  city: string;
-  country: string;
-  region: string;
-  streetAddress: string;
-  buildingNumber: string;
-  floorNumber: string;
-  apartmentNumber: string;
-  phoneNumber: string;
-  notes: string;
+  userId: number;
+  userEmail: string;
+  totalAmount: number;
+  orderStatus: string;
+  paymentStatus: string;
+  createdAt: string;
 };
 
 export type Product = {
   id: number;
+  code: string;
   name: string;
+  description: string;
+  season: string;
+  club: string;
+  basePrice: number;
+  priceAfterDiscount: number;
+  brandName: string;
+  categoryName: string;
+  images: string[];
 };
