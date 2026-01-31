@@ -37,6 +37,8 @@ export type Product = {
   club: string;
   basePrice: number;
   priceAfterDiscount: number;
+  brandId: number;
+  categoryId: number;
   brandName: string;
   categoryName: string;
   images: string[];
