@@ -11,7 +11,7 @@ export const API_ENDPOINTS = {
     getById: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
     create: `${BASE_URL}/Api/V1/Product/Create`,
     update: `${BASE_URL}/Api/V1/Product/Edit`,
-    delete: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
+    delete: (id: number) => `${BASE_URL}/Api/V1/Product/${id}`,
     // paginated: `${BASE_URL}/Api/V1/Product/Paginated`,
     // withVariants: (id: string) => `${BASE_URL}/Api/V1/Product/${id}/With-Variants`,
   },
