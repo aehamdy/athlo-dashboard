@@ -11,8 +11,15 @@ import {
 import { Button } from "./ui/button";
 import { SquarePen, Trash2 } from "lucide-react";
 import TableWrapper from "./sharedComponents/TableWrapper";
+import http from "@/api/http";
+import { API_ENDPOINTS } from "@/api/endPoints";
 
 function ProductsTable({ data }: { data: Product[] }) {
+  const handleProductDelete = (id: number) => {
+    console.log(id);
+    http.delete(API_ENDPOINTS.products.delete(id));
+  };
+
   return (
     <TableWrapper>
       <Table className="rounded-md overflow-hidden">
@@ -27,9 +34,10 @@ function ProductsTable({ data }: { data: Product[] }) {
             <TableHead className="text-end">Actions</TableHead>
           </TableRow>
         </TableHeader>
+
         <TableBody>
           {data?.map((product) => (
-            <TableRow className="text-center">
+            <TableRow key={product.id} className="text-center">
               <TableCell className="font-medium">
                 <div className="flex items-center gap-sm">
                   <div className="w-14 h-14 overflow-hidden rounded-sm">
@@ -62,7 +70,11 @@ function ProductsTable({ data }: { data: Product[] }) {
                     <SquarePen />
                   </Button>
 
-                  <Button variant="icon" className="px-2 hover:text-red-500">
+                  <Button
+                    variant="icon"
+                    onClick={() => handleProductDelete(product.id)}
+                    className="px-2 hover:text-red-500"
+                  >
                     <Trash2 />
                   </Button>
                 </div>
