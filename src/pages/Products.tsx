@@ -8,9 +8,19 @@ import List from "@/components/sharedComponents/List";
 import Loading from "@/components/sharedComponents/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Product } from "@/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { DialogDescription } from "@radix-ui/react-dialog";
+import UpdateProductForm from "@/components/forms/UpdateProductForm";
 
 function Products() {
-  const [isUpdatingProduct, setIsUpdatingProduct] = useState<boolean>(false);
+  const [isUpdatingProduct, setIsUpdatingProduct] = useState<Product | null>(
+    null,
+  );
   const { data, error, loading } = useFetchAll<Product[]>(
     API_ENDPOINTS.products.getAll,
   );
@@ -37,6 +47,35 @@ function Products() {
           />
         )}
       </List>
+
+      {isUpdatingProduct && (
+        <Dialog
+          open={!!isUpdatingProduct}
+          onOpenChange={(open) => {
+            if (!open) {
+              setIsUpdatingProduct(null);
+            }
+          }}
+        >
+          <DialogContent className="sm:max-w-[400px]">
+            <DialogHeader>
+              <DialogTitle>
+                Update{" "}
+                <span className="text-accent">{isUpdatingProduct?.name}</span>
+              </DialogTitle>
+
+              <DialogDescription className="text-sm text-neutral-muted">
+                Update the product details
+              </DialogDescription>
+            </DialogHeader>
+
+            <UpdateProductForm
+              product={isUpdatingProduct}
+              onSuccess={() => setIsUpdatingProduct(null)}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </DashboardSection>
   );
 }
