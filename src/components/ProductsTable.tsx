@@ -16,12 +16,12 @@ import { API_ENDPOINTS } from "@/api/endPoints";
 
 type ProductsTableProps = {
   data: Product[];
-  setIsUpdatingProduct: (update: boolean) => void;
+  setIsUpdatingProduct: (product: Product | null) => void;
 };
 
 function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
-  const handleOnUpdate = () => {
-    setIsUpdatingProduct(true);
+  const handleOnUpdate = (product: Product) => {
+    setIsUpdatingProduct(product);
   };
 
   const handleProductDelete = (id: number) => {
@@ -37,7 +37,8 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
             <TableHead className="w-50 text-start">Product</TableHead>
             <TableHead className="text-center">Category</TableHead>
             <TableHead className="text-center">Brand</TableHead>
-            <TableHead className="text-center">Status</TableHead>
+            <TableHead className="text-center">Season</TableHead>
+            <TableHead className="text-center">Club</TableHead>
             <TableHead className="text-center">Price</TableHead>
             <TableHead className="text-end">Actions</TableHead>
           </TableRow>
@@ -65,7 +66,9 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
 
               <TableCell>{product.brandName}</TableCell>
 
-              <TableCell>Active</TableCell>
+              <TableCell>{product.season}</TableCell>
+
+              <TableCell>{product.club}</TableCell>
 
               <TableCell className="">
                 <span className="font-semibold">&pound;</span>{" "}
@@ -76,7 +79,7 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
                 <div className="flex justify-end items-center gap-tiny">
                   <Button
                     variant="icon"
-                    onClick={handleOnUpdate}
+                    onClick={() => handleOnUpdate(product)}
                     className="px-2 hover:text-blue-500"
                   >
                     <SquarePen />
