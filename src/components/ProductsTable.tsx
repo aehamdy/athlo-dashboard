@@ -14,9 +14,17 @@ import TableWrapper from "./sharedComponents/TableWrapper";
 import http from "@/api/http";
 import { API_ENDPOINTS } from "@/api/endPoints";
 
-function ProductsTable({ data }: { data: Product[] }) {
+type ProductsTableProps = {
+  data: Product[];
+  setIsUpdatingProduct: (update: boolean) => void;
+};
+
+function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
+  const handleOnUpdate = () => {
+    setIsUpdatingProduct(true);
+  };
+
   const handleProductDelete = (id: number) => {
-    console.log(id);
     http.delete(API_ENDPOINTS.products.delete(id));
   };
 
@@ -66,7 +74,11 @@ function ProductsTable({ data }: { data: Product[] }) {
 
               <TableCell className="">
                 <div className="flex justify-end items-center gap-tiny">
-                  <Button variant="icon" className="px-2 hover:text-blue-500">
+                  <Button
+                    variant="icon"
+                    onClick={handleOnUpdate}
+                    className="px-2 hover:text-blue-500"
+                  >
                     <SquarePen />
                   </Button>
 
