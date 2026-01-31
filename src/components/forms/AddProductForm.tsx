@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
 
-interface AddProductFormState {
+type AddProductFormState = {
   code: string;
   nameEn: string;
   nameAr: string;
@@ -17,7 +17,7 @@ interface AddProductFormState {
   clubAr?: string;
   brandId: string;
   categoryId: string;
-}
+};
 
 const initialValue: AddProductFormState = {
   code: "",
@@ -87,7 +87,7 @@ function AddProductForm() {
     await http.post(API_ENDPOINTS.products.create, payload);
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
@@ -105,7 +105,7 @@ function AddProductForm() {
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className="space-y-4">
+    <form onSubmit={handleAddProduct} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <Input
           name="nameEn"
@@ -115,7 +115,6 @@ function AddProductForm() {
           className="form-input"
           required
         />
-
         <Input
           name="nameAr"
           placeholder="اسم المنتج (العربية)"
@@ -133,7 +132,6 @@ function AddProductForm() {
           className="form-input"
           required
         />
-
         <Input
           name="descriptionAr"
           placeholder="وصف المنتج (العربية)"
@@ -150,7 +148,6 @@ function AddProductForm() {
           onChange={handleFormChange}
           className="form-input"
         />
-
         <Input
           name="clubAr"
           placeholder="النادي (العربية)"
@@ -168,12 +165,11 @@ function AddProductForm() {
           required
         />
 
-        {/* 🔢 NUMERIC INPUTS */}
+        {/* Numeric inputs */}
         <Input
-          type="number"
-          name="brandId"
-          placeholder="Brand ID"
-          value={productFormData.brandId}
+          name="code"
+          placeholder="Product Code"
+          value={productFormData.code}
           onChange={handleFormChange}
           className="form-input"
           required
@@ -190,9 +186,10 @@ function AddProductForm() {
         />
 
         <Input
-          name="code"
-          placeholder="Product Code"
-          value={productFormData.code}
+          type="number"
+          name="brandId"
+          placeholder="Brand ID"
+          value={productFormData.brandId}
           onChange={handleFormChange}
           className="form-input"
           required
