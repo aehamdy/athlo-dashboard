@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import AddProductForm from "@/components/forms/AddProductForm";
 import ProductsTable from "@/components/ProductsTable";
@@ -9,6 +10,7 @@ import useFetchAll from "@/hooks/useFetchAll";
 import type { Product } from "@/types";
 
 function Products() {
+  const [isUpdatingProduct, setIsUpdatingProduct] = useState<boolean>(false);
   const { data, error, loading } = useFetchAll<Product[]>(
     API_ENDPOINTS.products.getAll,
   );
@@ -27,7 +29,14 @@ function Products() {
       description="Add new products to your collection"
       formComponent={<AddProductForm />}
     >
-      <List variant="table">{data && <ProductsTable data={data} />}</List>
+      <List variant="table">
+        {data && (
+          <ProductsTable
+            data={data}
+            setIsUpdatingProduct={setIsUpdatingProduct}
+          />
+        )}
+      </List>
     </DashboardSection>
   );
 }
