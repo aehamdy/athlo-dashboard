@@ -72,6 +72,7 @@
   /* --color-danger: #FF5252; */
 
   /* Font sizes */
+  --text-tiny: 0.625rem; /* 10px */
   --text-xs: 0.75rem; /* 12px */
   --text-sm: 0.875rem; /* 14px */
   --text-base: 1rem; /* 16px */
@@ -199,6 +200,15 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-dark-muted);
+}
+
+.form-label {
+  @apply absolute top-0 start-1 -translate-y-1/2 px-1 text-tiny text-neutral-400 bg-light;
 }
 
 .form-input {
