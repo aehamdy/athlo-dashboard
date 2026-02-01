@@ -12,6 +12,7 @@ function useFetchAll<T>(endpoint: string) {
     const fetchAll = async () => {
       try {
         setLoading(true);
+        setError(null);
 
         const response = await http.get<ApiResponse<T>>(endpoint);
 
