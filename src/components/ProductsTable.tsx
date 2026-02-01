@@ -40,6 +40,7 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
             <TableHead className="text-center">Season</TableHead>
             <TableHead className="text-center">Club</TableHead>
             <TableHead className="text-center">Price</TableHead>
+            <TableHead className="text-center">Discount</TableHead>
             <TableHead className="text-end">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -73,6 +74,16 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
               <TableCell className="">
                 <span className="font-semibold">&pound;</span>{" "}
                 {product.basePrice}
+              </TableCell>
+
+              <TableCell className="">
+                {product.priceAfterDiscount < product.basePrice ? (
+                  <div className="flex items-center gap-tiny font-semibold text-red-500">
+                    <span>&pound;</span> {product.priceAfterDiscount}
+                  </div>
+                ) : (
+                  "-"
+                )}
               </TableCell>
 
               <TableCell className="">
