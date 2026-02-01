@@ -19,6 +19,17 @@ type ProductsTableProps = {
   setIsUpdatingProduct: (product: Product | null) => void;
 };
 
+const productTableCols = [
+  "Product",
+  "Category",
+  "Brand",
+  "Season",
+  "Club",
+  "Price",
+  "Discount",
+  "Actions",
+];
+
 function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
   const handleOnUpdate = (product: Product) => {
     setIsUpdatingProduct(product);
@@ -31,17 +42,17 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
   return (
     <TableWrapper>
       <Table className="rounded-md overflow-hidden">
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        <TableCaption>A list of your recent products.</TableCaption>
         <TableHeader className="bg-neutral cursor-default">
           <TableRow className="text-center">
-            <TableHead className="w-50 text-start">Product</TableHead>
-            <TableHead className="text-center">Category</TableHead>
-            <TableHead className="text-center">Brand</TableHead>
-            <TableHead className="text-center">Season</TableHead>
-            <TableHead className="text-center">Club</TableHead>
-            <TableHead className="text-center">Price</TableHead>
-            <TableHead className="text-center">Discount</TableHead>
-            <TableHead className="text-end">Actions</TableHead>
+            {productTableCols.map((col) => (
+              <TableHead
+                key={col}
+                className="text-center first:text-start last:text-end"
+              >
+                {col}
+              </TableHead>
+            ))}
           </TableRow>
         </TableHeader>
 
