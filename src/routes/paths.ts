@@ -8,5 +8,6 @@ export const ROUTE_PATHS = {
     categories: "/categories",
     brands: "/brands",
     orders: "/orders",
+    coupons: "/coupons",
   },
 } as const;

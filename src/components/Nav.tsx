@@ -1,4 +1,5 @@
 import {
+  BadgePercent,
   LayoutDashboard,
   ListTodo,
   Shirt,
@@ -46,6 +47,12 @@ const navItems: NavItemType[] = [
     label: "Orders",
     href: "/orders",
     icon: ShoppingCart,
+  },
+  {
+    id: 6,
+    label: "Coupons",
+    href: "/coupons",
+    icon: BadgePercent,
   },
 ];
 

@@ -10,6 +10,7 @@ import { ROUTE_PATHS } from "./routes/paths";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import Orders from "./pages/Orders";
+import Coupons from "./pages/Coupons";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           />
           <Route path={ROUTE_PATHS.dashboard.brands} element={<Brands />} />
           <Route path={ROUTE_PATHS.dashboard.orders} element={<Orders />} />
+          <Route path={ROUTE_PATHS.dashboard.coupons} element={<Coupons />} />
         </Route>
       </Route>
 
