@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { API_ENDPOINTS } from "@/api/endPoints";
 import AddProductForm from "@/components/forms/AddProductForm";
 import ProductsTable from "@/components/ProductsTable";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
 import List from "@/components/sharedComponents/List";
 import Loading from "@/components/sharedComponents/Loading";
-import useFetchAll from "@/hooks/useFetchAll";
 import type { Product } from "@/types";
+
 import {
   Dialog,
   DialogContent,
@@ -16,21 +15,27 @@ import {
 } from "@/components/ui/dialog";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import UpdateProductForm from "@/components/forms/UpdateProductForm";
+import { usePaginatedProducts } from "@/hooks/usePaginatedProducts";
+import { AppPagination } from "@/components/sharedComponents/AppPagination";
 
 function Products() {
+  const [page, setPage] = useState(1);
+  const [pageSize] = useState(10);
+  const [search, setSearch] = useState("");
+  const [ordering, setOrdering] = useState("");
   const [isUpdatingProduct, setIsUpdatingProduct] = useState<Product | null>(
     null,
   );
-  const { data, error, loading } = useFetchAll<Product[]>(
-    API_ENDPOINTS.products.getAll,
+
+  const { data, loading, error } = usePaginatedProducts(
+    page,
+    pageSize,
+    search,
+    ordering,
   );
 
   if (loading) return <Loading variant="table" />;
-
-  if (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    return <Error title="Products" message={errorMessage} />;
-  }
+  if (error) return <Error title="Products" message={error} />;
 
   return (
     <DashboardSection
@@ -42,11 +47,27 @@ function Products() {
       <List variant="table">
         {data && (
           <ProductsTable
-            data={data}
+            data={data?.items ?? []}
             setIsUpdatingProduct={setIsUpdatingProduct}
           />
         )}
       </List>
+
+      {data && (
+        <AppPagination
+          currentPage={page}
+          pageSize={data.pageSize}
+          total={data.totalCount}
+          onPageChange={setPage}
+        />
+      )}
+
+      {isUpdatingProduct && (
+        <UpdateProductForm
+          product={isUpdatingProduct}
+          onSuccess={() => setIsUpdatingProduct(null)}
+        />
+      )}
 
       {isUpdatingProduct && (
         <Dialog
