@@ -12,7 +12,26 @@ export const API_ENDPOINTS = {
     create: `${BASE_URL}/Api/V1/Product/Create`,
     update: `${BASE_URL}/Api/V1/Product/Edit`,
     delete: (id: number) => `${BASE_URL}/Api/V1/Product/${id}`,
-    // paginated: `${BASE_URL}/Api/V1/Product/Paginated`,
+    paginated: (
+      pageNumber: number,
+      pageSize: number,
+      search?: string,
+      ordering?: string,
+    ) => {
+      let url = `${BASE_URL}/Api/V1/Product/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+      if (search && search.trim()) {
+        url += `&search=${encodeURIComponent(search)}`;
+      }
+
+      if (ordering && ordering.trim()) {
+        url += `&ordering=${encodeURIComponent(ordering)}`;
+      }
+
+      return url;
+    },
+
+    // paginated: `${BASE_URL}/Api/V1/Product/Paginated/{PageNumber}/{PageSize}/{search}/{ordering}`, // all these are optional
     // withVariants: (id: string) => `${BASE_URL}/Api/V1/Product/${id}/With-Variants`,
   },
   brands: {
