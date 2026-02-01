@@ -25,7 +25,7 @@ function Products() {
     API_ENDPOINTS.products.getAll,
   );
 
-  if (loading) return <Loading size="xl" />;
+  if (loading) return <Loading variant="table" />;
 
   if (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);

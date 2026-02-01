@@ -31,7 +31,7 @@ function Orders() {
     API_ENDPOINTS.orders.getAll,
   );
 
-  if (loading) return <Loading size="xl" />;
+  if (loading) return <Loading variant="table" />;
 
   if (error) {
     const message = error instanceof Error ? error.message : String(error);
