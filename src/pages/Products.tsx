@@ -20,7 +20,7 @@ import { AppPagination } from "@/components/sharedComponents/AppPagination";
 
 function Products() {
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(10);
+  const [pageSize] = useState(8);
   const [search, setSearch] = useState("");
   const [ordering, setOrdering] = useState("");
   const [isUpdatingProduct, setIsUpdatingProduct] = useState<Product | null>(
