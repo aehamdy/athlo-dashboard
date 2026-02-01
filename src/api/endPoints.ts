@@ -38,4 +38,11 @@ export const API_ENDPOINTS = {
     paymentStatus: `${BASE_URL}/Api/V1/Order/payment-status`,
     userOrder: (userId: string) => `${BASE_URL}/Api/V1/Order/user/${userId}`,
   },
+  coupons: {
+    getAll: `${BASE_URL}/Api/V1/Discount/List`,
+    getById: (id: number) => `${BASE_URL}/Api/V1/Discount/${id}`,
+    create: `${BASE_URL}/Api/V1/Discount/Create`,
+    update: `${BASE_URL}/Api/V1/Discount/Edit`,
+    delete: (id: number) => `${BASE_URL}/Api/V1/Discount/${id}`,
+  },
 } as const;
