@@ -6,18 +6,18 @@ import Error from "@/components/sharedComponents/Error";
 import List from "@/components/sharedComponents/List";
 import Loading from "@/components/sharedComponents/Loading";
 import type { Product } from "@/types";
-
+import { DialogDescription } from "@radix-ui/react-dialog";
+import UpdateProductForm from "@/components/forms/UpdateProductForm";
+import useFetchPaginatedData from "@/hooks/useFetchPaginatedData";
+import { AppPagination } from "@/components/sharedComponents/AppPagination";
+import { API_ENDPOINTS } from "@/api/endPoints";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { DialogDescription } from "@radix-ui/react-dialog";
-import UpdateProductForm from "@/components/forms/UpdateProductForm";
-import { usePaginatedProducts } from "@/hooks/usePaginatedProducts";
-import { AppPagination } from "@/components/sharedComponents/AppPagination";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -37,7 +37,8 @@ function Products() {
     null,
   );
 
-  const { data, loading, error } = usePaginatedProducts(
+  const { data, loading, error } = useFetchPaginatedData<Product>(
+    API_ENDPOINTS.products.paginated,
     page,
     pageSize,
     search,
