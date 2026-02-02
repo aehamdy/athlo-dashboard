@@ -1,26 +1,23 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endPoints";
-import type { Product } from "@/types";
 import type { AxiosError } from "axios";
+import type { PaginatedResponse } from "@/types";
 
-interface PaginatedProducts {
-  items: Product[];
-  currentPage: number;
-  totalPages: number;
-  pageSize: number;
-  totalCount: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
+type PaginatedEndpointBuilder = (
+  pageNumber: number,
+  pageSize: number,
+  search?: string,
+  ordering?: string,
+) => string;
 
-export function usePaginatedProducts(
+function useFetchPaginatedData<T>(
+  buildEndpoint: PaginatedEndpointBuilder,
   pageNumber: number = 1,
-  pageSize: number = 6,
+  pageSize: number = 10,
   search?: string,
   ordering?: string,
 ) {
-  const [data, setData] = useState<PaginatedProducts | null>(null);
+  const [data, setData] = useState<PaginatedResponse<T> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,18 +27,11 @@ export function usePaginatedProducts(
         setLoading(true);
         setError(null);
 
-        const endpoint = API_ENDPOINTS.products.paginated(
-          pageNumber,
-          pageSize,
-          search,
-          ordering,
-        );
+        const endpoint = buildEndpoint(pageNumber, pageSize, search, ordering);
 
         const response = await http.get(endpoint);
-
         const respData = response.data;
 
-        // Map backend fields to frontend state
         setData({
           items: respData.data,
           currentPage: respData.currentPage,
@@ -64,7 +54,9 @@ export function usePaginatedProducts(
     };
 
     fetchData();
-  }, [pageNumber, pageSize, search, ordering]);
+  }, [buildEndpoint, pageNumber, pageSize, search, ordering]);
 
   return { data, loading, error };
 }
+
+export default useFetchPaginatedData;
