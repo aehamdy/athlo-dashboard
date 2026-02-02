@@ -17,6 +17,16 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import UpdateProductForm from "@/components/forms/UpdateProductForm";
 import { usePaginatedProducts } from "@/hooks/usePaginatedProducts";
 import { AppPagination } from "@/components/sharedComponents/AppPagination";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function Products() {
   const [page, setPage] = useState(1);
@@ -34,6 +44,12 @@ function Products() {
     ordering,
   );
 
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setSearch(e.currentTarget.value);
+    }
+  };
+
   if (loading) return <Loading variant="table" />;
   if (error) return <Error title="Products" message={error} />;
 
@@ -44,23 +60,59 @@ function Products() {
       description="Add new products to your collection"
       formComponent={<AddProductForm />}
     >
-      <List variant="table">
+      <div className="flex justify-between items-center">
+        <div className="w-1/2 md:w-2/5 lg:w-1/4">
+          <Input
+            type="search"
+            placeholder="Search"
+            className="form-input w-full"
+            onKeyDown={handleSearch}
+          />
+        </div>
+
+        <div>
+          <Select onValueChange={(value) => setOrdering(value)}>
+            <SelectTrigger className="form-input w-full max-w-48">
+              <SelectValue placeholder="Order by" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Adcending order by</SelectLabel>
+                <SelectItem value="6">Price</SelectItem>
+                <SelectItem value="2">Name</SelectItem>
+                <SelectItem value="4">Season</SelectItem>
+                <SelectItem value="8">Category</SelectItem>
+                <SelectItem value="5">Club</SelectItem>
+                <SelectItem value="7">Brand</SelectItem>
+                {/* <SelectItem value="0">Id</SelectItem> */}
+                {/* <SelectItem value="1">Code</SelectItem> */}
+                {/* <SelectItem value="3">Description</SelectItem> */}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className="space-y-tiny md:space-y-md lg:space-y-6xl">
+        <List variant="table">
+          {data && (
+            <ProductsTable
+              data={data?.items ?? []}
+              setIsUpdatingProduct={setIsUpdatingProduct}
+            />
+          )}
+        </List>
+
         {data && (
-          <ProductsTable
-            data={data?.items ?? []}
-            setIsUpdatingProduct={setIsUpdatingProduct}
+          <AppPagination
+            currentPage={page}
+            pageSize={data.pageSize}
+            total={data.totalCount}
+            onPageChange={setPage}
           />
         )}
-      </List>
-
-      {data && (
-        <AppPagination
-          currentPage={page}
-          pageSize={data.pageSize}
-          total={data.totalCount}
-          onPageChange={setPage}
-        />
-      )}
+      </div>
 
       {isUpdatingProduct && (
         <UpdateProductForm
