@@ -87,9 +87,9 @@ function ProductsTable({ data, setIsUpdatingProduct }: ProductsTableProps) {
                 {product.basePrice}
               </TableCell>
 
-              <TableCell className="">
+              <TableCell>
                 {product.priceAfterDiscount < product.basePrice ? (
-                  <div className="flex items-center gap-tiny font-semibold text-red-500">
+                  <div className="flex justify-center items-center gap-tiny font-semibold text-red-500">
                     <span>&pound;</span> {product.priceAfterDiscount}
                   </div>
                 ) : (
