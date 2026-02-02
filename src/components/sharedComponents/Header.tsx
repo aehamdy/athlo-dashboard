@@ -16,8 +16,8 @@ import Logo from "./Logo";
 
 function Header() {
   return (
-    <header className="bg-light rounded-xl">
-      <div className="flex justify-between items-center p-compact lg:p-regular">
+    <header className="bg-light rounded-2xl">
+      <div className="flex justify-between items-center p-compact lg:p-sm">
         <div className="flex flex-col gap-2">
           <Heading as="h2">Hello, Admin! 👋</Heading>
 
