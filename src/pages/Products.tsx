@@ -17,6 +17,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import UpdateProductForm from "@/components/forms/UpdateProductForm";
 import { usePaginatedProducts } from "@/hooks/usePaginatedProducts";
 import { AppPagination } from "@/components/sharedComponents/AppPagination";
+import { Input } from "@/components/ui/input";
 
 function Products() {
   const [page, setPage] = useState(1);
@@ -34,6 +35,12 @@ function Products() {
     ordering,
   );
 
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setSearch(e.currentTarget.value);
+    }
+  };
+
   if (loading) return <Loading variant="table" />;
   if (error) return <Error title="Products" message={error} />;
 
@@ -44,23 +51,36 @@ function Products() {
       description="Add new products to your collection"
       formComponent={<AddProductForm />}
     >
-      <List variant="table">
+      <div className="flex justify-between items-center">
+        <div className="w-1/2 md:w-2/5 lg:w-1/4">
+          <Input
+            type="search"
+            placeholder="Search"
+            className="form-input w-full"
+            onKeyDown={handleSearch}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-tiny md:space-y-md lg:space-y-6xl">
+        <List variant="table">
+          {data && (
+            <ProductsTable
+              data={data?.items ?? []}
+              setIsUpdatingProduct={setIsUpdatingProduct}
+            />
+          )}
+        </List>
+
         {data && (
-          <ProductsTable
-            data={data?.items ?? []}
-            setIsUpdatingProduct={setIsUpdatingProduct}
+          <AppPagination
+            currentPage={page}
+            pageSize={data.pageSize}
+            total={data.totalCount}
+            onPageChange={setPage}
           />
         )}
-      </List>
-
-      {data && (
-        <AppPagination
-          currentPage={page}
-          pageSize={data.pageSize}
-          total={data.totalCount}
-          onPageChange={setPage}
-        />
-      )}
+      </div>
 
       {isUpdatingProduct && (
         <UpdateProductForm
