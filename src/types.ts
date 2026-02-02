@@ -1,3 +1,13 @@
+export interface PaginatedResponse<T> {
+  items: T[];
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalCount: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
+}
+
 export type ApiResponse<T> = {
   succeeded: boolean;
   message?: string;
