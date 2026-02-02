@@ -18,6 +18,15 @@ import UpdateProductForm from "@/components/forms/UpdateProductForm";
 import { usePaginatedProducts } from "@/hooks/usePaginatedProducts";
 import { AppPagination } from "@/components/sharedComponents/AppPagination";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function Products() {
   const [page, setPage] = useState(1);
@@ -59,6 +68,29 @@ function Products() {
             className="form-input w-full"
             onKeyDown={handleSearch}
           />
+        </div>
+
+        <div>
+          <Select onValueChange={(value) => setOrdering(value)}>
+            <SelectTrigger className="form-input w-full max-w-48">
+              <SelectValue placeholder="Order by" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Adcending order by</SelectLabel>
+                <SelectItem value="6">Price</SelectItem>
+                <SelectItem value="2">Name</SelectItem>
+                <SelectItem value="4">Season</SelectItem>
+                <SelectItem value="8">Category</SelectItem>
+                <SelectItem value="5">Club</SelectItem>
+                <SelectItem value="7">Brand</SelectItem>
+                {/* <SelectItem value="0">Id</SelectItem> */}
+                {/* <SelectItem value="1">Code</SelectItem> */}
+                {/* <SelectItem value="3">Description</SelectItem> */}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
