@@ -9,5 +9,6 @@ export const ROUTE_PATHS = {
     brands: "/brands",
     orders: "/orders",
     coupons: "/coupons",
+    users: "/users",
   },
 } as const;

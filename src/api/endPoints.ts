@@ -64,4 +64,12 @@ export const API_ENDPOINTS = {
     update: `${BASE_URL}/Api/V1/Discount/Edit`,
     delete: (id: number) => `${BASE_URL}/Api/V1/Discount/${id}`,
   },
+  users: {
+    delete: (id: number) => `${BASE_URL}/Api/V1/User/${id}`,
+    paginated: (pageNumber: number, pageSize: number) => {
+      const url = `${BASE_URL}/Api/V1/User/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+      return url;
+    },
+  },
 } as const;
