@@ -1,6 +1,5 @@
 import { useState } from "react";
 import AddProductForm from "@/components/forms/AddProductForm";
-import ProductsTable from "@/components/ProductsTable";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
 import List from "@/components/sharedComponents/List";
@@ -27,6 +26,83 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { SquarePen, Trash2 } from "lucide-react";
+import http from "@/api/http";
+
+type OrderProductsBy = {
+  id: number;
+  label: string;
+  value: number;
+};
+
+const orderProductsBy: OrderProductsBy[] = [
+  {
+    id: 1,
+    label: "Price",
+    value: 6,
+  },
+  {
+    id: 2,
+    label: "Name",
+    value: 2,
+  },
+  {
+    id: 3,
+    label: "Season",
+    value: 4,
+  },
+  {
+    id: 4,
+    label: "Category",
+    value: 8,
+  },
+  {
+    id: 5,
+    label: "Club",
+    value: 5,
+  },
+  {
+    id: 6,
+    label: "Brand",
+    value: 7,
+  },
+  // {
+  //   id: 7,
+  //   label: "ID",
+  //   value: 0,
+  // },
+  // {
+  //   id: 8,
+  //   label: "Code",
+  //   value: 1,
+  // },
+  // {
+  //   id: 9,
+  //   label: "Description",
+  //   value: 3,
+  // },
+];
+
+const productTableCols = [
+  "Product",
+  "Category",
+  "Brand",
+  "Season",
+  "Club",
+  "Price",
+  "Discount",
+  "Actions",
+];
 
 function Products() {
   const [page, setPage] = useState(1);
@@ -51,7 +127,14 @@ function Products() {
     }
   };
 
-  if (loading) return <Loading variant="table" />;
+  const handleOnUpdate = (product: Product) => {
+    setIsUpdatingProduct(product);
+  };
+
+  const handleProductDelete = (id: number) => {
+    http.delete(API_ENDPOINTS.products.delete(id));
+  };
+
   if (error) return <Error title="Products" message={error} />;
 
   return (
@@ -80,15 +163,11 @@ function Products() {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Adcending order by</SelectLabel>
-                <SelectItem value="6">Price</SelectItem>
-                <SelectItem value="2">Name</SelectItem>
-                <SelectItem value="4">Season</SelectItem>
-                <SelectItem value="8">Category</SelectItem>
-                <SelectItem value="5">Club</SelectItem>
-                <SelectItem value="7">Brand</SelectItem>
-                {/* <SelectItem value="0">Id</SelectItem> */}
-                {/* <SelectItem value="1">Code</SelectItem> */}
-                {/* <SelectItem value="3">Description</SelectItem> */}
+                {orderProductsBy.map((item) => (
+                  <SelectItem key={item.id} value={item.value.toString()}>
+                    {item.label}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -97,12 +176,97 @@ function Products() {
 
       <div className="space-y-tiny md:space-y-md lg:space-y-6xl">
         <List variant="table">
-          {data && (
-            <ProductsTable
-              data={data?.items ?? []}
-              setIsUpdatingProduct={setIsUpdatingProduct}
-            />
-          )}
+          {/* <TableWrapper> */}
+          <Table className="rounded-md overflow-hidden">
+            <TableCaption>A list of your recent products.</TableCaption>
+
+            <TableHeader className="bg-neutral cursor-default">
+              <TableRow className="text-center">
+                {productTableCols.map((col) => (
+                  <TableHead
+                    key={col}
+                    className="text-center first:text-start last:text-end"
+                  >
+                    {col}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+
+            {loading ? (
+              <Loading
+                variant="table"
+                rowsCount={pageSize}
+                colsCount={productTableCols.length}
+              />
+            ) : (
+              data && (
+                <TableBody>
+                  {data?.items?.map((product) => (
+                    <TableRow key={product.id} className="text-center">
+                      <TableCell className="font-medium">
+                        <div className="flex items-center gap-sm">
+                          <div className="w-14 h-14 overflow-hidden rounded-sm">
+                            <img
+                              src={product.images[0]}
+                              // alt={product.name}
+                              alt={product.code}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+
+                          <div className="">{product.name}</div>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>{product.categoryName}</TableCell>
+
+                      <TableCell>{product.brandName}</TableCell>
+
+                      <TableCell>{product.season}</TableCell>
+
+                      <TableCell>{product.club}</TableCell>
+
+                      <TableCell className="">
+                        <span className="font-semibold">&pound;</span>{" "}
+                        {product.basePrice}
+                      </TableCell>
+
+                      <TableCell>
+                        {product.priceAfterDiscount < product.basePrice ? (
+                          <div className="flex justify-center items-center gap-tiny font-semibold text-red-500">
+                            <span>&pound;</span> {product.priceAfterDiscount}
+                          </div>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+
+                      <TableCell className="">
+                        <div className="flex justify-end items-center gap-tiny">
+                          <Button
+                            variant="icon"
+                            onClick={() => handleOnUpdate(product)}
+                            className="px-2 hover:text-blue-500"
+                          >
+                            <SquarePen />
+                          </Button>
+
+                          <Button
+                            variant="icon"
+                            onClick={() => handleProductDelete(product.id)}
+                            className="px-2 hover:text-red-500"
+                          >
+                            <Trash2 />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )
+            )}
+          </Table>
         </List>
 
         {data && (
