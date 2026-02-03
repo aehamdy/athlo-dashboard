@@ -11,6 +11,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 import Orders from "./pages/Orders";
 import Coupons from "./pages/Coupons";
+import Users from "./pages/Users";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path={ROUTE_PATHS.dashboard.brands} element={<Brands />} />
           <Route path={ROUTE_PATHS.dashboard.orders} element={<Orders />} />
           <Route path={ROUTE_PATHS.dashboard.coupons} element={<Coupons />} />
+          <Route path={ROUTE_PATHS.dashboard.users} element={<Users />} />
         </Route>
       </Route>
 
