@@ -1,12 +1,15 @@
 import { Skeleton } from "../ui/skeleton";
 import { Spinner } from "../ui/spinner";
+import { TableBody, TableCell, TableRow } from "../ui/table";
 
 type LoadingProps = {
   variant?: "table";
+  rowsCount?: number;
+  colsCount?: number;
   size?: "xs" | "sm" | "normal" | "lg" | "xl";
 };
 
-function Loading({ variant, size }: LoadingProps) {
+function Loading({ variant, rowsCount, colsCount, size }: LoadingProps) {
   const sekeletonColor = "bg-neutral-100";
   const loadingSize =
     size === "xs"
@@ -21,8 +24,23 @@ function Loading({ variant, size }: LoadingProps) {
               ? "w-9xl h-9xl"
               : "w-base h-base";
 
+  if (variant === "table" && rowsCount && colsCount) {
+    return (
+      <TableBody>
+        {Array.from({ length: rowsCount }).map((_, idx) => (
+          <TableRow key={idx}>
+            {Array.from({ length: colsCount }).map((_, idx) => (
+              <TableCell key={idx} className="">
+                <Skeleton className="h-4 mt-1 bg-gray-200" />
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    );
+  }
   return (
-    <div className="h-full p-compact bg-light rounded-xl">
+    <div className="h-1/2 mt-auto p-compact bg-light rounded-xl">
       {size && (
         <div className="flex justify-center items-center h-[calc(100dvh-9rem)]">
           <Spinner className={`${loadingSize} text-accent`} />
@@ -30,16 +48,7 @@ function Loading({ variant, size }: LoadingProps) {
       )}
 
       {variant === "table" && (
-        <div className="flex flex-col gap-6 h-full p-compact lg:p-regular bg-light rounded-xl overflow-hidden">
-          <div className="flex justify-between items-center h-[36px]">
-            <Skeleton
-              className={`w-[130px] h-full p-compact ${sekeletonColor}`}
-            />
-            <Skeleton
-              className={`w-[105px] h-full p-compact ${sekeletonColor}`}
-            />
-          </div>
-
+        <div className="flex flex-col gap-6 p-compact lg:p-regular bg-light rounded-xl overflow-hidden">
           <div className="flex flex-col gap-2 w-full h-full">
             {Array.from({ length: 10 }).map((_, index) => (
               <Skeleton
