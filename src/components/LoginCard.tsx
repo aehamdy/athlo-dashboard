@@ -22,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { Spinner } from "./ui/spinner";
-import { Spinner } from "./ui/spinner";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/paths";
