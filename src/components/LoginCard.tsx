@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { Spinner } from "./ui/spinner";
+import { Spinner } from "./ui/spinner";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/paths";
@@ -74,7 +75,7 @@ function LoginCard() {
       Cookies.set(
         AUTH.COOKIE.REFRESH_TOKEN,
         response.data.data.refreshToken.tokenString,
-        { path: "/", expires: 7 } // refresh token lasts longer
+        { path: "/", expires: 7 }, // refresh token lasts longer
       );
 
       // Redirect to dashboard
@@ -84,7 +85,7 @@ function LoginCard() {
       const axiosError = error as AxiosError<{ message?: string }>;
       setServerError(
         axiosError.response?.data?.message ||
-          "An error occurred. Please try again."
+          "An error occurred. Please try again.",
       );
     } finally {
       setIsLoading(false);
