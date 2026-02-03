@@ -17,7 +17,7 @@ interface DashboardSectionProps {
   title: string;
   buttonLabel?: string;
   description: string;
-  formComponent: React.ReactNode;
+  formComponent?: React.ReactNode;
 }
 
 function DashboardSection({
@@ -35,12 +35,14 @@ function DashboardSection({
         </Heading>
 
         <Dialog>
-          <DialogTrigger asChild>
-            <Button className="text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer">
-              <Plus />
-              {buttonLabel}
-            </Button>
-          </DialogTrigger>
+          {buttonLabel && (
+            <DialogTrigger asChild>
+              <Button className="text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer">
+                <Plus />
+                {buttonLabel}
+              </Button>
+            </DialogTrigger>
+          )}
 
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
