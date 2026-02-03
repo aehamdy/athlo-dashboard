@@ -5,6 +5,7 @@ import {
   Shirt,
   ShoppingCart,
   Tags,
+  UsersRound,
 } from "lucide-react";
 import NavItem from "./NavItem";
 
@@ -53,6 +54,12 @@ const navItems: NavItemType[] = [
     label: "Coupons",
     href: "/coupons",
     icon: BadgePercent,
+  },
+  {
+    id: 7,
+    label: "Users",
+    href: "/users",
+    icon: UsersRound,
   },
 ];
 
