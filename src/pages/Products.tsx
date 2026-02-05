@@ -31,13 +31,14 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { SquarePen, Trash2 } from "lucide-react";
 import http from "@/api/http";
+import TableWrapper from "@/components/sharedComponents/TableWrapper";
+import TableHeadRow from "@/components/sharedComponents/TableHeadRow";
+import { PRODUCT_TABLE_COLUMNS } from "@/config/tableColumns";
 
 type OrderProductsBy = {
   id: number;
@@ -93,17 +94,6 @@ const orderProductsBy: OrderProductsBy[] = [
   // },
 ];
 
-const productTableCols = [
-  "Product",
-  "Category",
-  "Brand",
-  "Season",
-  "Club",
-  "Price",
-  "Discount",
-  "Actions",
-];
-
 function Products() {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(8);
@@ -144,7 +134,7 @@ function Products() {
       description="Add new products to your collection"
       formComponent={<AddProductForm />}
     >
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-1">
         <div className="w-1/2 md:w-2/5 lg:w-1/4">
           <Input
             type="search"
@@ -174,99 +164,90 @@ function Products() {
         </div>
       </div>
 
-      <div className="space-y-tiny md:space-y-md lg:space-y-6xl">
+      {/* <div className="space-y-tiny md:space-y-md lg:space-y-6xl"> */}
+      <div className="flex flex-col justify-between h-full">
         <List variant="table">
-          {/* <TableWrapper> */}
-          <Table className="rounded-md overflow-hidden">
-            <TableCaption>A list of your recent products.</TableCaption>
+          <TableWrapper>
+            <Table className="rounded-md overflow-hidden">
+              <TableCaption>A list of your recent products.</TableCaption>
 
-            <TableHeader className="bg-neutral cursor-default">
-              <TableRow className="text-center">
-                {productTableCols.map((col) => (
-                  <TableHead
-                    key={col}
-                    className="text-center first:text-start last:text-end"
-                  >
-                    {col}
-                  </TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
+              <TableHeadRow tableCols={PRODUCT_TABLE_COLUMNS} />
 
-            {loading ? (
-              <Loading
-                variant="table"
-                rowsCount={pageSize}
-                colsCount={productTableCols.length}
-              />
-            ) : (
-              data && (
-                <TableBody>
-                  {data?.items?.map((product) => (
-                    <TableRow key={product.id} className="text-center">
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-sm">
-                          <div className="w-14 h-14 overflow-hidden rounded-sm">
-                            <img
-                              src={product.images[0]}
-                              // alt={product.name}
-                              alt={product.code}
-                              className="w-full h-full object-cover"
-                            />
+              {loading ? (
+                <Loading
+                  variant="table"
+                  rowsCount={pageSize}
+                  colsCount={PRODUCT_TABLE_COLUMNS.length}
+                />
+              ) : (
+                data && (
+                  <TableBody>
+                    {data?.items?.map((product) => (
+                      <TableRow key={product.id} className="text-center">
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-sm">
+                            <div className="w-14 h-14 overflow-hidden rounded-sm">
+                              <img
+                                src={product.images[0]}
+                                // alt={product.name}
+                                alt={product.code}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+
+                            <div className="">{product.name}</div>
                           </div>
+                        </TableCell>
 
-                          <div className="">{product.name}</div>
-                        </div>
-                      </TableCell>
+                        <TableCell>{product.categoryName}</TableCell>
 
-                      <TableCell>{product.categoryName}</TableCell>
+                        <TableCell>{product.brandName}</TableCell>
 
-                      <TableCell>{product.brandName}</TableCell>
+                        <TableCell>{product.season}</TableCell>
 
-                      <TableCell>{product.season}</TableCell>
+                        <TableCell>{product.club}</TableCell>
 
-                      <TableCell>{product.club}</TableCell>
+                        <TableCell className="">
+                          <span className="font-semibold">&pound;</span>{" "}
+                          {product.basePrice}
+                        </TableCell>
 
-                      <TableCell className="">
-                        <span className="font-semibold">&pound;</span>{" "}
-                        {product.basePrice}
-                      </TableCell>
+                        <TableCell>
+                          {product.priceAfterDiscount < product.basePrice ? (
+                            <div className="flex justify-center items-center gap-tiny font-semibold text-red-500">
+                              <span>&pound;</span> {product.priceAfterDiscount}
+                            </div>
+                          ) : (
+                            "-"
+                          )}
+                        </TableCell>
 
-                      <TableCell>
-                        {product.priceAfterDiscount < product.basePrice ? (
-                          <div className="flex justify-center items-center gap-tiny font-semibold text-red-500">
-                            <span>&pound;</span> {product.priceAfterDiscount}
+                        <TableCell className="">
+                          <div className="flex justify-end items-center gap-tiny">
+                            <Button
+                              variant="icon"
+                              onClick={() => handleOnUpdate(product)}
+                              className="px-2 hover:text-blue-500"
+                            >
+                              <SquarePen />
+                            </Button>
+
+                            <Button
+                              variant="icon"
+                              onClick={() => handleProductDelete(product.id)}
+                              className="px-2 hover:text-red-500"
+                            >
+                              <Trash2 />
+                            </Button>
                           </div>
-                        ) : (
-                          "-"
-                        )}
-                      </TableCell>
-
-                      <TableCell className="">
-                        <div className="flex justify-end items-center gap-tiny">
-                          <Button
-                            variant="icon"
-                            onClick={() => handleOnUpdate(product)}
-                            className="px-2 hover:text-blue-500"
-                          >
-                            <SquarePen />
-                          </Button>
-
-                          <Button
-                            variant="icon"
-                            onClick={() => handleProductDelete(product.id)}
-                            className="px-2 hover:text-red-500"
-                          >
-                            <Trash2 />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              )
-            )}
-          </Table>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                )
+              )}
+            </Table>
+          </TableWrapper>
         </List>
 
         {data && (
