@@ -10,6 +10,8 @@ import {
 } from "./ui/table";
 import TableHeadRow from "./sharedComponents/TableHeadRow";
 import { COUPON_TABLE_COLUMNS } from "@/config/tableColumns";
+import { formatDateTime } from "@/utils/formatDateTime ";
+import { Badge } from "./ui/badge";
 
 type CouponData = {
   id: number;
@@ -42,38 +44,57 @@ function CouponsTable() {
         <TableHeadRow tableCols={COUPON_TABLE_COLUMNS} />
 
         <TableBody>
-          {data.map((coupon) => (
-            <TableRow key={coupon.id}>
-              <TableCell>{coupon.code}</TableCell>
+          {data.map((coupon) => {
+            const { date: startDate } = formatDateTime(coupon.startDate);
+            const { date: endDate } = formatDateTime(coupon.endDate);
 
-              <TableCell>{coupon.name}</TableCell>
+            return (
+              <TableRow key={coupon.id}>
+                <TableCell className="text-start font-semibold">
+                  <Badge className="bg-accent text-dark rounded-md">
+                    {coupon.code}
+                  </Badge>
+                </TableCell>
 
-              <TableCell>{coupon.percentage}</TableCell>
+                <TableCell className="text-center">{coupon.name}</TableCell>
 
-              <TableCell>{coupon.startDate}</TableCell>
+                <TableCell className="text-center">
+                  <Badge className="font-bold text-white bg-red-500 rounded-md">
+                    % {coupon.percentage}
+                  </Badge>
+                </TableCell>
 
-              <TableCell>{coupon.endDate}</TableCell>
+                <TableCell className="text-center font-medium text-cyan-600">
+                  {startDate}
+                </TableCell>
 
-              <TableCell>{coupon.type}</TableCell>
+                <TableCell className="text-center font-medium text-cyan-600">
+                  {endDate}
+                </TableCell>
 
-              <TableCell className="flex justify-end items-center gap-tiny">
-                <Button
-                  variant="icon"
-                  // onClick={() => handleOnUpdate(product)}
-                  className="px-2 hover:text-blue-500"
-                >
-                  <SquarePen />
-                </Button>
-                <Button
-                  variant="icon"
-                  // onClick={() => handleProductDelete(product.id)}
-                  className="px-2 hover:text-red-500"
-                >
-                  <Trash2 />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+                <TableCell className="text-center font-semibold">
+                  {coupon.type}
+                </TableCell>
+
+                <TableCell className="flex justify-end items-center gap-tiny text-end">
+                  <Button
+                    variant="icon"
+                    // onClick={() => handleOnUpdate(product)}
+                    className="px-2 hover:text-blue-500"
+                  >
+                    <SquarePen />
+                  </Button>
+                  <Button
+                    variant="icon"
+                    // onClick={() => handleProductDelete(product.id)}
+                    className="px-2 hover:text-red-500"
+                  >
+                    <Trash2 />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </TableWrapper>
