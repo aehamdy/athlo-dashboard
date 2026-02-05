@@ -2,6 +2,7 @@ import CouponsTable from "@/components/CouponsTable";
 import AddCouponForm from "@/components/forms/AddCouponForm";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import List from "@/components/sharedComponents/List";
+import TableWrapper from "@/components/sharedComponents/TableWrapper";
 
 function Coupons() {
   return (
@@ -12,7 +13,9 @@ function Coupons() {
       formComponent={<AddCouponForm />}
     >
       <List variant="table">
-        <CouponsTable />
+        <TableWrapper>
+          <CouponsTable />
+        </TableWrapper>
       </List>
     </DashboardSection>
   );
