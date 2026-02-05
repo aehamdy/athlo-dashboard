@@ -28,7 +28,7 @@ function DashboardSection({
   formComponent,
 }: DashboardSectionProps) {
   return (
-    <section className="flex flex-col gap-4 md:gap-4 lg:gap-3 xl:gap-2 h-full p-compact md:p-regular lg:p-sm bg-light rounded-xl overflow-hidden">
+    <section className="flex flex-col gap-4 md:gap-4 lg:gap-3 xl:gap-4 h-full p-compact md:p-regular lg:p-sm bg-light rounded-xl overflow-hidden">
       <div className="flex justify-between items-center">
         <Heading as="h2" className="text-2xl font-semibold">
           {title}
