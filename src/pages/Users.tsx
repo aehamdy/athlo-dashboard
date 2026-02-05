@@ -15,6 +15,7 @@ import Error from "@/components/sharedComponents/Error";
 import TableHeadRow from "@/components/sharedComponents/TableHeadRow";
 import TableWrapper from "@/components/sharedComponents/TableWrapper";
 import { USER_TABLE_COLUMNS } from "@/config/tableColumns";
+import { formatDateTime } from "@/utils/formatDateTime ";
 
 type User = {
   id?: number;
@@ -62,34 +63,46 @@ function Users() {
               ) : (
                 data && (
                   <TableBody>
-                    {data?.items?.map((user, idx) => (
-                      <TableRow
-                        key={user.email}
-                        className="h-[53px] text-center"
-                      >
-                        <TableCell className="w-4 text-start font-medium">
-                          #{idx + 1}
-                        </TableCell>
+                    {data?.items?.map((user, idx) => {
+                      const { date: birthDate } = formatDateTime(
+                        user.birthDate,
+                      );
 
-                        <TableCell className="font-medium">
-                          {`${user.firstName} ${user.lastName}`}
-                        </TableCell>
+                      return (
+                        <TableRow
+                          key={user.email}
+                          className="h-[53px] text-center"
+                        >
+                          <TableCell className="w-4 text-start font-medium">
+                            #{idx + 1}
+                          </TableCell>
 
-                        <TableCell>{user.email}</TableCell>
+                          <TableCell className="font-medium">
+                            {`${user.firstName} ${user.lastName}`}
+                          </TableCell>
 
-                        <TableCell>
-                          {user.phoneNumber === null ? "N/A" : user.phoneNumber}
-                        </TableCell>
+                          <TableCell>{user.email}</TableCell>
 
-                        <TableCell>
-                          {user.city === null ? "N/A" : user.city}
-                        </TableCell>
+                          <TableCell className="font-medium text-cyan-600">
+                            {birthDate}
+                          </TableCell>
 
-                        <TableCell>
-                          {user.country === null ? "N/A" : user.country}
-                        </TableCell>
-                      </TableRow>
-                    ))}
+                          <TableCell>
+                            {user.phoneNumber === null
+                              ? "N/A"
+                              : user.phoneNumber}
+                          </TableCell>
+
+                          <TableCell>
+                            {user.city === null ? "N/A" : user.city}
+                          </TableCell>
+
+                          <TableCell className="text-end">
+                            {user.country === null ? "N/A" : user.country}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 )
               )}

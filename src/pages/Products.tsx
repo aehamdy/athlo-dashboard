@@ -164,7 +164,6 @@ function Products() {
         </div>
       </div>
 
-      {/* <div className="space-y-tiny md:space-y-md lg:space-y-6xl"> */}
       <div className="flex flex-col justify-between h-full">
         <List variant="table">
           <TableWrapper>
