@@ -5,7 +5,7 @@ export const PRODUCT_TABLE_COLUMNS = [
   "Season",
   "Club",
   "Price",
-  "Discount",
+  "Sale Price",
   "Actions",
 ];
 
@@ -33,6 +33,7 @@ export const USER_TABLE_COLUMNS = [
   "No.",
   "User",
   "Email",
+  "Birthdate",
   "Phone",
   "City",
   "Country",
