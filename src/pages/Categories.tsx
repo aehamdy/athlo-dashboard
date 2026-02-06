@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { API_ENDPOINTS } from "@/api/endPoints";
-import AddCategoryForm from "@/components/forms/AddCategoryForm";
+import CategoryForm from "@/components/forms/CategoryForm";
 import CategoryCard from "@/components/CategoryCard";
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
 import Error from "@/components/sharedComponents/Error";
@@ -9,6 +9,8 @@ import ListItem from "@/components/sharedComponents/ListItem";
 import Loading from "@/components/sharedComponents/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Category } from "@/types";
+import { Button } from "@/components/ui/button";
+import http from "@/api/http";
 import {
   Dialog,
   DialogContent,
@@ -16,8 +18,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import http from "@/api/http";
 
 function Categories() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
@@ -34,9 +34,9 @@ function Categories() {
 
     try {
       await http.delete(API_ENDPOINTS.categories.delete(deletingCategory.id));
-      // console.log(`Category ${deletingCategory?.id} deleted`);
-      console.log(`Category ${deletingCategory}`);
+
       setDeletingCategory(null);
+
       // optionally trigger refetch or optimistic update
     } catch (error) {
       console.error("Delete failed:", error);
@@ -59,7 +59,7 @@ function Categories() {
       title="Categories"
       buttonLabel="Add Category"
       description="Add new categories to organize your products"
-      formComponent={<AddCategoryForm />}
+      formComponent={<CategoryForm />}
     >
       <List>
         {data?.map((category) => (
@@ -84,9 +84,11 @@ function Categories() {
         <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle>
-              {editingCategory
-                ? "Edit Category"
-                : deletingCategory && "Delete Category"}
+              {editingCategory ? "Edit " : deletingCategory ? "Delete " : ""}
+              <span className="text-accent-strong">
+                {editingCategory?.name}
+              </span>{" "}
+              Category
             </DialogTitle>
           </DialogHeader>
 
@@ -94,7 +96,7 @@ function Categories() {
           {deletingCategory && (
             <DialogDescription>
               Are you sure you want to delete{" "}
-              <span className="font-semibold">
+              <span className="font-semibold text-accent-strong">
                 {deletingCategory?.name || deletingCategory?.nameEn}
               </span>{" "}
               category?
@@ -103,14 +105,14 @@ function Categories() {
 
           {/* Display Edit Form */}
           {editingCategory && (
-            <AddCategoryForm
+            <CategoryForm
               mode="edit"
               category={editingCategory}
               onSuccess={() => setEditingCategory(null)}
             />
           )}
 
-          {/* Display Delete Button */}
+          {/* Display Delete Message */}
           {deletingCategory && (
             <div className="flex justify-between items-center">
               <Button
@@ -120,6 +122,7 @@ function Categories() {
               >
                 Yes
               </Button>
+
               <Button
                 variant="outline"
                 onClick={handleCancelDelete}
