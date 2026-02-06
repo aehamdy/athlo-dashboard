@@ -7,8 +7,11 @@ import Loading from "@/components/sharedComponents/Loading";
 import Error from "@/components/sharedComponents/Error";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Brand } from "@/types";
-import AddBrandForm from "@/components/forms/AddBrandForm";
+import AddBrandForm from "@/components/forms/BrandForm";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import http from "@/api/http";
+import BrandForm from "@/components/forms/BrandForm";
 import {
   Dialog,
   DialogContent,
@@ -16,8 +19,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import http from "@/api/http";
 
 function Brands() {
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
@@ -57,7 +58,7 @@ function Brands() {
       title="Brands"
       buttonLabel="Add Brand"
       description="Add new brands to your collection"
-      formComponent={<AddBrandForm />}
+      formComponent={<BrandForm />}
     >
       <List>
         {data?.map((brand) => (
@@ -81,7 +82,11 @@ function Brands() {
         <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle>
-              {editingBrand ? "Edit Brand" : deletingBrand && "Delete Brand"}
+              {editingBrand ? "Edit " : deletingBrand ? "Delete " : ""}
+              <span className="text-accent-strong">
+                {editingBrand?.name}
+              </span>{" "}
+              Brand
             </DialogTitle>
           </DialogHeader>
 
@@ -89,8 +94,10 @@ function Brands() {
           {deletingBrand && (
             <DialogDescription>
               Are you sure you want to delete{" "}
-              <span className="font-semibold">{deletingBrand?.nameEn}</span>{" "}
-              category?
+              <span className="font-semibold text-accent-strong">
+                {deletingBrand?.name || deletingBrand?.nameEn}
+              </span>{" "}
+              brand?
             </DialogDescription>
           )}
 
@@ -113,6 +120,7 @@ function Brands() {
               >
                 Yes
               </Button>
+
               <Button
                 variant="outline"
                 onClick={handleCancelDelete}
