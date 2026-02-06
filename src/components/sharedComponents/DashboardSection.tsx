@@ -3,10 +3,8 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -51,17 +49,6 @@ function DashboardSection({
             </DialogHeader>
 
             {formComponent}
-
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button
-                  variant="outline"
-                  className="w-full -mt-tiny active:text-light active:bg-accent-strong cursor-pointer"
-                >
-                  Cancel
-                </Button>
-              </DialogClose>
-            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
