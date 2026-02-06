@@ -4,7 +4,7 @@ type TableWrapperProps = {
 
 function TableWrapper({ children }: TableWrapperProps) {
   return (
-    <section className="h-[69dvh] md:h-[73dvh] lg:h-[55vh] xl:h-[52vh] overflow-y-auto">
+    <section className="h-[50dvh] min-h-[55dvh] max-h-[69dvh] md:h-[69dvh] lg:h-[55vh] xl:h-[52vh] overflow-y-auto">
       {children}
     </section>
   );
