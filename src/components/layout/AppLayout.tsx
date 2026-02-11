@@ -3,7 +3,7 @@ import MainContent from "./MainContent";
 
 function AppLayout() {
   return (
-    <section className="h-screen grid grid-cols-12 p-tiny md:p-regular lg:py-sm lg:pe-sm text-light bg-dark-muted overflow-hidden">
+    <section className="h-screen grid grid-cols-12 p-tiny md:p-regular lg:py-sm lg:pe-sm text-light bg-linear-to-tl from-black to-[#074120] overflow-hidden">
       {/* Sidebar on desktop */}
       <div className="hidden lg:block lg:col-span-2">
         <Sidebar />
