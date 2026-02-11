@@ -1,16 +1,25 @@
 import { useState } from "react";
+
 import { API_ENDPOINTS } from "@/api/endPoints";
+
 import CategoryForm from "@/components/forms/CategoryForm";
+
 import CategoryCard from "@/components/CategoryCard";
+
 import DashboardSection from "@/components/sharedComponents/DashboardSection";
+
 import Error from "@/components/sharedComponents/Error";
+
 import List from "@/components/sharedComponents/List";
+
 import ListItem from "@/components/sharedComponents/ListItem";
+
 import Loading from "@/components/sharedComponents/Loading";
+
 import useFetchAll from "@/hooks/useFetchAll";
+
 import type { Category } from "@/types";
-import { Button } from "@/components/ui/button";
-import http from "@/api/http";
+
 import {
   Dialog,
   DialogContent,
@@ -19,8 +28,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+import { Button } from "@/components/ui/button";
+
+import http from "@/api/http";
+
 function Categories() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+
   const [deletingCategory, setDeletingCategory] = useState<Category | null>(
     null,
   );
@@ -34,6 +48,10 @@ function Categories() {
 
     try {
       await http.delete(API_ENDPOINTS.categories.delete(deletingCategory.id));
+
+      // console.log(`Category ${deletingCategory?.id} deleted`);
+
+      console.log(`Category ${deletingCategory}`);
 
       setDeletingCategory(null);
 
@@ -51,6 +69,7 @@ function Categories() {
 
   if (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
+
     return <Error title="Categories" message={errorMessage} />;
   }
 
@@ -74,6 +93,7 @@ function Categories() {
       </List>
 
       {/* Edit and Delete Dialog */}
+
       <Dialog
         open={!!editingCategory || !!deletingCategory}
         onOpenChange={(open) =>
@@ -84,19 +104,52 @@ function Categories() {
         <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
             <DialogTitle>
-              {editingCategory ? "Edit " : deletingCategory ? "Delete " : ""}
-              <span className="text-accent-strong">
-                {editingCategory?.name}
-              </span>{" "}
-              Category
+              {`${editingCategory ? "Edit " : deletingCategory && "Delete "} ${(
+                <span className="text-accent-strong">
+                  {editingCategory?.name || deletingCategory?.name}
+                </span>
+              )} Category`}
+
+              {/* {editingCategory
+
+                ? "Edit "
+
+                : deletingCategory &&
+
+                  "Delete " +
+
+                    `${editingCategory?.name || editingCategory?.nameEn} Category`} */}
+
+              {/* {editingCategory ? (
+
+                <p className="">
+
+                  Edit{" "}
+
+                  <span className="text-accent-strong">
+
+                    {editingCategory.name || editingCategory.nameEn}
+
+                  </span>{" "}
+
+                  Category
+
+                </p>
+
+              ) : (
+
+                deletingCategory && "Delete Category"
+
+              )} */}
             </DialogTitle>
           </DialogHeader>
 
           {/* Display Delete Description */}
+
           {deletingCategory && (
             <DialogDescription>
               Are you sure you want to delete{" "}
-              <span className="font-semibold text-accent-strong">
+              <span className="font-semibold">
                 {deletingCategory?.name || deletingCategory?.nameEn}
               </span>{" "}
               category?
@@ -104,6 +157,7 @@ function Categories() {
           )}
 
           {/* Display Edit Form */}
+
           {editingCategory && (
             <CategoryForm
               mode="edit"
@@ -112,7 +166,8 @@ function Categories() {
             />
           )}
 
-          {/* Display Delete Message */}
+          {/* Display Delete Button */}
+
           {deletingCategory && (
             <div className="flex justify-between items-center">
               <Button
