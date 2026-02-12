@@ -26,6 +26,7 @@ export type Category = {
   name?: string;
   nameEn: string;
   nameAr: string;
+  imageUrl: string;
 };
 
 export type Order = {
