@@ -2,7 +2,7 @@ import { Frown, Home, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
-import Heading from "@/components/sharedComponents/Heading";
+import Heading from "@/components/shared/Heading";
 
 function NotFound() {
   return (
@@ -45,7 +45,7 @@ function NotFound() {
               "bg-accent-soft hover:bg-accent-strong",
               "text-dark hover:text-light font-medium py-6 px-8 rounded-xl",
               "transition-all duration-normal hover:shadow-lg hover:shadow-accent-500/30",
-              "hover:translate-y-[-2px]"
+              "hover:translate-y-[-2px]",
             )}
           >
             <Link to="/">
@@ -61,7 +61,7 @@ function NotFound() {
               "text-gray-700 dark:text-gray-300 font-medium py-6 px-8 rounded-xl",
               "hover:bg-accent-soft dark:hover:bg-gray-800 transition-all duration-300 ",
               "border-gray-300 dark:border-gray-600",
-              "hover:translate-y-[-2px]"
+              "hover:translate-y-[-2px]",
             )}
             onClick={() => window.history.back()}
           >

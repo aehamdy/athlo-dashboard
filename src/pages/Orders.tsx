@@ -2,11 +2,11 @@ import { useState } from "react";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import AddOrderForm, {
   type AddOrderFormData,
-} from "@/components/forms/AddOrderForm";
-import DashboardSection from "@/components/sharedComponents/DashboardSection";
-import Error from "@/components/sharedComponents/Error";
-import List from "@/components/sharedComponents/List";
-import Loading from "@/components/sharedComponents/Loading";
+} from "@/features/orders/components/AddOrderForm";
+import DashboardSection from "@/components/shared/DashboardSection";
+import Error from "@/components/shared/Error";
+import List from "@/components/shared/List";
+import Loading from "@/components/shared/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Order } from "@/types";
 import {
@@ -19,8 +19,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { SquarePen, Trash2 } from "lucide-react";
-import TableHeadRow from "@/components/sharedComponents/TableHeadRow";
-import TableWrapper from "@/components/sharedComponents/TableWrapper";
+import TableHeadRow from "@/components/shared/TableHeadRow";
+import TableWrapper from "@/components/shared/TableWrapper";
 import { ORDER_TABLE_COLUMNS } from "@/config/tableColumns";
 import { formatDateTime } from "@/utils/formatDateTime ";
 

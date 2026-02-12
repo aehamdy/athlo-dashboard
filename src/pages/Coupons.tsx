@@ -1,8 +1,8 @@
-import CouponsTable from "@/components/CouponsTable";
-import AddCouponForm from "@/components/forms/AddCouponForm";
-import DashboardSection from "@/components/sharedComponents/DashboardSection";
-import List from "@/components/sharedComponents/List";
-import TableWrapper from "@/components/sharedComponents/TableWrapper";
+import AddCouponForm from "@/features/coupons/components/AddCouponForm";
+import DashboardSection from "@/components/shared/DashboardSection";
+import List from "@/components/shared/List";
+import TableWrapper from "@/components/shared/TableWrapper";
+import CouponsTable from "@/features/coupons/components/CouponsTable";
 
 function Coupons() {
   return (

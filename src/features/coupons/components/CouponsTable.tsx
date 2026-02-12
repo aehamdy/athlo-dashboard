@@ -1,17 +1,17 @@
 import { SquarePen, Trash2 } from "lucide-react";
-import { Button } from "./ui/button";
-import TableWrapper from "./sharedComponents/TableWrapper";
+import { Button } from "@/components/ui/button";
+import TableWrapper from "@/components/shared/TableWrapper";
 import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
   TableRow,
-} from "./ui/table";
-import TableHeadRow from "./sharedComponents/TableHeadRow";
+} from "@/components/ui/table";
+import TableHeadRow from "@/components/shared/TableHeadRow";
+import { Badge } from "@/components/ui/badge";
 import { COUPON_TABLE_COLUMNS } from "@/config/tableColumns";
 import { formatDateTime } from "@/utils/formatDateTime ";
-import { Badge } from "./ui/badge";
 
 type CouponData = {
   id: number;

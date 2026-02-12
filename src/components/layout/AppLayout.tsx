@@ -1,4 +1,4 @@
-import Sidebar from "../sharedComponents/Sidebar";
+import Sidebar from "../shared/Sidebar";
 import MainContent from "./MainContent";
 
 function AppLayout() {
