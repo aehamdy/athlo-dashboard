@@ -14,9 +14,13 @@ function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
     <article className="group rounded-xl overflow-hidden">
       <div className="relative before:absolute before:inset-0 before:w-full before:h-full before:bg-linear-to-t from-black to-transparent">
         <img
-          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"
+          src={category.imageUrl}
           alt={category.name}
           className="w-full h-40 md:h-90 object-cover"
+          onError={(e) => {
+            e.currentTarget.src =
+              "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600";
+          }}
         />
         <div className="absolute inset-0 bg-black/40">
           <div className="absolute bottom-0 start-0 end-0 p-4 text-white lg:group-hover:translate-y-[-1rem] lg:transition-transform lg:duration-normal">
