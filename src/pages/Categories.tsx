@@ -1,25 +1,13 @@
 import { useState } from "react";
-
 import { API_ENDPOINTS } from "@/api/endPoints";
-
-import CategoryForm from "@/components/forms/CategoryForm";
-
-import CategoryCard from "@/components/CategoryCard";
-
-import DashboardSection from "@/components/sharedComponents/DashboardSection";
-
-import Error from "@/components/sharedComponents/Error";
-
-import List from "@/components/sharedComponents/List";
-
-import ListItem from "@/components/sharedComponents/ListItem";
-
-import Loading from "@/components/sharedComponents/Loading";
-
+import CategoryForm from "@/features/categories/components/CategoryForm";
+import DashboardSection from "@/components/shared/DashboardSection";
+import Error from "@/components/shared/Error";
+import List from "@/components/shared/List";
+import ListItem from "@/components/shared/ListItem";
+import Loading from "@/components/shared/Loading";
 import useFetchAll from "@/hooks/useFetchAll";
-
 import type { Category } from "@/types";
-
 import {
   Dialog,
   DialogContent,
@@ -27,10 +15,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Button } from "@/components/ui/button";
-
 import http from "@/api/http";
+import CategoryCard from "@/features/categories/components/CategoryCard";
 
 function Categories() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);

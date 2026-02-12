@@ -1,17 +1,17 @@
 import { API_ENDPOINTS } from "@/api/endPoints";
-import BrandCard from "@/components/BrandCard";
-import List from "@/components/sharedComponents/List";
-import ListItem from "@/components/sharedComponents/ListItem";
-import DashboardSection from "@/components/sharedComponents/DashboardSection";
-import Loading from "@/components/sharedComponents/Loading";
-import Error from "@/components/sharedComponents/Error";
+import BrandCard from "@/features/brands/components/BrandCard";
+import List from "@/components/shared/List";
+import ListItem from "@/components/shared/ListItem";
+import DashboardSection from "@/components/shared/DashboardSection";
+import Loading from "@/components/shared/Loading";
+import Error from "@/components/shared/Error";
 import useFetchAll from "@/hooks/useFetchAll";
 import type { Brand } from "@/types";
-import AddBrandForm from "@/components/forms/BrandForm";
+import AddBrandForm from "@/features/brands/components/BrandForm";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import http from "@/api/http";
-import BrandForm from "@/components/forms/BrandForm";
+import BrandForm from "@/features/brands/components/BrandForm";
 import {
   Dialog,
   DialogContent,

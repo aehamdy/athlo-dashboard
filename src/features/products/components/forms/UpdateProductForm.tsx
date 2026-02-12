@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Button } from "../../../../components/ui/button";
+import { Input } from "../../../../components/ui/input";
 import http from "@/api/http";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import type { Product } from "@/types";
-import { Label } from "../ui/label";
+import { Label } from "../../../../components/ui/label";
 
 type UpdateProductFormProps = {
   product: Product | null;

@@ -1,31 +1,27 @@
-import type { Category } from "@/types";
-import Heading from "./sharedComponents/Heading";
-import { Button } from "./ui/button";
+import Heading from "@/components/shared/Heading";
+import { Button } from "@/components/ui/button";
+import type { Brand } from "@/types";
 import { SquarePen, Trash2 } from "lucide-react";
 
-type CategoryCardProps = {
-  category: Category;
+type BrandCardProps = {
+  brand: Brand;
   onEdit: () => void;
   onDelete: () => void;
 };
 
-function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
+function BrandCard({ brand, onEdit, onDelete }: BrandCardProps) {
   return (
     <article className="group rounded-xl overflow-hidden">
       <div className="relative before:absolute before:inset-0 before:w-full before:h-full before:bg-linear-to-t from-black to-transparent">
         <img
-          src={category.imageUrl}
-          alt={category.name}
+          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"
+          alt={brand.name}
           className="w-full h-40 md:h-90 object-cover"
-          onError={(e) => {
-            e.currentTarget.src =
-              "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600";
-          }}
         />
         <div className="absolute inset-0 bg-black/40">
           <div className="absolute bottom-0 start-0 end-0 p-4 text-white lg:group-hover:translate-y-[-1rem] lg:transition-transform lg:duration-normal">
             <Heading as="h3" className="font-semibold text-lg text-light">
-              {category.name || category.nameEn}
+              {brand.name || brand.nameEn}
             </Heading>
 
             <div className="flex justify-between items-center gap-2 mt-2 lg:opacity-0 lg:group-hover:opacity-100 lg:transition-opacity lg:duration-normal">
@@ -56,4 +52,4 @@ function CategoryCard({ category, onEdit, onDelete }: CategoryCardProps) {
   );
 }
 
-export default CategoryCard;
+export default BrandCard;

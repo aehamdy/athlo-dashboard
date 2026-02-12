@@ -1,5 +1,5 @@
-import DashboardSection from "@/components/sharedComponents/DashboardSection";
-import List from "@/components/sharedComponents/List";
+import DashboardSection from "@/components/shared/DashboardSection";
+import List from "@/components/shared/List";
 import {
   Table,
   TableBody,
@@ -10,10 +10,10 @@ import {
 import useFetchPaginatedData from "@/hooks/useFetchPaginatedData";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { useState } from "react";
-import Loading from "@/components/sharedComponents/Loading";
-import Error from "@/components/sharedComponents/Error";
-import TableHeadRow from "@/components/sharedComponents/TableHeadRow";
-import TableWrapper from "@/components/sharedComponents/TableWrapper";
+import Loading from "@/components/shared/Loading";
+import Error from "@/components/shared/Error";
+import TableHeadRow from "@/components/shared/TableHeadRow";
+import TableWrapper from "@/components/shared/TableWrapper";
 import { USER_TABLE_COLUMNS } from "@/config/tableColumns";
 import { formatDateTime } from "@/utils/formatDateTime ";
 

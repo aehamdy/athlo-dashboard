@@ -1,14 +1,14 @@
 import { useActionState, useEffect, useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
-import type { Brand } from "@/types";
-import { DialogClose } from "../ui/dialog";
+import type { Category } from "@/types";
+import { DialogClose } from "../../../components/ui/dialog";
 
-interface BrandFormProps {
+interface CategoryFormProps {
   mode?: "add" | "edit";
-  brand?: Brand;
+  category?: Category;
   onSuccess?: () => void;
 }
 
@@ -20,7 +20,11 @@ const initialState: ActionState = {
   error: null,
 };
 
-function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
+function CategoryForm({
+  mode = "add",
+  category,
+  onSuccess,
+}: CategoryFormProps) {
   const [image, setImage] = useState<File | null>(null);
 
   const submitAction = async (
@@ -32,13 +36,14 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
         formData.append("image", image);
       }
 
-      if (mode === "edit" && brand) {
-        formData.append("id", String(brand.id));
-        await http.put(API_ENDPOINTS.brands.update, formData, {
+      if (mode === "edit" && category) {
+        formData.append("id", String(category.id));
+
+        await http.put(API_ENDPOINTS.categories.update, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        await http.post(API_ENDPOINTS.brands.create, formData, {
+        await http.post(API_ENDPOINTS.categories.create, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -48,7 +53,7 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
 
       return { error: null };
     } catch (err) {
-      console.error("Brand submit failed:", err);
+      console.error("Submit failed:", err);
       return { error: "Something went wrong. Please try again." };
     }
   };
@@ -57,33 +62,33 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
 
   // Prefill form when editing
   useEffect(() => {
-    if (mode === "edit" && brand) {
+    if (mode === "edit" && category) {
       const form = document.getElementById(
-        "brand-form",
+        "category-form",
       ) as HTMLFormElement | null;
 
       if (!form) return;
 
       (form.elements.namedItem("nameEn") as HTMLInputElement).value =
-        brand.nameEn ?? "";
+        category.nameEn;
       (form.elements.namedItem("nameAr") as HTMLInputElement).value =
-        brand.nameAr ?? "";
+        category.nameAr;
     }
-  }, [mode, brand]);
+  }, [mode, category]);
 
   return (
-    <form action={action} id="brand-form" className="w-full space-y-4">
+    <form action={action} id="category-form" className="w-full space-y-4">
       <div className="grid gap-4">
         <Input
           name="nameEn"
-          placeholder="Enter brand name (English)"
+          placeholder="Enter category name (English)"
           required
           className="form-input"
         />
 
         <Input
           name="nameAr"
-          placeholder="ادخل اسم الماركة (العربية)"
+          placeholder="ادخل اسم التصنيف (العربية)"
           required
           className="form-input"
         />
@@ -98,7 +103,7 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
         {image && (
           <img
             src={URL.createObjectURL(image)}
-            alt="Brand preview"
+            alt="Category preview"
             className="h-24 w-24 rounded-sm object-cover"
           />
         )}
@@ -113,8 +118,8 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
           {isPending
             ? "Saving..."
             : mode === "edit"
-              ? "Update Brand"
-              : "Add Brand"}
+              ? "Update Category"
+              : "Add Category"}
         </Button>
 
         <DialogClose asChild>
@@ -130,4 +135,4 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
   );
 }
 
-export default BrandForm;
+export default CategoryForm;

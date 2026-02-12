@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Input } from "../ui/input";
-import { DialogClose } from "../ui/dialog";
-import { Button } from "../ui/button";
+import { Input } from "../../../../components/ui/input";
+import { DialogClose } from "../../../../components/ui/dialog";
+import { Button } from "../../../../components/ui/button";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
 

@@ -1,14 +1,14 @@
 import { useActionState, useEffect, useState } from "react";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../../../components/ui/input";
+import { Button } from "../../../components/ui/button";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
-import type { Category } from "@/types";
-import { DialogClose } from "../ui/dialog";
+import type { Brand } from "@/types";
+import { DialogClose } from "../../../components/ui/dialog";
 
-interface CategoryFormProps {
+interface BrandFormProps {
   mode?: "add" | "edit";
-  category?: Category;
+  brand?: Brand;
   onSuccess?: () => void;
 }
 
@@ -20,11 +20,7 @@ const initialState: ActionState = {
   error: null,
 };
 
-function CategoryForm({
-  mode = "add",
-  category,
-  onSuccess,
-}: CategoryFormProps) {
+function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
   const [image, setImage] = useState<File | null>(null);
 
   const submitAction = async (
@@ -36,14 +32,13 @@ function CategoryForm({
         formData.append("image", image);
       }
 
-      if (mode === "edit" && category) {
-        formData.append("id", String(category.id));
-
-        await http.put(API_ENDPOINTS.categories.update, formData, {
+      if (mode === "edit" && brand) {
+        formData.append("id", String(brand.id));
+        await http.put(API_ENDPOINTS.brands.update, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       } else {
-        await http.post(API_ENDPOINTS.categories.create, formData, {
+        await http.post(API_ENDPOINTS.brands.create, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
       }
@@ -53,7 +48,7 @@ function CategoryForm({
 
       return { error: null };
     } catch (err) {
-      console.error("Submit failed:", err);
+      console.error("Brand submit failed:", err);
       return { error: "Something went wrong. Please try again." };
     }
   };
@@ -62,33 +57,33 @@ function CategoryForm({
 
   // Prefill form when editing
   useEffect(() => {
-    if (mode === "edit" && category) {
+    if (mode === "edit" && brand) {
       const form = document.getElementById(
-        "category-form",
+        "brand-form",
       ) as HTMLFormElement | null;
 
       if (!form) return;
 
       (form.elements.namedItem("nameEn") as HTMLInputElement).value =
-        category.nameEn;
+        brand.nameEn ?? "";
       (form.elements.namedItem("nameAr") as HTMLInputElement).value =
-        category.nameAr;
+        brand.nameAr ?? "";
     }
-  }, [mode, category]);
+  }, [mode, brand]);
 
   return (
-    <form action={action} id="category-form" className="w-full space-y-4">
+    <form action={action} id="brand-form" className="w-full space-y-4">
       <div className="grid gap-4">
         <Input
           name="nameEn"
-          placeholder="Enter category name (English)"
+          placeholder="Enter brand name (English)"
           required
           className="form-input"
         />
 
         <Input
           name="nameAr"
-          placeholder="ادخل اسم التصنيف (العربية)"
+          placeholder="ادخل اسم الماركة (العربية)"
           required
           className="form-input"
         />
@@ -103,7 +98,7 @@ function CategoryForm({
         {image && (
           <img
             src={URL.createObjectURL(image)}
-            alt="Category preview"
+            alt="Brand preview"
             className="h-24 w-24 rounded-sm object-cover"
           />
         )}
@@ -118,8 +113,8 @@ function CategoryForm({
           {isPending
             ? "Saving..."
             : mode === "edit"
-              ? "Update Category"
-              : "Add Category"}
+              ? "Update Brand"
+              : "Add Brand"}
         </Button>
 
         <DialogClose asChild>
@@ -135,4 +130,4 @@ function CategoryForm({
   );
 }
 
-export default CategoryForm;
+export default BrandForm;

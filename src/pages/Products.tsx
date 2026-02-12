@@ -1,14 +1,14 @@
 import { useState } from "react";
-import AddProductForm from "@/components/forms/AddProductForm";
-import DashboardSection from "@/components/sharedComponents/DashboardSection";
-import Error from "@/components/sharedComponents/Error";
-import List from "@/components/sharedComponents/List";
-import Loading from "@/components/sharedComponents/Loading";
+import AddProductForm from "@/features/products/components/forms/AddProductForm";
+import DashboardSection from "@/components/shared/DashboardSection";
+import Error from "@/components/shared/Error";
+import List from "@/components/shared/List";
+import Loading from "@/components/shared/Loading";
 import type { Product } from "@/types";
 import { DialogDescription } from "@radix-ui/react-dialog";
-import UpdateProductForm from "@/components/forms/UpdateProductForm";
+import UpdateProductForm from "@/features/products/components/forms/UpdateProductForm";
 import useFetchPaginatedData from "@/hooks/useFetchPaginatedData";
-import { AppPagination } from "@/components/sharedComponents/AppPagination";
+import { AppPagination } from "@/components/shared/AppPagination";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { Input } from "@/components/ui/input";
 import {
@@ -36,8 +36,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { SquarePen, Trash2 } from "lucide-react";
 import http from "@/api/http";
-import TableWrapper from "@/components/sharedComponents/TableWrapper";
-import TableHeadRow from "@/components/sharedComponents/TableHeadRow";
+import TableWrapper from "@/components/shared/TableWrapper";
+import TableHeadRow from "@/components/shared/TableHeadRow";
 import { PRODUCT_TABLE_COLUMNS } from "@/config/tableColumns";
 
 type OrderProductsBy = {
