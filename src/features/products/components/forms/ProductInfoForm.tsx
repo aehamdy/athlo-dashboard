@@ -7,6 +7,9 @@ import http from "@/api/http";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { ArrowRight } from "lucide-react";
 import Heading from "@/components/shared/Heading";
+import useBrands from "@/features/brands/api/useBrands";
+import FormSelect from "@/components/shared/FormSelect";
+import { useCategories } from "@/features/categories/api/useCategories";
 
 type Props = {
   onSuccess: (id: number) => void;
@@ -16,11 +19,16 @@ function ProductInfoForm({ onSuccess }: Props) {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ProductInfoFormType>({
     resolver: zodResolver(productInfoSchema),
     mode: "onChange",
   });
+  const { data: brands = [], isLoading: brandsLoading } = useBrands();
+  const { data: categories = [], isLoading: categoriesLoading } =
+    useCategories();
 
   const onSubmit = async (data: ProductInfoFormType) => {
     try {
@@ -30,6 +38,8 @@ function ProductInfoForm({ onSuccess }: Props) {
       console.error(error);
     }
   };
+
+  console.log(brands);
 
   return (
     <div className="flex flex-col gap-compact h-full p-regular md:p-lg bg-light">
@@ -121,6 +131,32 @@ function ProductInfoForm({ onSuccess }: Props) {
           </div>
 
           <div className="flex flex-col">
+            <FormSelect
+              placeholder="Select Category"
+              value={watch("categoryId")?.toString()}
+              onValueChange={(val) =>
+                setValue("categoryId", Number(val), { shouldValidate: true })
+              }
+              options={categories}
+              error={errors.categoryId?.message}
+              disabled={categoriesLoading}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <FormSelect
+              placeholder="Select Brand"
+              value={watch("brandId")?.toString()}
+              onValueChange={(val) =>
+                setValue("brandId", Number(val), { shouldValidate: true })
+              }
+              options={brands}
+              error={errors.brandId?.message}
+              disabled={brandsLoading}
+            />
+          </div>
+
+          <div className="flex flex-col">
             <Input
               {...register("code")}
               placeholder="Product Code"
@@ -129,34 +165,6 @@ function ProductInfoForm({ onSuccess }: Props) {
             {errors.code && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.code.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col">
-            <Input
-              type="number"
-              {...register("categoryId")}
-              placeholder="Category ID"
-              className="form-input"
-            />
-            {errors.categoryId && (
-              <span className="text-red-600 text-sm mt-1">
-                {errors.categoryId.message}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-col">
-            <Input
-              type="number"
-              {...register("brandId")}
-              placeholder="Brand ID"
-              className="form-input"
-            />
-            {errors.brandId && (
-              <span className="text-red-600 text-sm mt-1">
-                {errors.brandId.message}
               </span>
             )}
           </div>
