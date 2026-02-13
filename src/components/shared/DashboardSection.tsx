@@ -9,11 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Link } from "react-router-dom";
 
 interface DashboardSectionProps {
   children: React.ReactNode;
   title: string;
   buttonLabel?: string;
+  navigateTo?: string;
   description: string;
   formComponent?: React.ReactNode;
 }
@@ -22,6 +24,7 @@ function DashboardSection({
   children,
   title,
   buttonLabel,
+  navigateTo,
   description,
   formComponent,
 }: DashboardSectionProps) {
@@ -33,23 +36,35 @@ function DashboardSection({
         </Heading>
 
         <Dialog>
-          {buttonLabel && (
-            <DialogTrigger asChild>
-              <Button className="text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer">
-                <Plus />
+          <DialogTrigger asChild>
+            {navigateTo ? (
+              <Link
+                to={navigateTo}
+                className="flex items-center gap-tiny py-1.5 px-2 text-dark active:text-dark bg-accent-soft hover:bg-accent active:bg-accent rounded-md transform-colors duration-normal cursor-pointer"
+              >
+                <Plus className="w-5 h-5" />
                 {buttonLabel}
-              </Button>
-            </DialogTrigger>
+              </Link>
+            ) : (
+              buttonLabel && (
+                <Button className="text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer">
+                  <Plus />
+                  {buttonLabel}
+                </Button>
+              )
+            )}
+          </DialogTrigger>
+
+          {formComponent && (
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Add New {title}</DialogTitle>
+                <DialogDescription>{description}</DialogDescription>
+              </DialogHeader>
+
+              {formComponent}
+            </DialogContent>
           )}
-
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Add New {title}</DialogTitle>
-              <DialogDescription>{description}</DialogDescription>
-            </DialogHeader>
-
-            {formComponent}
-          </DialogContent>
         </Dialog>
       </div>
 
