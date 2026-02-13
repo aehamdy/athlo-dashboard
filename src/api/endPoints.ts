@@ -30,9 +30,7 @@ export const API_ENDPOINTS = {
 
       return url;
     },
-
-    // paginated: `${BASE_URL}/Api/V1/Product/Paginated/{PageNumber}/{PageSize}/{search}/{ordering}`, // all these are optional
-    // withVariants: (id: string) => `${BASE_URL}/Api/V1/Product/${id}/With-Variants`,
+    addImages: `${BASE_URL}/Api/V1/ProductImage/CreateProductImages`,
   },
   brands: {
     getAll: `${BASE_URL}/Api/V1/Brand/List`,
