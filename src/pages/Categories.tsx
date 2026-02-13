@@ -2,11 +2,9 @@ import { useState } from "react";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import CategoryForm from "@/features/categories/components/CategoryForm";
 import DashboardSection from "@/components/shared/DashboardSection";
-import Error from "@/components/shared/Error";
 import List from "@/components/shared/List";
 import ListItem from "@/components/shared/ListItem";
 import Loading from "@/components/shared/Loading";
-import useFetchAll from "@/hooks/useFetchAll";
 import type { Category } from "@/types";
 import {
   Dialog,
@@ -18,16 +16,14 @@ import {
 import { Button } from "@/components/ui/button";
 import http from "@/api/http";
 import CategoryCard from "@/features/categories/components/CategoryCard";
+import { useCategories } from "@/features/categories/api/useCategories";
 
 function Categories() {
+  const { data: catgories = [], isLoading: categoriesLoading } =
+    useCategories();
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-
   const [deletingCategory, setDeletingCategory] = useState<Category | null>(
     null,
-  );
-
-  const { data, error, loading } = useFetchAll<Category[]>(
-    API_ENDPOINTS.categories.getAll,
   );
 
   const handleDelete = async () => {
@@ -36,13 +32,7 @@ function Categories() {
     try {
       await http.delete(API_ENDPOINTS.categories.delete(deletingCategory.id));
 
-      // console.log(`Category ${deletingCategory?.id} deleted`);
-
-      console.log(`Category ${deletingCategory}`);
-
       setDeletingCategory(null);
-
-      // optionally trigger refetch or optimistic update
     } catch (error) {
       console.error("Delete failed:", error);
     }
@@ -52,13 +42,13 @@ function Categories() {
     setDeletingCategory(null);
   };
 
-  if (loading) return <Loading size="xl" />;
+  if (categoriesLoading) return <Loading size="xl" />;
 
-  if (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
+  // if (error) {
+  //   const errorMessage = error instanceof Error ? error.message : String(error);
 
-    return <Error title="Categories" message={errorMessage} />;
-  }
+  //   return <Error title="Categories" message={errorMessage} />;
+  // }
 
   return (
     <DashboardSection
@@ -68,7 +58,7 @@ function Categories() {
       formComponent={<CategoryForm />}
     >
       <List>
-        {data?.map((category) => (
+        {catgories?.map((category) => (
           <ListItem key={category.id}>
             <CategoryCard
               category={category}
