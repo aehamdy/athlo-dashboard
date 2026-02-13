@@ -12,6 +12,7 @@ import PublicRoute from "./routes/PublicRoute";
 import Orders from "./pages/Orders";
 import Coupons from "./pages/Coupons";
 import Users from "./pages/Users";
+import AddProduct from "./pages/AddProduct";
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
           />
           <Route path={ROUTE_PATHS.dashboard.overview} element={<Overview />} />
           <Route path={ROUTE_PATHS.dashboard.products} element={<Products />} />
+          <Route
+            path={ROUTE_PATHS.dashboard.addProduct}
+            element={<AddProduct />}
+          />
           <Route
             path={ROUTE_PATHS.dashboard.categories}
             element={<Categories />}
