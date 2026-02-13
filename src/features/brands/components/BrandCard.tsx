@@ -14,7 +14,7 @@ function BrandCard({ brand, onEdit, onDelete }: BrandCardProps) {
     <article className="group rounded-xl overflow-hidden">
       <div className="relative before:absolute before:inset-0 before:w-full before:h-full before:bg-linear-to-t from-black to-transparent">
         <img
-          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600"
+          src={brand.imageUrl}
           alt={brand.name}
           className="w-full h-40 md:h-90 object-cover"
         />
