@@ -19,6 +19,7 @@ export type Brand = {
   name?: string;
   nameEn: string;
   nameAr: string;
+  imageUrl: string;
 };
 
 export type Category = {
