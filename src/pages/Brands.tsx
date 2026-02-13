@@ -4,8 +4,6 @@ import List from "@/components/shared/List";
 import ListItem from "@/components/shared/ListItem";
 import DashboardSection from "@/components/shared/DashboardSection";
 import Loading from "@/components/shared/Loading";
-import Error from "@/components/shared/Error";
-import useFetchAll from "@/hooks/useFetchAll";
 import type { Brand } from "@/types";
 import AddBrandForm from "@/features/brands/components/BrandForm";
 import { useState } from "react";
@@ -19,13 +17,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import useBrands from "@/features/brands/api/useBrands";
 
 function Brands() {
+  const { data: brands = [], isLoading: brandsLoading } = useBrands();
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [deletingBrand, setDeletingBrand] = useState<Brand | null>(null);
-  const { data, error, loading } = useFetchAll<Brand[]>(
-    API_ENDPOINTS.brands.getAll,
-  );
 
   const handleDelete = async () => {
     if (!deletingBrand) return;
@@ -36,7 +33,6 @@ function Brands() {
       );
       console.log(`Brand ${deletingBrand?.id} deleted`);
       setDeletingBrand(null);
-      // optionally trigger refetch or optimistic update
     } catch (error) {
       console.error("Delete failed:", error);
     }
@@ -46,12 +42,12 @@ function Brands() {
     setDeletingBrand(null);
   };
 
-  if (loading) return <Loading size="xl" />;
+  if (brandsLoading) return <Loading size="xl" />;
 
-  if (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return <Error title="Brands" message={message} />;
-  }
+  // if (error) {
+  //   const message = error instanceof Error ? error.message : String(error);
+  //   return <Error title="Brands" message={message} />;
+  // }
 
   return (
     <DashboardSection
@@ -61,7 +57,7 @@ function Brands() {
       formComponent={<BrandForm />}
     >
       <List>
-        {data?.map((brand) => (
+        {brands?.map((brand) => (
           <ListItem key={brand.id}>
             <BrandCard
               brand={brand}
