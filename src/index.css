@@ -207,6 +207,10 @@ body {
   color: var(--color-dark-muted);
 }
 
+.main-button {
+  @apply w-fit px-6 text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong;
+}
+
 .form-label {
   @apply absolute top-0 start-1 -translate-y-1/2 px-1 text-tiny text-neutral-400 bg-light;
 }
