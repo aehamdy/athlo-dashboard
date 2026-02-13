@@ -1,5 +1,4 @@
 import { useState } from "react";
-import AddProductForm from "@/features/products/components/forms/AddProductForm";
 import DashboardSection from "@/components/shared/DashboardSection";
 import Error from "@/components/shared/Error";
 import List from "@/components/shared/List";
@@ -39,6 +38,7 @@ import http from "@/api/http";
 import TableWrapper from "@/components/shared/TableWrapper";
 import TableHeadRow from "@/components/shared/TableHeadRow";
 import { PRODUCT_TABLE_COLUMNS } from "@/config/tableColumns";
+import { ROUTE_PATHS } from "@/routes/paths";
 
 type OrderProductsBy = {
   id: number;
@@ -131,8 +131,8 @@ function Products() {
     <DashboardSection
       title="Products"
       buttonLabel="Add Product"
+      navigateTo={ROUTE_PATHS.dashboard.addProduct}
       description="Add new products to your collection"
-      formComponent={<AddProductForm />}
     >
       <div className="flex justify-between items-center mt-1">
         <div className="w-1/2 md:w-2/5 lg:w-1/4">
