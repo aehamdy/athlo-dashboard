@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
-import http from "@/api/http";
 import { productImagesSchema, type ProductImagesFormType } from "../../schemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +13,10 @@ import {
   X,
 } from "lucide-react";
 import Heading from "@/components/shared/Heading";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "@/routes/paths";
+import Loading from "@/components/shared/Loading";
+import { useUploadProductImages } from "../../hooks/useUploadProductImages";
 
 type Props = {
   productId: number;
@@ -30,28 +32,12 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
     },
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [pending, setPending] = useState(false);
   const images = form.watch("images");
-
-  const onSubmit = async (data: ProductImagesFormType) => {
-    try {
-      setPending(true);
-
-      const formData = new FormData();
-
-      formData.append("productId", productId.toString());
-
-      data.images.forEach((img) => {
-        formData.append("Images", img);
-      });
-
-      await http.post(API_ENDPOINTS.products.addImages, formData);
-    } catch (error) {
-      console.error("Upload failed:", error);
-    } finally {
-      setPending(false);
-    }
-  };
+  const navigate = useNavigate();
+  const uploadMutation = useUploadProductImages();
+  const [activeButton, setActiveButton] = useState<
+    "finish" | "variants" | null
+  >(null);
 
   useEffect(() => {
     const urls = images?.map((file) => URL.createObjectURL(file)) || [];
@@ -61,9 +47,30 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
     };
   }, [images]);
 
+  const handleUpload = async (nextStep: "finish" | "variants") => {
+    setActiveButton(nextStep);
+
+    const data = form.getValues();
+
+    uploadMutation.mutate(
+      { productId, data },
+      {
+        onSuccess: () => {
+          if (nextStep === "finish") {
+            navigate(ROUTE_PATHS.dashboard.products);
+          } else if (nextStep === "variants") {
+            onSuccess();
+          }
+          setActiveButton(null);
+        },
+        onError: () => setActiveButton(null),
+      },
+    );
+  };
+
   return (
     <form
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={(e) => e.preventDefault()}
       className="h-full p-compact md:p-2xl bg-white rounded-2xl"
     >
       <div className="flex flex-col justify-between gap-base h-full">
@@ -161,6 +168,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
             type="button"
             variant="plain"
             className="w-full md:w-fit text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
+            disabled={uploadMutation.isPending}
             onClick={onBack}
           >
             <ArrowLeft />
@@ -169,23 +177,43 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
 
           <div className="flex flex-col md:flex-row items-center gap-regular w-full md:w-fit">
             <Button
-              type="submit"
+              type="button"
               variant="plain"
-              disabled={pending}
-              className="group w-full md:w-fit hover:bg-accent-soft active:bg-accent-strong border border-accent transform-colors duration-normal"
+              className="group w-full md:w-fit hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:opacity-70 transform-colors duration-normal cursor-pointer"
+              disabled={uploadMutation.isPending || !images?.length}
+              onClick={() => handleUpload("finish")}
             >
-              <CircleCheck className="text-accent group-hover:text-dark group-active:text-dark transform-colors duration-normal" />
-              Save & Finish
+              {uploadMutation.isPending && activeButton === "finish" ? (
+                <div className="flex items-center gap-xs">
+                  <Loading />
+                  Processing...
+                </div>
+              ) : (
+                <div className="flex items-center gap-xs">
+                  <CircleCheck className="text-accent group-hover:text-dark group-active:text-dark transform-colors duration-normal" />
+                  Save & Finish
+                </div>
+              )}
             </Button>
 
             <Button
               type="button"
               variant="plain"
-              className="w-full md:w-fit text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent transform-colors duration-normal"
-              onClick={onSuccess}
+              className="w-full md:w-fit text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-70 transform-colors duration-normal"
+              disabled={uploadMutation.isPending || !images?.length}
+              onClick={() => handleUpload("variants")}
             >
-              Continue to Variants
-              <ArrowRight />
+              {uploadMutation.isPending && activeButton === "variants" ? (
+                <div className="flex items-center gap-xs">
+                  <Loading />
+                  Processing...
+                </div>
+              ) : (
+                <>
+                  Continue to Variants
+                  <ArrowRight />
+                </>
+              )}
             </Button>
           </div>
         </div>
