@@ -60,14 +60,17 @@ export const productImagesSchema = z.object({
 export type ProductImagesFormType = z.infer<typeof productImagesSchema>;
 
 // Product Variant
-export const variantSchema = z.object({
-  size: z.string(),
-  color: z.string(),
-  stock: z.number().int().min(0),
-});
-
 export const productVariantsSchema = z.object({
-  variants: z.array(variantSchema).min(1),
+  variants: z
+    .array(
+      z.object({
+        size: z.string().min(1, "Size is required"),
+        color: z.string().min(1, "Color is required"),
+        price: z.number().min(1, "Price must be a number"),
+        stock: z.number().min(1, "Stock must be a number"),
+      }),
+    )
+    .min(1, "At least one variant is required"),
 });
 
 export type ProductVariantsFormType = z.infer<typeof productVariantsSchema>;
