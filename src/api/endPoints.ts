@@ -31,6 +31,7 @@ export const API_ENDPOINTS = {
       return url;
     },
     addImages: `${BASE_URL}/Api/V1/ProductImage/CreateProductImages`,
+    addVariants: `${BASE_URL}/Api/V1/ProductVariant/CreateRange`,
   },
   brands: {
     getAll: `${BASE_URL}/Api/V1/Brand/List`,
