@@ -37,7 +37,11 @@ function AddProductWizard() {
       )}
 
       {step === 2 && productId && (
-        <ProductVariantsForm productId={productId} onBack={handleBack} />
+        <ProductVariantsForm
+          productId={productId}
+          onBack={handleBack}
+          onSuccess={handleSuccess}
+        />
       )}
     </>
   );
