@@ -39,8 +39,6 @@ function ProductInfoForm({ onSuccess }: Props) {
     }
   };
 
-  console.log(brands);
-
   return (
     <div className="flex flex-col gap-compact h-full p-regular md:p-lg bg-light">
       <Heading as="h3" className="mb-base text-zinc-700">
