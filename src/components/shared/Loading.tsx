@@ -9,7 +9,7 @@ type LoadingProps = {
   size?: "xs" | "sm" | "normal" | "lg" | "xl";
 };
 
-function Loading({ variant, rowsCount, colsCount, size }: LoadingProps) {
+function Loading({ variant, rowsCount, colsCount, size = "sm" }: LoadingProps) {
   const sekeletonColor = "bg-neutral-100";
   const loadingSize =
     size === "xs"
@@ -40,10 +40,10 @@ function Loading({ variant, rowsCount, colsCount, size }: LoadingProps) {
     );
   }
   return (
-    <div className="h-1/2 mt-auto p-compact bg-light rounded-xl">
+    <div className="h-1/2 mt-auto rounded-xl">
       {size && (
-        <div className="flex justify-center items-center h-[calc(100dvh-9rem)]">
-          <Spinner className={`${loadingSize} text-accent`} />
+        <div className="flex justify-center items-center">
+          <Spinner className={`${loadingSize} text-gray-500`} />
         </div>
       )}
 
