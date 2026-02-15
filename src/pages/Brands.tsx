@@ -7,17 +7,10 @@ import Loading from "@/components/shared/Loading";
 import type { Brand } from "@/types";
 import AddBrandForm from "@/features/brands/components/BrandForm";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import http from "@/api/http";
 import BrandForm from "@/features/brands/components/BrandForm";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import useBrands from "@/features/brands/api/useBrands";
+import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
 
 function Brands() {
   const { data: brands = [], isLoading: brandsLoading } = useBrands();
@@ -44,11 +37,6 @@ function Brands() {
 
   if (brandsLoading) return <Loading size="xl" />;
 
-  // if (error) {
-  //   const message = error instanceof Error ? error.message : String(error);
-  //   return <Error title="Brands" message={message} />;
-  // }
-
   return (
     <DashboardSection
       title="Brands"
@@ -68,66 +56,24 @@ function Brands() {
         ))}
       </List>
 
-      {/* Edit and Delete Dialog */}
-      <Dialog
-        open={!!editingBrand || !!deletingBrand}
-        onOpenChange={(open) =>
-          (!open && setEditingBrand(null)) || (!open && setDeletingBrand(null))
-        }
-      >
-        <DialogContent className="sm:max-w-[400px]">
-          <DialogHeader>
-            <DialogTitle>
-              {editingBrand ? "Edit " : deletingBrand ? "Delete " : ""}
-              <span className="text-accent-strong">
-                {editingBrand?.name}
-              </span>{" "}
-              Brand
-            </DialogTitle>
-          </DialogHeader>
+      {/* Edit Form */}
+      {editingBrand && (
+        <AddBrandForm
+          mode="edit"
+          brand={editingBrand}
+          onSuccess={() => setEditingBrand(null)}
+        />
+      )}
 
-          {/* Display Delete Description */}
-          {deletingBrand && (
-            <DialogDescription>
-              Are you sure you want to delete{" "}
-              <span className="font-semibold text-accent-strong">
-                {deletingBrand?.name || deletingBrand?.nameEn}
-              </span>{" "}
-              brand?
-            </DialogDescription>
-          )}
-
-          {/* Display Edit Form */}
-          {editingBrand && (
-            <AddBrandForm
-              mode="edit"
-              brand={editingBrand}
-              onSuccess={() => setEditingBrand(null)}
-            />
-          )}
-
-          {/* Display Delete Button */}
-          {deletingBrand && (
-            <div className="flex justify-between items-center">
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                className="cursor-pointer"
-              >
-                Yes
-              </Button>
-
-              <Button
-                variant="outline"
-                onClick={handleCancelDelete}
-                className="cursor-pointer"
-              >
-                No
-              </Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Delete Confirmation Modal */}
+      <ConfirmDeleteModal
+        item={deletingBrand}
+        setItem={setDeletingBrand}
+        itemLabel="brand"
+        getDisplayName={(brand) => brand?.name || ""}
+        onConfirm={handleDelete}
+        onCancel={handleCancelDelete}
+      />
     </DashboardSection>
   );
 }
