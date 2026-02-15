@@ -4,18 +4,10 @@ import Error from "@/components/shared/Error";
 import List from "@/components/shared/List";
 import Loading from "@/components/shared/Loading";
 import type { Product } from "@/types";
-import { DialogDescription } from "@radix-ui/react-dialog";
-import UpdateProductForm from "@/features/products/components/forms/UpdateProductForm";
 import useFetchPaginatedData from "@/hooks/useFetchPaginatedData";
 import { AppPagination } from "@/components/shared/AppPagination";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -39,6 +31,8 @@ import TableWrapper from "@/components/shared/TableWrapper";
 import TableHeadRow from "@/components/shared/TableHeadRow";
 import { PRODUCT_TABLE_COLUMNS } from "@/config/tableColumns";
 import { ROUTE_PATHS } from "@/routes/paths";
+import EditProductModal from "@/features/products/components/EditProductModal";
+import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
 
 type OrderProductsBy = {
   id: number;
@@ -102,6 +96,7 @@ function Products() {
   const [isUpdatingProduct, setIsUpdatingProduct] = useState<Product | null>(
     null,
   );
+  const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
 
   const { data, loading, error } = useFetchPaginatedData<Product>(
     API_ENDPOINTS.products.paginated,
@@ -121,8 +116,21 @@ function Products() {
     setIsUpdatingProduct(product);
   };
 
-  const handleProductDelete = (id: number) => {
-    http.delete(API_ENDPOINTS.products.delete(id));
+  const handleProductDelete = async (product: Product) => {
+    if (!deletingProduct) return;
+    setDeletingProduct(product);
+
+    try {
+      await http.delete(API_ENDPOINTS.products.delete(product.id));
+    } catch (error) {
+      console.error("Delete failed:", error);
+    } finally {
+      setDeletingProduct(null);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setDeletingProduct(null);
   };
 
   if (error) return <Error title="Products" message={error} />;
@@ -153,6 +161,7 @@ function Products() {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Adcending order by</SelectLabel>
+
                 {orderProductsBy.map((item) => (
                   <SelectItem key={item.id} value={item.value.toString()}>
                     {item.label}
@@ -188,8 +197,7 @@ function Products() {
                             <div className="w-14 h-14 overflow-hidden rounded-sm">
                               <img
                                 src={product.images[0]}
-                                // alt={product.name}
-                                alt={product.code}
+                                alt={product.name}
                                 className="w-full h-full object-cover"
                               />
                             </div>
@@ -233,7 +241,7 @@ function Products() {
 
                             <Button
                               variant="icon"
-                              onClick={() => handleProductDelete(product.id)}
+                              onClick={() => setDeletingProduct(product)}
                               className="px-2 hover:text-red-500"
                             >
                               <Trash2 />
@@ -259,40 +267,22 @@ function Products() {
         )}
       </div>
 
-      {isUpdatingProduct && (
-        <UpdateProductForm
-          product={isUpdatingProduct}
-          onSuccess={() => setIsUpdatingProduct(null)}
+      {deletingProduct && (
+        <ConfirmDeleteModal
+          item={deletingProduct}
+          setItem={setDeletingProduct}
+          itemLabel="product"
+          getDisplayName={(product) => product.name}
+          onConfirm={handleProductDelete}
+          onCancel={handleCancelDelete}
         />
       )}
 
       {isUpdatingProduct && (
-        <Dialog
-          open={!!isUpdatingProduct}
-          onOpenChange={(open) => {
-            if (!open) {
-              setIsUpdatingProduct(null);
-            }
-          }}
-        >
-          <DialogContent className="sm:max-w-[400px]">
-            <DialogHeader>
-              <DialogTitle>
-                Update{" "}
-                <span className="text-accent">{isUpdatingProduct?.name}</span>
-              </DialogTitle>
-
-              <DialogDescription className="text-sm text-neutral-muted">
-                Update the product details
-              </DialogDescription>
-            </DialogHeader>
-
-            <UpdateProductForm
-              product={isUpdatingProduct}
-              onSuccess={() => setIsUpdatingProduct(null)}
-            />
-          </DialogContent>
-        </Dialog>
+        <EditProductModal
+          isUpdatingProduct={isUpdatingProduct}
+          setIsUpdatingProduct={setIsUpdatingProduct}
+        />
       )}
     </DashboardSection>
   );
