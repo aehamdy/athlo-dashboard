@@ -5,6 +5,12 @@ import http from "@/api/http";
 import { API_ENDPOINTS } from "@/api/endPoints";
 import type { Product } from "@/types";
 import { Label } from "../../../../components/ui/label";
+import FormSelect from "@/components/shared/FormSelect";
+import { useCategories } from "@/features/categories/api/useCategories";
+import { useForm } from "react-hook-form";
+import { productInfoSchema, type ProductInfoFormType } from "../../schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import useBrands from "@/features/brands/api/useBrands";
 
 type UpdateProductFormProps = {
   product: Product | null;
@@ -40,6 +46,12 @@ const initialValue: UpdateProductFormState = {
 };
 
 function UpdateProductForm({ product, onSuccess }: UpdateProductFormProps) {
+  const {
+    formState: { errors },
+  } = useForm<ProductInfoFormType>({
+    resolver: zodResolver(productInfoSchema),
+    mode: "onChange",
+  });
   const [productFormData, setProductFormData] =
     useState<UpdateProductFormState>(() => {
       if (!product) return initialValue;
@@ -58,6 +70,9 @@ function UpdateProductForm({ product, onSuccess }: UpdateProductFormProps) {
         categoryId: String(product.categoryId ?? ""),
       };
     });
+  const { data: categories = [], isLoading: categoriesLoading } =
+    useCategories();
+  const { data: brands = [], isLoading: brandsLoading } = useBrands();
 
   const handleFormChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -198,37 +213,27 @@ function UpdateProductForm({ product, onSuccess }: UpdateProductFormProps) {
           />
         </div>
 
-        <select
-          required
-          name="brandId"
+        <FormSelect
+          placeholder="Select Brand"
           value={productFormData.brandId}
-          onChange={handleFormChange}
-        >
-          <option value="" disabled>
-            Select brand
-          </option>
-          <option value="1">Nike</option>
-          <option value="2">Adidas</option>
-          <option value="3">Puma</option>
-          <option value="4">Under Armour</option>
-        </select>
+          onValueChange={(val) =>
+            setProductFormData((prev) => ({ ...prev, brandId: val }))
+          }
+          options={brands}
+          error={errors.brandId?.message}
+          disabled={brandsLoading}
+        />
 
-        <select
-          required
-          name="categoryId"
+        <FormSelect
+          placeholder="Select Category"
           value={productFormData.categoryId}
-          onChange={handleFormChange}
-        >
-          <option value="" disabled>
-            Select category
-          </option>
-          <option value="1">Football Clothing</option>
-          <option value="2">Football Shoes</option>
-          <option value="3">Clothing</option>
-          <option value="4">Bags</option>
-          <option value="5">Accessories</option>
-          <option value="6">Balls</option>
-        </select>
+          onValueChange={(val) =>
+            setProductFormData((prev) => ({ ...prev, categoryId: val }))
+          }
+          options={categories}
+          error={errors.categoryId?.message}
+          disabled={categoriesLoading}
+        />
 
         <div className="relative">
           <Label className="form-label">Price</Label>
