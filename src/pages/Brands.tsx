@@ -17,14 +17,13 @@ function Brands() {
   const { data: brands = [], isLoading: brandsLoading } = useBrands();
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [deletingBrand, setDeletingBrand] = useState<Brand | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
   const handleDelete = async (brand: Brand) => {
     if (!brand) return;
 
     try {
       await http.delete(API_ENDPOINTS.brands.delete(brand.id));
-
-      setDeletingBrand(null);
     } catch (error: unknown) {
       const axiosError = error as AxiosError<{ message?: string }>;
 
@@ -35,6 +34,8 @@ function Brands() {
       toast.error(message, {
         closeButton: true,
       });
+    } finally {
+      setDeletingBrand(null);
     }
   };
 
@@ -49,7 +50,9 @@ function Brands() {
       title="Brands"
       buttonLabel="Add Brand"
       description="Add new brands to your collection"
-      formComponent={<BrandForm />}
+      formComponent={<BrandForm onSuccess={() => setIsAddDialogOpen(false)} />}
+      isDialogOpen={isAddDialogOpen}
+      setIsDialogOpen={setIsAddDialogOpen}
     >
       <List>
         {brands?.map((brand) => (
