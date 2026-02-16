@@ -18,6 +18,8 @@ interface DashboardSectionProps {
   navigateTo?: string;
   description: string;
   formComponent?: React.ReactNode;
+  isDialogOpen?: boolean;
+  setIsDialogOpen?: (open: boolean) => void;
 }
 
 function DashboardSection({
@@ -27,6 +29,8 @@ function DashboardSection({
   navigateTo,
   description,
   formComponent,
+  isDialogOpen,
+  setIsDialogOpen,
 }: DashboardSectionProps) {
   return (
     <section className="flex flex-col gap-4 md:gap-4 lg:gap-3 xl:gap-4 h-full p-compact md:p-regular lg:p-sm bg-light rounded-xl overflow-hidden">
@@ -35,7 +39,7 @@ function DashboardSection({
           {title}
         </Heading>
 
-        <Dialog>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             {navigateTo ? (
               <Link
