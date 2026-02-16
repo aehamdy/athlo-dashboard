@@ -5,6 +5,8 @@ import { API_ENDPOINTS } from "@/api/endPoints";
 import http from "@/api/http";
 import type { Brand } from "@/types";
 import { DialogClose } from "../../../components/ui/dialog";
+import type { AxiosError } from "axios";
+import { toast } from "sonner";
 
 interface BrandFormProps {
   mode?: "add" | "edit";
@@ -47,9 +49,16 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
       setImage(null);
 
       return { error: null };
-    } catch (err) {
-      console.error("Brand submit failed:", err);
-      return { error: "Something went wrong. Please try again." };
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+
+      const message =
+        axiosError.response?.data?.message ||
+        "Something went wrong while adding.";
+
+      toast.error(message, {
+        closeButton: true,
+      });
     }
   };
 
