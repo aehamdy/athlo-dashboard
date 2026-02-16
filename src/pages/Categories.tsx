@@ -10,6 +10,8 @@ import http from "@/api/http";
 import CategoryCard from "@/features/categories/components/CategoryCard";
 import { useCategories } from "@/features/categories/api/useCategories";
 import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import type { AxiosError } from "axios";
+import { toast } from "sonner";
 
 function Categories() {
   const { data: catgories = [], isLoading: categoriesLoading } =
@@ -26,8 +28,16 @@ function Categories() {
       await http.delete(API_ENDPOINTS.categories.delete(deletingCategory.id));
 
       setDeletingCategory(null);
-    } catch (error) {
-      console.error("Delete failed:", error);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+
+      const message =
+        axiosError.response?.data?.message ||
+        "Something went wrong while deleting.";
+
+      toast.error(message, {
+        closeButton: true,
+      });
     }
   };
 
