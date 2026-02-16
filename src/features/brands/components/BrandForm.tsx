@@ -59,6 +59,8 @@ function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
       toast.error(message, {
         closeButton: true,
       });
+
+      return { error: message };
     }
   };
 
