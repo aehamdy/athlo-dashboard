@@ -5,29 +5,37 @@ import ListItem from "@/components/shared/ListItem";
 import DashboardSection from "@/components/shared/DashboardSection";
 import Loading from "@/components/shared/Loading";
 import type { Brand } from "@/types";
-import AddBrandForm from "@/features/brands/components/BrandForm";
 import { useState } from "react";
 import http from "@/api/http";
 import BrandForm from "@/features/brands/components/BrandForm";
 import useBrands from "@/features/brands/api/useBrands";
 import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import { toast } from "sonner";
+import type { AxiosError } from "axios";
 
 function Brands() {
   const { data: brands = [], isLoading: brandsLoading } = useBrands();
   const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
   const [deletingBrand, setDeletingBrand] = useState<Brand | null>(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-  const handleDelete = async () => {
-    if (!deletingBrand) return;
+  const handleDelete = async (brand: Brand) => {
+    if (!brand) return;
 
     try {
-      await http.delete(
-        API_ENDPOINTS.brands.delete(deletingBrand.id.toString()),
-      );
-      console.log(`Brand ${deletingBrand?.id} deleted`);
+      await http.delete(API_ENDPOINTS.brands.delete(brand.id));
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError<{ message?: string }>;
+
+      const message =
+        axiosError.response?.data?.message ||
+        "Something went wrong while deleting.";
+
+      toast.error(message, {
+        closeButton: true,
+      });
+    } finally {
       setDeletingBrand(null);
-    } catch (error) {
-      console.error("Delete failed:", error);
     }
   };
 
@@ -42,7 +50,9 @@ function Brands() {
       title="Brands"
       buttonLabel="Add Brand"
       description="Add new brands to your collection"
-      formComponent={<BrandForm />}
+      formComponent={<BrandForm onSuccess={() => setIsAddDialogOpen(false)} />}
+      isDialogOpen={isAddDialogOpen}
+      setIsDialogOpen={setIsAddDialogOpen}
     >
       <List>
         {brands?.map((brand) => (
@@ -58,7 +68,7 @@ function Brands() {
 
       {/* Edit Form */}
       {editingBrand && (
-        <AddBrandForm
+        <BrandForm
           mode="edit"
           brand={editingBrand}
           onSuccess={() => setEditingBrand(null)}
