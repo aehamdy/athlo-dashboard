@@ -1,136 +1,136 @@
-import { useActionState, useEffect, useState } from "react";
-import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
-import { API_ENDPOINTS } from "@/api/endPoints";
-import http from "@/api/http";
-import type { Category } from "@/types";
-import { DialogClose } from "../../../components/ui/dialog";
+import { useFormStatus } from "react-dom";
+import { Input } from "@/components/ui/input";
+import { DialogClose } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import type { UseMutationResult } from "@tanstack/react-query";
+import { useActionState } from "react";
+import { toast } from "sonner";
+import type { Category } from "../types";
 
-interface CategoryFormProps {
-  mode?: "add" | "edit";
-  category?: Category;
-  onSuccess?: () => void;
-}
-
-type ActionState = {
-  error: string | null;
+type Props = {
+  category: Category | null;
+  createCategory: UseMutationResult<Category, Error, FormData>;
+  updateCategory: UseMutationResult<Category, Error, FormData>;
+  onSuccess: () => void;
 };
 
-const initialState: ActionState = {
-  error: null,
-};
+function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
+  const { pending } = useFormStatus();
 
-function CategoryForm({
-  mode = "add",
-  category,
-  onSuccess,
-}: CategoryFormProps) {
-  const [image, setImage] = useState<File | null>(null);
-
-  const submitAction = async (
-    _: ActionState,
-    formData: FormData,
-  ): Promise<ActionState> => {
-    try {
-      if (image) {
-        formData.append("image", image);
-      }
-
-      if (mode === "edit" && category) {
-        formData.append("id", String(category.id));
-
-        await http.put(API_ENDPOINTS.categories.update, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else {
-        await http.post(API_ENDPOINTS.categories.create, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      onSuccess?.();
-      setImage(null);
-
-      return { error: null };
-    } catch (err) {
-      console.error("Submit failed:", err);
-      return { error: "Something went wrong. Please try again." };
-    }
-  };
-
-  const [state, action, isPending] = useActionState(submitAction, initialState);
-
-  // Prefill form when editing
-  useEffect(() => {
-    if (mode === "edit" && category) {
-      const form = document.getElementById(
-        "category-form",
-      ) as HTMLFormElement | null;
-
-      if (!form) return;
-
-      (form.elements.namedItem("nameEn") as HTMLInputElement).value =
-        category.nameEn;
-      (form.elements.namedItem("nameAr") as HTMLInputElement).value =
-        category.nameAr;
-    }
-  }, [mode, category]);
+  const defaultLabel = isEditMode ? "Update Category" : "Add Category";
+  const loadingLabel = isEditMode ? "Updating..." : "Adding...";
 
   return (
-    <form action={action} id="category-form" className="w-full space-y-4">
-      <div className="grid gap-4">
-        <Input
-          name="nameEn"
-          placeholder="Enter category name (English)"
-          required
-          className="form-input"
-        />
+    <Button type="submit" disabled={pending} className="main-button w-full">
+      {pending ? loadingLabel : defaultLabel}
+    </Button>
+  );
+}
 
-        <Input
-          name="nameAr"
-          placeholder="ادخل اسم التصنيف (العربية)"
-          required
-          className="form-input"
-        />
+function CategoryForm({
+  category,
+  createCategory,
+  updateCategory,
+  onSuccess,
+}: Props) {
+  const isEditMode = !!category;
 
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files?.[0] ?? null)}
-          className="form-input"
-        />
+  const action = async (_: unknown, formData: FormData) => {
+    try {
+      // --- Required fields validation ---
+      const nameEn = formData.get("nameEn")?.toString();
+      const nameAr = formData.get("nameAr")?.toString();
+      if (!nameEn || !nameAr) throw new Error("Missing required field");
 
-        {image && (
+      if (!isEditMode) {
+        const image = formData.get("image") as File | null;
+        if (!image || image.size === 0) throw new Error("Image is required");
+      }
+
+      if (isEditMode) {
+        const image = formData.get("image") as File | null;
+
+        if (!image || image.size === 0) {
+          formData.delete("image");
+        }
+
+        formData.append("id", String(category!.id));
+
+        const updatedCategory = await updateCategory.mutateAsync(formData);
+
+        toast.success(
+          `Category "${updatedCategory.nameEn}" updated successfully`,
+        );
+      } else {
+        const createdCategory = await createCategory.mutateAsync(formData);
+
+        toast.success(
+          `Category "${createdCategory.nameEn}" added successfully`,
+        );
+      }
+
+      onSuccess();
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+
+      toast.error(message);
+    }
+
+    return null;
+  };
+
+  const [, formAction] = useActionState(action, null);
+
+  return (
+    <form action={formAction} className="space-y-compact">
+      <div className="flex flex-col gap-compact">
+        <div className="">
+          <Input
+            name="nameEn"
+            required
+            defaultValue={category?.nameEn ?? ""}
+            placeholder="Enter category's English name"
+            className="form-input w-full"
+          />
+        </div>
+
+        <div className="">
+          <Input
+            name="nameAr"
+            required
+            defaultValue={category?.nameAr ?? ""}
+            placeholder="ادخل اسم الفئة بالعربية"
+            className="form-input w-full"
+          />
+        </div>
+
+        {isEditMode && category?.imageUrl && (
           <img
-            src={URL.createObjectURL(image)}
-            alt="Category preview"
-            className="h-24 w-24 rounded-sm object-cover"
+            key={category.id}
+            src={category.imageUrl}
+            alt={category.nameEn}
+            className="w-24 h-24 object-cover rounded-md"
           />
         )}
 
-        {state.error && <p className="text-sm text-red-500">{state.error}</p>}
-
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full py-tiny px-xs text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
-        >
-          {isPending
-            ? "Saving..."
-            : mode === "edit"
-              ? "Update Category"
-              : "Add Category"}
-        </Button>
-
-        <DialogClose asChild>
-          <Button
-            variant="outline"
-            className="w-full -mt-tiny active:text-light active:bg-accent-strong cursor-pointer"
-          >
-            Cancel
-          </Button>
-        </DialogClose>
+        <Input
+          type="file"
+          name="image"
+          required={!isEditMode}
+          className="form-input w-full"
+        />
       </div>
+
+      <div className="w-full">
+        <SubmitButton isEditMode={isEditMode} />
+      </div>
+
+      <DialogClose asChild>
+        <Button variant="outline" className="w-full">
+          Cancel
+        </Button>
+      </DialogClose>
     </form>
   );
 }
