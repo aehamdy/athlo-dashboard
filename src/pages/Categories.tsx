@@ -1,90 +1,64 @@
 import { useState } from "react";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import type { Category } from "../types";
+import { Button } from "@/components/ui/button";
+import { useCategories } from "@/features/categories/hooks/useCategories";
+import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
+import CategoriesGrid from "@/features/categories/components/CategoriesGrid";
 import CategoryForm from "@/features/categories/components/CategoryForm";
-import DashboardSection from "@/components/shared/DashboardSection";
-import List from "@/components/shared/List";
-import ListItem from "@/components/shared/ListItem";
-import Loading from "@/components/shared/Loading";
-import type { Category } from "@/types";
-import http from "@/api/http";
-import CategoryCard from "@/features/categories/components/CategoryCard";
-import { useCategories } from "@/features/categories/api/useCategories";
-import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
-import type { AxiosError } from "axios";
-import { toast } from "sonner";
 
 function Categories() {
-  const { data: catgories = [], isLoading: categoriesLoading } =
-    useCategories();
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
-  const [deletingCategory, setDeletingCategory] = useState<Category | null>(
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
     null,
   );
 
-  const handleDelete = async () => {
-    if (!deletingCategory) return;
+  const { data: categories, createCategory, updateCategory } = useCategories();
 
-    try {
-      await http.delete(API_ENDPOINTS.categories.delete(deletingCategory.id));
-
-      setDeletingCategory(null);
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-
-      const message =
-        axiosError.response?.data?.message ||
-        "Something went wrong while deleting.";
-
-      toast.error(message, {
-        closeButton: true,
-      });
+  const handleEdit = (id: number) => {
+    const category = categories?.find((cat) => cat.id === id);
+    if (category) {
+      setSelectedCategory(category);
+      setOpenForm(true);
     }
   };
 
-  const handleCancelDelete = () => {
-    setDeletingCategory(null);
+  const handleDeleteClick = (id: number) => {
+    const category = categories?.find((cat) => cat.id === id);
+    if (category) setCategoryToDelete(category);
   };
 
-  if (categoriesLoading) return <Loading size="xl" />;
-
   return (
-    <DashboardSection
-      title="Categories"
-      buttonLabel="Add Category"
-      description="Add new categories to organize your products"
-      formComponent={<CategoryForm />}
-    >
-      <List>
-        {catgories?.map((category) => (
-          <ListItem key={category.id}>
-            <CategoryCard
-              category={category}
-              onEdit={() => setEditingCategory(category)}
-              onDelete={() => setDeletingCategory(category)}
-            />
-          </ListItem>
-        ))}
-      </List>
-
-      {/* Edit Form */}
-      {editingCategory && (
-        <CategoryForm
-          mode="edit"
-          category={editingCategory}
-          onSuccess={() => setEditingCategory(null)}
+    <>
+      <DashboardPageLayout
+        open={openForm}
+        onOpenChange={setOpenForm}
+        title="Categories"
+        dialogLabel="Add Category"
+        description="Add new categories to your collection"
+        action={<Button>Add Category</Button>}
+        formComponent={
+          <CategoryForm
+            category={selectedCategory}
+            createCategory={createCategory}
+            updateCategory={updateCategory}
+            onSuccess={() => {
+              setOpenForm(false);
+              setSelectedCategory(null);
+            }}
+          />
+        }
+      >
+        <CategoriesGrid
+          onEdit={handleEdit}
+          onDelete={handleDeleteClick} // opens modal
+          categories={categories ?? []}
+          isLoading={false}
         />
-      )}
-
-      {/* Delete Confirmation Modal */}
-      <ConfirmDeleteModal
-        item={deletingCategory}
-        setItem={setDeletingCategory}
-        itemLabel="category"
-        getDisplayName={(category) => category?.name || ""}
-        onConfirm={handleDelete}
-        onCancel={handleCancelDelete}
-      />
-    </DashboardSection>
+      </DashboardPageLayout>
+    </>
   );
 }
 
