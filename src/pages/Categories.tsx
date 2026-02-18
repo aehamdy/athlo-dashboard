@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import type { Category } from "../types";
 import { Button } from "@/components/ui/button";
 import { useCategories } from "@/features/categories/hooks/useCategories";
 import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
 import CategoriesGrid from "@/features/categories/components/CategoriesGrid";
 import CategoryForm from "@/features/categories/components/CategoryForm";
+import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import Icon from "@/components/shared/Icon";
 
 function Categories() {
   const [openForm, setOpenForm] = useState(false);
@@ -15,7 +18,12 @@ function Categories() {
     null,
   );
 
-  const { data: categories, createCategory, updateCategory } = useCategories();
+  const {
+    data: categories,
+    createCategory,
+    updateCategory,
+    deleteCategory,
+  } = useCategories();
 
   const handleEdit = (id: number) => {
     const category = categories?.find((cat) => cat.id === id);
@@ -30,6 +38,24 @@ function Categories() {
     if (category) setCategoryToDelete(category);
   };
 
+  const handleConfirmDelete = (category: Category) => {
+    deleteCategory.mutate(category.id, {
+      onSuccess: () => {
+        toast.success(`"Category ${category.name}" deleted successfully!`, {
+          closeButton: true,
+        });
+        setCategoryToDelete(null);
+      },
+      onError: () => {
+        toast.error("Failed to delete category", {
+          closeButton: true,
+        });
+      },
+    });
+  };
+
+  const handleCancelDelete = () => setCategoryToDelete(null);
+
   return (
     <>
       <DashboardPageLayout
@@ -38,7 +64,11 @@ function Categories() {
         title="Categories"
         dialogLabel="Add Category"
         description="Add new categories to your collection"
-        action={<Button>Add Category</Button>}
+        action={
+          <Button className="flex items-center gap-sm">
+            <Icon name="Plus" /> Add Category
+          </Button>
+        }
         formComponent={
           <CategoryForm
             category={selectedCategory}
@@ -53,11 +83,24 @@ function Categories() {
       >
         <CategoriesGrid
           onEdit={handleEdit}
-          onDelete={handleDeleteClick} // opens modal
+          onDelete={handleDeleteClick}
           categories={categories ?? []}
           isLoading={false}
         />
       </DashboardPageLayout>
+
+      {/* Delete confirmation modal */}
+      <ConfirmDeleteModal<string>
+        item={categoryToDelete?.name ?? null}
+        setItem={() => setCategoryToDelete(null)}
+        itemLabel="category"
+        getDisplayName={(name) => name}
+        onConfirm={() =>
+          categoryToDelete && handleConfirmDelete(categoryToDelete)
+        }
+        onCancel={handleCancelDelete}
+        isPending={deleteCategory.status === "pending"}
+      />
     </>
   );
 }
