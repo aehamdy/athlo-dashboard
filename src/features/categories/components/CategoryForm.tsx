@@ -6,6 +6,7 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import { useActionState } from "react";
 import { toast } from "sonner";
 import type { Category } from "../types";
+import Loading from "@/components/shared/Loading";
 
 type Props = {
   category: Category | null;
@@ -18,12 +19,30 @@ function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
   const { pending } = useFormStatus();
 
   const defaultLabel = isEditMode ? "Update Category" : "Add Category";
-  const loadingLabel = isEditMode ? "Updating..." : "Adding...";
 
   return (
     <Button type="submit" disabled={pending} className="main-button w-full">
-      {pending ? loadingLabel : defaultLabel}
+      {pending ? (
+        <div className="flex items-center gap-sm">
+          <Loading size="sm" />
+          {isEditMode ? " Updating..." : " Adding..."}
+        </div>
+      ) : (
+        defaultLabel
+      )}
     </Button>
+  );
+}
+
+function CancelButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <DialogClose asChild>
+      <Button variant="outline" disabled={pending} className="w-full">
+        Cancel
+      </Button>
+    </DialogClose>
   );
 }
 
@@ -37,7 +56,6 @@ function CategoryForm({
 
   const action = async (_: unknown, formData: FormData) => {
     try {
-      // --- Required fields validation ---
       const nameEn = formData.get("nameEn")?.toString();
       const nameAr = formData.get("nameAr")?.toString();
       if (!nameEn || !nameAr) throw new Error("Missing required field");
@@ -56,17 +74,17 @@ function CategoryForm({
 
         formData.append("id", String(category!.id));
 
-        const updatedCategory = await updateCategory.mutateAsync(formData);
+        await updateCategory.mutateAsync(formData);
 
-        toast.success(
-          `Category "${updatedCategory.nameEn}" updated successfully`,
-        );
+        toast.success(`Category "${nameEn}" updated successfully`, {
+          closeButton: true,
+        });
       } else {
-        const createdCategory = await createCategory.mutateAsync(formData);
+        await createCategory.mutateAsync(formData);
 
-        toast.success(
-          `Category "${createdCategory.nameEn}" added successfully`,
-        );
+        toast.success(`Category "${nameEn}" added successfully!`, {
+          closeButton: true,
+        });
       }
 
       onSuccess();
@@ -126,11 +144,7 @@ function CategoryForm({
         <SubmitButton isEditMode={isEditMode} />
       </div>
 
-      <DialogClose asChild>
-        <Button variant="outline" className="w-full">
-          Cancel
-        </Button>
-      </DialogClose>
+      <CancelButton />
     </form>
   );
 }
