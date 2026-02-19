@@ -12,6 +12,15 @@ function Brands() {
   const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
   const { data: brands, createBrand, updateBrand } = useBrands();
 
+  const handleEdit = (id: number) => {
+    const brand = brands?.find((brand) => brand.id === id);
+
+    if (brand) {
+      setSelectedBrand(brand);
+      setOpenForm(true);
+    }
+  };
+
   return (
     <DashboardPageLayout
       open={openForm}
@@ -37,7 +46,7 @@ function Brands() {
       }
     >
       <BrandsGrid
-        onEdit={() => {}}
+        onEdit={handleEdit}
         onDelete={() => {}}
         brands={brands ?? []}
         isLoading={false}
