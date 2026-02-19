@@ -6,11 +6,11 @@ import { API_ENDPOINTS } from "@/api/endPoints";
 import type { Product } from "@/types";
 import { Label } from "../../../../components/ui/label";
 import FormSelect from "@/components/shared/FormSelect";
-import { useCategories } from "@/features/categories/api/useCategories";
 import { useForm } from "react-hook-form";
 import { productInfoSchema, type ProductInfoFormType } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useBrands from "@/features/brands/api/useBrands";
+import { useCategories } from "@/features/categories/hooks/useCategories";
 
 type UpdateProductFormProps = {
   product: Product | null;

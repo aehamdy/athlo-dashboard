@@ -9,7 +9,7 @@ import { ArrowRight } from "lucide-react";
 import Heading from "@/components/shared/Heading";
 import useBrands from "@/features/brands/api/useBrands";
 import FormSelect from "@/components/shared/FormSelect";
-import { useCategories } from "@/features/categories/api/useCategories";
+import { useCategories } from "@/features/categories/hooks/useCategories";
 
 type Props = {
   onSuccess: (id: number) => void;
