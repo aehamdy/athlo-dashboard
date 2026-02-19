@@ -1,142 +1,141 @@
-import { useActionState, useEffect, useState } from "react";
-import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
-import { API_ENDPOINTS } from "@/api/endPoints";
-import http from "@/api/http";
-import type { Brand } from "@/types";
-import { DialogClose } from "../../../components/ui/dialog";
-import type { AxiosError } from "axios";
+import Loading from "@/components/shared/Loading";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { DialogClose } from "@radix-ui/react-dialog";
+import type { Brand } from "../types";
+import type { UseMutationResult } from "@tanstack/react-query";
+import { useFormStatus } from "react-dom";
 import { toast } from "sonner";
+import { useActionState } from "react";
 
-interface BrandFormProps {
-  mode?: "add" | "edit";
-  brand?: Brand;
-  onSuccess?: () => void;
-}
-
-type ActionState = {
-  error: string | null;
+type Props = {
+  brand: Brand | null;
+  createBrand: UseMutationResult<Brand, Error, FormData>;
+  updateBrand: UseMutationResult<Brand, Error, FormData>;
+  onSuccess: () => void;
 };
 
-const initialState: ActionState = {
-  error: null,
-};
+function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
+  const { pending } = useFormStatus();
 
-function BrandForm({ mode = "add", brand, onSuccess }: BrandFormProps) {
-  const [image, setImage] = useState<File | null>(null);
-
-  const submitAction = async (
-    _: ActionState,
-    formData: FormData,
-  ): Promise<ActionState> => {
-    try {
-      if (image) {
-        formData.append("image", image);
-      }
-
-      if (mode === "edit" && brand) {
-        formData.append("id", String(brand.id));
-        await http.put(API_ENDPOINTS.brands.update, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else {
-        await http.post(API_ENDPOINTS.brands.create, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      onSuccess?.();
-      setImage(null);
-
-      return { error: null };
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-
-      const message =
-        axiosError.response?.data?.message ||
-        "Something went wrong while adding.";
-
-      toast.error(message, {
-        closeButton: true,
-      });
-
-      return { error: message };
-    }
-  };
-
-  const [state, action, isPending] = useActionState(submitAction, initialState);
-
-  // Prefill form when editing
-  useEffect(() => {
-    if (mode === "edit" && brand) {
-      const form = document.getElementById(
-        "brand-form",
-      ) as HTMLFormElement | null;
-
-      if (!form) return;
-
-      (form.elements.namedItem("nameEn") as HTMLInputElement).value =
-        brand.nameEn ?? "";
-      (form.elements.namedItem("nameAr") as HTMLInputElement).value =
-        brand.nameAr ?? "";
-    }
-  }, [mode, brand]);
+  const defaultLabel = isEditMode ? "Update Brand" : "Add Brand";
 
   return (
-    <form action={action} id="brand-form" className="w-full space-y-4">
-      <div className="grid gap-4">
-        <Input
-          name="nameEn"
-          placeholder="Enter brand name (English)"
-          required
-          className="form-input"
-        />
+    <Button type="submit" disabled={pending} className="main-button w-full">
+      {pending ? (
+        <div className="flex items-center gap-sm">
+          <Loading size="sm" />
+          {isEditMode ? " Updating..." : " Adding..."}
+        </div>
+      ) : (
+        defaultLabel
+      )}
+    </Button>
+  );
+}
 
-        <Input
-          name="nameAr"
-          placeholder="ادخل اسم الماركة (العربية)"
-          required
-          className="form-input"
-        />
+function CancelButton() {
+  const { pending } = useFormStatus();
 
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setImage(e.target.files?.[0] ?? null)}
-          className="form-input"
-        />
+  return (
+    <DialogClose asChild>
+      <Button variant="outline" disabled={pending} className="w-full">
+        Cancel
+      </Button>
+    </DialogClose>
+  );
+}
 
-        {image && (
+function BrandForm({ brand, createBrand, updateBrand, onSuccess }: Props) {
+  const isEditMode = !!brand;
+
+  const action = async (_: unknown, formData: FormData) => {
+    try {
+      const nameEn = formData.get("nameEn")?.toString();
+      const nameAr = formData.get("nameAr")?.toString();
+      if (!nameEn || !nameAr) throw new Error("Missing required field");
+
+      if (!isEditMode) {
+        const image = formData.get("image") as File | null;
+        if (!image || image.size === 0) throw new Error("Image is required");
+      }
+
+      if (isEditMode) {
+        const image = formData.get("image") as File | null;
+
+        if (!image || image.size === 0) {
+          formData.delete("iamge");
+        }
+
+        formData.append("id", String(brand!.id));
+
+        await updateBrand.mutateAsync(formData);
+
+        toast.success(`Brand "${nameEn}" updated successfully`);
+      } else {
+        await createBrand.mutateAsync(formData);
+
+        toast.success(`Brand "${nameEn}" added successfully`);
+      }
+
+      onSuccess();
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong";
+
+      toast.error(message);
+    }
+
+    return null;
+  };
+
+  const [, formAction] = useActionState(action, null);
+
+  return (
+    <form action={formAction} className="space-y-compact">
+      <div className="flex flex-col gap-compact">
+        <div className="">
+          <Input
+            name="nameEn"
+            required
+            defaultValue={brand?.nameEn ?? ""}
+            placeholder="Enter brand's English name"
+            className="form-input w-full"
+          />
+        </div>
+
+        <div className="">
+          <Input
+            name="nameAr"
+            required
+            defaultValue={brand?.nameAr ?? ""}
+            placeholder="ادخل اسم الفئة بالعربية"
+            className="form-input w-full"
+          />
+        </div>
+
+        {isEditMode && brand?.imageUrl && (
           <img
-            src={URL.createObjectURL(image)}
-            alt="Brand preview"
-            className="h-24 w-24 rounded-sm object-cover"
+            key={brand.id}
+            src={brand.imageUrl}
+            alt={brand.nameEn}
+            className="w-24 h-24 object-cover rounded-md"
           />
         )}
 
-        {state.error && <p className="text-sm text-red-500">{state.error}</p>}
-
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="w-full py-tiny px-xs text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
-        >
-          {isPending
-            ? "Saving..."
-            : mode === "edit"
-              ? "Update Brand"
-              : "Add Brand"}
-        </Button>
-
-        <DialogClose asChild>
-          <Button
-            variant="outline"
-            className="w-full -mt-tiny active:text-light active:bg-accent-strong cursor-pointer"
-          >
-            Cancel
-          </Button>
-        </DialogClose>
+        <Input
+          type="file"
+          name="image"
+          required={!isEditMode}
+          className="form-input w-full"
+        />
       </div>
+
+      <div className="w-full">
+        <SubmitButton isEditMode={isEditMode} />
+      </div>
+
+      <CancelButton />
     </form>
   );
 }
