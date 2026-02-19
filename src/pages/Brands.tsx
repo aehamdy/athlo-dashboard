@@ -1,90 +1,48 @@
-import { API_ENDPOINTS } from "@/api/endPoints";
-import BrandCard from "@/features/brands/components/BrandCard";
-import List from "@/components/shared/List";
-import ListItem from "@/components/shared/ListItem";
-import DashboardSection from "@/components/shared/DashboardSection";
-import Loading from "@/components/shared/Loading";
-import type { Brand } from "@/types";
-import { useState } from "react";
-import http from "@/api/http";
+import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
+import Icon from "@/components/shared/Icon";
+import { Button } from "@/components/ui/button";
 import BrandForm from "@/features/brands/components/BrandForm";
-import useBrands from "@/features/brands/api/useBrands";
-import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
-import { toast } from "sonner";
-import type { AxiosError } from "axios";
+import BrandsGrid from "@/features/brands/components/BrandsGrid";
+import { useBrands } from "@/features/brands/hooks/useBrands";
+import type { Brand } from "@/features/brands/types";
+import { useState } from "react";
 
 function Brands() {
-  const { data: brands = [], isLoading: brandsLoading } = useBrands();
-  const [editingBrand, setEditingBrand] = useState<Brand | null>(null);
-  const [deletingBrand, setDeletingBrand] = useState<Brand | null>(null);
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-
-  const handleDelete = async (brand: Brand) => {
-    if (!brand) return;
-
-    try {
-      await http.delete(API_ENDPOINTS.brands.delete(brand.id));
-    } catch (error: unknown) {
-      const axiosError = error as AxiosError<{ message?: string }>;
-
-      const message =
-        axiosError.response?.data?.message ||
-        "Something went wrong while deleting.";
-
-      toast.error(message, {
-        closeButton: true,
-      });
-    } finally {
-      setDeletingBrand(null);
-    }
-  };
-
-  const handleCancelDelete = () => {
-    setDeletingBrand(null);
-  };
-
-  if (brandsLoading) return <Loading size="xl" />;
+  const [openForm, setOpenForm] = useState(false);
+  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
+  const { data: brands, createBrand, updateBrand } = useBrands();
 
   return (
-    <DashboardSection
+    <DashboardPageLayout
+      open={openForm}
+      onOpenChange={setOpenForm}
       title="Brands"
-      buttonLabel="Add Brand"
+      dialogLabel="Add Brand"
       description="Add new brands to your collection"
-      formComponent={<BrandForm onSuccess={() => setIsAddDialogOpen(false)} />}
-      isDialogOpen={isAddDialogOpen}
-      setIsDialogOpen={setIsAddDialogOpen}
-    >
-      <List>
-        {brands?.map((brand) => (
-          <ListItem key={brand.id}>
-            <BrandCard
-              brand={brand}
-              onEdit={() => setEditingBrand(brand)}
-              onDelete={() => setDeletingBrand(brand)}
-            />
-          </ListItem>
-        ))}
-      </List>
-
-      {/* Edit Form */}
-      {editingBrand && (
+      action={
+        <Button className="flex items-center gap-sm">
+          <Icon name="Plus" /> Add Brand
+        </Button>
+      }
+      formComponent={
         <BrandForm
-          mode="edit"
-          brand={editingBrand}
-          onSuccess={() => setEditingBrand(null)}
+          brand={selectedBrand}
+          createBrand={createBrand}
+          updateBrand={updateBrand}
+          onSuccess={() => {
+            setOpenForm(false);
+            setSelectedBrand(null);
+          }}
         />
-      )}
-
-      {/* Delete Confirmation Modal */}
-      <ConfirmDeleteModal
-        item={deletingBrand}
-        setItem={setDeletingBrand}
-        itemLabel="brand"
-        getDisplayName={(brand) => brand?.name || ""}
-        onConfirm={handleDelete}
-        onCancel={handleCancelDelete}
+      }
+    >
+      <BrandsGrid
+        onEdit={() => {}}
+        onDelete={() => {}}
+        brands={brands ?? []}
+        isLoading={false}
       />
-    </DashboardSection>
+    </DashboardPageLayout>
   );
 }
 
