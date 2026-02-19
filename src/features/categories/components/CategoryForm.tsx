@@ -76,15 +76,11 @@ function CategoryForm({
 
         await updateCategory.mutateAsync(formData);
 
-        toast.success(`Category "${nameEn}" updated successfully`, {
-          closeButton: true,
-        });
+        toast.success(`Category "${nameEn}" updated successfully`);
       } else {
         await createCategory.mutateAsync(formData);
 
-        toast.success(`Category "${nameEn}" added successfully!`, {
-          closeButton: true,
-        });
+        toast.success(`Category "${nameEn}" added successfully!`);
       }
 
       onSuccess();

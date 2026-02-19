@@ -41,15 +41,11 @@ function Categories() {
   const handleConfirmDelete = (category: Category) => {
     deleteCategory.mutate(category.id, {
       onSuccess: () => {
-        toast.success(`"Category ${category.name}" deleted successfully!`, {
-          closeButton: true,
-        });
+        toast.success(`"Category ${category.name}" deleted successfully!`);
         setCategoryToDelete(null);
       },
       onError: () => {
-        toast.error("Failed to delete category", {
-          closeButton: true,
-        });
+        toast.error("Failed to delete category. Please try again.");
       },
     });
   };
