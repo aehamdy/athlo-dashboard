@@ -9,10 +9,6 @@ export const categoriesService = {
   },
 
   create: async (payload: FormData): Promise<Category> => {
-    const sleep = new Promise((resolve) => setTimeout(resolve, 3000));
-
-    await sleep;
-
     const { data } = await http.post(API_ENDPOINTS.categories.create, payload, {
       headers: { "Content-Type": "multipart/form-data" },
     });
@@ -20,9 +16,6 @@ export const categoriesService = {
   },
 
   update: async (payload: FormData): Promise<Category> => {
-    const sleep = new Promise((resolve) => setTimeout(resolve, 3000));
-
-    await sleep;
     const { data } = await http.put(
       `${API_ENDPOINTS.categories.update}`,
       payload,
