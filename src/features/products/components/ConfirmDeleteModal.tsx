@@ -1,3 +1,5 @@
+import Icon from "@/components/shared/Icon";
+import Loading from "@/components/shared/Loading";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { OctagonAlert } from "lucide-react";
 
 type ConfirmDeleteModalProps<T> = {
   item: T | null;
@@ -15,6 +16,7 @@ type ConfirmDeleteModalProps<T> = {
   getDisplayName: (item: T) => string;
   onConfirm: (item: T) => void;
   onCancel: () => void;
+  isPending?: boolean;
 };
 
 function ConfirmDeleteModal<T>({
@@ -24,6 +26,7 @@ function ConfirmDeleteModal<T>({
   getDisplayName,
   onConfirm,
   onCancel,
+  isPending,
 }: ConfirmDeleteModalProps<T>) {
   return (
     <Dialog open={!!item} onOpenChange={(open) => !open && setItem(null)}>
@@ -33,7 +36,11 @@ function ConfirmDeleteModal<T>({
             <div className="relative flex flex-col items-center gap-regular pt-6 pb-2">
               <div className="absolute top-0 start-1/2 -translate-y-full -translate-x-1/2 p-2 bg-light rounded-full">
                 <div className="bg-red-500/10 rounded-full">
-                  <OctagonAlert size={36} className="text-red-500" />
+                  <Icon
+                    name="OctagonAlert"
+                    size={36}
+                    className="text-red-500"
+                  />
                 </div>
               </div>
               You are about to delete a {itemLabel}
@@ -44,22 +51,31 @@ function ConfirmDeleteModal<T>({
         <DialogDescription className="mb-2 text-center">
           Do you really want to delete{" "}
           <span className="font-semibold text-accent">
-            {getDisplayName(item!)}
+            {item ? getDisplayName(item) : ""}
           </span>{" "}
           ?
         </DialogDescription>
 
-        <div className="flex flex-col gap-md">
+        <div className="flex flex-col gap-sm">
           <Button
-            variant="plain"
-            onClick={() => onConfirm(item!)}
+            variant="destructive"
+            onClick={() => item && onConfirm(item)}
+            disabled={!item || isPending}
             className="text-light active:text-dark bg-red-500 hover:bg-red-600 active:bg-red-600 hover:shadow-md transform duration-normal cursor-pointer"
           >
-            Yes, Delete!
+            {isPending ? (
+              <div className="flex items-center gap-sm">
+                <Loading size="sm" />
+                Deleting...
+              </div>
+            ) : (
+              "Yes, Delete!"
+            )}
           </Button>
 
           <Button
             variant="outline"
+            disabled={isPending}
             onClick={onCancel}
             className="active:bg-accent-strong hover:shadow-md transform duration-normal cursor-pointer"
           >
