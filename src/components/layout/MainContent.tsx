@@ -1,20 +1,16 @@
 import { Outlet } from "react-router-dom";
-import Header from "../shared/Header";
 import { Toaster } from "../ui/sonner";
 
 function MainContent() {
   return (
     <section className="h-full p-sm md:p-regular lg:p-sm text-dark bg-light-muted rounded-3xl">
-      <div className="flex flex-col gap-sm md:gap-base lg:gap-sm h-full">
-        <Header />
-
-        <main className="flex-1">
-          <Outlet />
-        </main>
-      </div>
+      <main className="flex-1">
+        <Outlet />
+      </main>
 
       <Toaster
         position="bottom-right"
+        closeButton
         richColors
         toastOptions={{
           className: "font-medium text-sm border rounded-xl !shadow-xl",
