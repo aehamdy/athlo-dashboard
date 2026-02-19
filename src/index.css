@@ -208,7 +208,7 @@ body {
 }
 
 .main-button {
-  @apply w-fit px-6 text-dark active:text-light bg-accent hover:bg-accent-soft active:bg-accent-strong;
+  @apply px-3xl text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer;
 }
 
 .form-label {
