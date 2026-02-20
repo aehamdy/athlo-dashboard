@@ -2,11 +2,15 @@ import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { categoriesService } from "../services/categories.service";
 import type { Category } from "../types";
 
+export const categoryKeys = {
+  all: ["categories"] as const,
+};
+
 export function useCategories() {
   const queryClient = useQueryClient();
 
   const query = useQuery<Category[], Error>({
-    queryKey: ["categories"],
+    queryKey: categoryKeys.all,
     queryFn: categoriesService.getAll,
   });
 
@@ -14,7 +18,7 @@ export function useCategories() {
     mutationFn: categoriesService.create,
 
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["categories"] }),
+      queryClient.invalidateQueries({ queryKey: categoryKeys.all }),
   });
 
   const updateCategory = useMutation({
@@ -22,7 +26,7 @@ export function useCategories() {
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
-        queryKey: ["categories"],
+        queryKey: categoryKeys.all,
       });
     },
   });
@@ -31,7 +35,7 @@ export function useCategories() {
     mutationFn: categoriesService.delete,
 
     onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["categories"] }),
+      queryClient.invalidateQueries({ queryKey: categoryKeys.all }),
   });
 
   return { ...query, createCategory, updateCategory, deleteCategory };
