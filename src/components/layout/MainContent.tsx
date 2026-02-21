@@ -4,7 +4,7 @@ import { Toaster } from "../ui/sonner";
 function MainContent() {
   return (
     <section className="h-full p-sm md:p-regular lg:p-sm text-dark bg-light-muted rounded-3xl">
-      <main className="flex-1">
+      <main className="flex-1 h-full">
         <Outlet />
       </main>
 
