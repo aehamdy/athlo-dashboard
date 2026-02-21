@@ -11,8 +11,8 @@ import {
 
 type DashboardPageLayoutProps = {
   title: string;
-  dialogLabel: string;
-  description: string;
+  dialogLabel?: string;
+  description?: string;
   action?: ReactNode;
   filters?: ReactNode;
   formComponent?: ReactNode;
@@ -33,9 +33,9 @@ function DashboardPageLayout({
   onOpenChange,
 }: DashboardPageLayoutProps) {
   return (
-    <section className="flex flex-col gap-base h-full p-compact md:p-regular lg:p-sm bg-light rounded-xl">
+    <section className="flex flex-col gap-base h-full bg-light rounded-xl">
       {/* Top Row */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between p-compact md:p-regular lg:p-sm">
         <Heading as="h2" className="text-2xl font-semibold">
           {title}
         </Heading>
@@ -43,14 +43,16 @@ function DashboardPageLayout({
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogTrigger asChild>{action && action}</DialogTrigger>
 
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>{dialogLabel}</DialogTitle>
-              <DialogDescription>{description}</DialogDescription>
-            </DialogHeader>
+          {(dialogLabel || description || formComponent) && (
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>{dialogLabel}</DialogTitle>
+                <DialogDescription>{description}</DialogDescription>
+              </DialogHeader>
 
-            {formComponent}
-          </DialogContent>
+              {formComponent && formComponent}
+            </DialogContent>
+          )}
         </Dialog>
       </div>
 
@@ -62,7 +64,7 @@ function DashboardPageLayout({
       )}
 
       {/* Main Content */}
-      <div>{children}</div>
+      <div className="h-full">{children}</div>
     </section>
   );
 }
