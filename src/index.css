@@ -211,6 +211,10 @@ body {
   @apply px-3xl text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer;
 }
 
+.main-link {
+  @apply py-xs px-sm text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong rounded-lg transition-all duration-normal cursor-pointer;
+}
+
 .form-label {
   @apply absolute top-0 start-1 -translate-y-1/2 px-1 text-tiny text-neutral-400 bg-light;
 }
