@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useProducts } from "@/features/products/hooks/useProducts";
 import { DataTable } from "@/components/data-table/DataTable";
 import DataTableToolbar from "@/components/data-table/DataTableToolbar";
-import { productColumns } from "@/features/products/components/columns";
+import { productColumns } from "@/features/products/columns";
 import type { SortingState } from "@tanstack/react-table";
 import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
 import { Link } from "react-router-dom";
