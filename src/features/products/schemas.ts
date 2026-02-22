@@ -66,6 +66,7 @@ export const productVariantsSchema = z.object({
       z.object({
         size: z.string().min(1, "Size is required"),
         color: z.string().min(1, "Color is required"),
+        colorCode: z.string().min(1, "Color Code is required"),
         price: z.number().min(1, "Price must be a number"),
         stock: z.number().min(1, "Stock must be a number"),
       }),
