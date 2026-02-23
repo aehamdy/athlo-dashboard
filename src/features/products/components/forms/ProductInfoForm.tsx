@@ -1,5 +1,5 @@
 import { productInfoSchema, type ProductInfoFormType } from "../../schemas";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,10 @@ import { API_ENDPOINTS } from "@/api/endPoints";
 import { ArrowRight } from "lucide-react";
 import Heading from "@/components/shared/Heading";
 import useBrands from "@/features/brands/api/useBrands";
+import type { Brand, Category } from "@/types";
 import FormSelect from "@/components/shared/FormSelect";
 import { useCategories } from "@/features/categories/hooks/useCategories";
+import { toast } from "sonner";
 
 type Props = {
   onSuccess: (id: number) => void;
@@ -19,23 +21,55 @@ function ProductInfoForm({ onSuccess }: Props) {
   const {
     register,
     handleSubmit,
-    watch,
     setValue,
+    control,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ProductInfoFormType>({
     resolver: zodResolver(productInfoSchema),
     mode: "onChange",
+    defaultValues: {
+      nameEn: "",
+      nameAr: "",
+      descriptionEn: "",
+      descriptionAr: "",
+      clubEn: "",
+      clubAr: "",
+      season: "",
+      code: "",
+      categoryId: 0,
+      brandId: 0,
+      basePrice: 0,
+    },
   });
-  const { data: brands = [], isLoading: brandsLoading } = useBrands();
+
+  const categoryId = useWatch({ control, name: "categoryId" });
+  const brandId = useWatch({ control, name: "brandId" });
+  const { data: brands = [], isLoading: brandsLoading } = useBrands() as {
+    data: Brand[];
+    isLoading: boolean;
+  };
   const { data: categories = [], isLoading: categoriesLoading } =
-    useCategories();
+    useCategories() as { data: Category[]; isLoading: boolean };
 
   const onSubmit = async (data: ProductInfoFormType) => {
     try {
       const res = await http.post(API_ENDPOINTS.products.create, data);
       onSuccess(res.data.data);
     } catch (error) {
-      console.error(error);
+      if (error && typeof error === "object" && "response" in error) {
+        const axiosError = error as {
+          response?: {
+            data?: {
+              Message?: string;
+              StatusCode?: number;
+              Errors?: Record<string, string[]>;
+            };
+            status?: number;
+          };
+        };
+
+        toast.error(axiosError.response?.data?.Message);
+      }
     }
   };
 
@@ -131,7 +165,7 @@ function ProductInfoForm({ onSuccess }: Props) {
           <div className="flex flex-col">
             <FormSelect
               placeholder="Select Category"
-              value={watch("categoryId")?.toString()}
+              value={categoryId ? categoryId.toString() : undefined}
               onValueChange={(val) =>
                 setValue("categoryId", Number(val), { shouldValidate: true })
               }
@@ -144,7 +178,7 @@ function ProductInfoForm({ onSuccess }: Props) {
           <div className="flex flex-col">
             <FormSelect
               placeholder="Select Brand"
-              value={watch("brandId")?.toString()}
+              value={brandId ? brandId.toString() : undefined}
               onValueChange={(val) =>
                 setValue("brandId", Number(val), { shouldValidate: true })
               }
