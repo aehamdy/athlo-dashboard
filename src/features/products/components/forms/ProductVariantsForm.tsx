@@ -1,12 +1,24 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  FormProvider,
+  useWatch,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   productVariantsSchema,
   type ProductVariantsFormType,
 } from "../../schemas";
-import http from "@/api/http";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, CircleCheck, Plus, Trash2 } from "lucide-react";
+import VariantsHeader from "./VariantsHeader";
+import VariantRow from "./VariantRow";
+import Icon from "@/components/shared/Icon";
+import Heading from "@/components/shared/Heading";
+import { useProduct } from "../../hooks/useProduct";
+import { toast } from "sonner";
+import { useAddProductVariants } from "../../hooks/useAddProductVariants";
+import { isVariantsComplete } from "../../utils/isVariantsComplete";
+import parseApiError from "../../utils/parseApiError";
 
 type Props = {
   productId: number;
@@ -15,10 +27,21 @@ type Props = {
 };
 
 function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
+  const { basePrice } = useProduct(productId);
+  const { submitVariants } = useAddProductVariants(productId);
+
   const form = useForm<ProductVariantsFormType>({
     resolver: zodResolver(productVariantsSchema),
     defaultValues: {
-      variants: [{ size: "", color: "", price: 0, stock: 0 }],
+      variants: [
+        {
+          size: "",
+          color: "",
+          colorCode: "",
+          price: basePrice || 0,
+          stock: 0,
+        },
+      ],
     },
     mode: "onChange",
   });
@@ -28,106 +51,75 @@ function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
     name: "variants",
   });
 
-  const submit: (data: ProductVariantsFormType) => Promise<void> = async (
-    data,
-  ) => {
+  const variants = useWatch({ control: form.control, name: "variants" });
+
+  const allVariantsComplete = isVariantsComplete(variants);
+  const { isSubmitting } = form.formState;
+
+  const handleAddVariant = () => {
+    append({
+      size: "",
+      color: "",
+      colorCode: "",
+      price: basePrice || 0,
+      stock: 0,
+    });
+  };
+
+  const onSubmit = async (data: ProductVariantsFormType) => {
     try {
-      await http.post(`/products/${productId}/variants`, data.variants);
+      await submitVariants(data);
+      toast.success("Variants added successfully");
       onSuccess();
     } catch (error) {
-      console.error("Error submitting variants:", error);
+      toast.error(parseApiError(error));
     }
   };
 
   return (
-    <form
-      onSubmit={form.handleSubmit(submit)}
-      className="h-full p-compact md:p-2xl bg-light rounded-2xl"
-    >
-      <div className="flex flex-col justify-between gap-base h-full">
-        <div className="flex justify-end">
-          <Button
-            type="button"
-            variant="plain"
-            className="w-full md:w-fit text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent transform-colors duration-normal"
-            onClick={() => append({ size: "", color: "", price: 0, stock: 0 })}
-          >
-            <Plus className="w-4 h-4" />
-            Add Variant
-          </Button>
-        </div>
+    <FormProvider {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-md h-full min-h-0 p-compact md:p-2xl bg-light rounded-2xl"
+      >
+        <div className="flex flex-col gap-base flex-1 min-h-0">
+          <div className="flex justify-between shrink-0">
+            <Heading as="h2">Add Prodcut Variants</Heading>
 
-        <div className="flex flex-col gap-base h-full ">
-          {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="grid grid-cols-4 gap-4 items-end border-b border-gray-200 pb-2 mb-2"
+            <Button
+              type="button"
+              className="w-full md:w-fit text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border transform-colors duration-normal"
+              onClick={handleAddVariant}
             >
-              <div className="flex flex-col">
-                <label className="text-sm font-medium">Size</label>
-                <input
-                  {...form.register(`variants.${index}.size`)}
-                  className="form-input"
-                  placeholder="Size"
-                />
-              </div>
+              <Icon name="Plus" className="w-4 h-4" />
+              Add Variant
+            </Button>
+          </div>
 
-              <div className="flex flex-col">
-                <label className="text-sm font-medium">Color</label>
-                <input
-                  {...form.register(`variants.${index}.color`)}
-                  className="form-input"
-                  placeholder="Color"
-                />
-              </div>
+          <div className="flex flex-col flex-1 min-h-0 overflow-hidden">
+            <VariantsHeader />
 
-              <div className="flex flex-col">
-                <label className="text-sm font-medium">Price</label>
-                <input
-                  type="number"
-                  {...form.register(`variants.${index}.price`, {
-                    valueAsNumber: true,
-                  })}
-                  className="form-input"
-                  placeholder="Price"
+            <div className="flex-1 min-h-0 border-x border-b rounded-b-md overflow-y-auto">
+              {fields.map((field, index) => (
+                <VariantRow
+                  key={field.id}
+                  index={index}
+                  remove={remove}
+                  totalRows={fields.length}
+                  basePrice={basePrice}
                 />
-              </div>
-
-              <div className="flex flex-col items-start">
-                <label className="text-sm font-medium">Stock</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    {...form.register(`variants.${index}.stock`, {
-                      valueAsNumber: true,
-                    })}
-                    className="form-input"
-                    placeholder="Stock"
-                  />
-                  {fields.length > 1 && (
-                    <Button
-                      type="button"
-                      variant="plain"
-                      className="flex items-center justify-center h-7 w-7 bg-gray-300"
-                      onClick={() => remove(index)}
-                    >
-                      <Trash2 />
-                    </Button>
-                  )}
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
 
         <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-compact">
           <Button
             type="button"
-            variant="plain"
             className="w-full md:w-fit text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
             onClick={onBack}
           >
-            <ArrowLeft />
+            <Icon name="ArrowLeft" />
             Previous
           </Button>
 
@@ -135,14 +127,14 @@ function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
             type="submit"
             variant="plain"
             className="w-full md:w-fit text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent transform-colors duration-normal"
-            // onClick={onBack}
+            disabled={!allVariantsComplete || isSubmitting}
           >
-            <CircleCheck className="text-dark" />
+            <Icon name="CircleCheck" className="text-dark" />
             Save Variants
           </Button>
         </div>
-      </div>
-    </form>
+      </form>
+    </FormProvider>
   );
 }
 
