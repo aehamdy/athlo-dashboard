@@ -10,12 +10,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Controller, useFormContext } from "react-hook-form";
+import { useEffect } from "react";
 import type { ProductVariantsFormType } from "../../schemas";
 
 interface VariantRowProps {
   index: number;
   remove: (index: number) => void;
   totalRows: number;
+  basePrice: number;
 }
 
 const sizes = [
@@ -28,18 +30,26 @@ const sizes = [
   { id: 7, value: "3xl", label: "3XL" },
 ];
 
-function VariantRow({ index, remove, totalRows }: VariantRowProps) {
-  const { register, control } = useFormContext<ProductVariantsFormType>();
+function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
+  const { register, control, setValue } =
+    useFormContext<ProductVariantsFormType>();
+
+  // Set initial price when component mounts or basePrice changes
+  useEffect(() => {
+    if (basePrice > 0) {
+      setValue(`variants.${index}.price`, basePrice);
+    }
+  }, [basePrice, index, setValue]);
 
   return (
-    <div className="grid grid-cols-12 gap-4 items-center py-2 px-xs border-b border-gray-200 pb-2">
+    <div className="grid grid-cols-12 gap-4 items-center py-base px-xs border-b border-gray-200">
       <div className="col-span-2">
         <Controller
           control={control}
           name={`variants.${index}.size`}
           render={({ field }) => (
             <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger className="w-full form-input">
                 <SelectValue placeholder="Size" />
               </SelectTrigger>
 
@@ -65,22 +75,53 @@ function VariantRow({ index, remove, totalRows }: VariantRowProps) {
         />
       </div>
 
-      <div className="col-span-2">
-        <Input
-          type="color"
-          {...register(`variants.${index}.colorCode`)}
-          className="form-input"
+      <div className="col-span-2 flex items-center gap-4 px-compact bg-gray-100 rounded-md">
+        <Controller
+          control={control}
+          name={`variants.${index}.colorCode`}
+          render={({ field }) => (
+            <div className="flex justify-between items-center gap-[30px]">
+              <div className="relative">
+                <div
+                  className="w-8 h-6 border border-gray-400 rounded-xl shadow-sm"
+                  style={{ backgroundColor: field.value || "#000000" }}
+                />
+                <input
+                  type="color"
+                  value={field.value || "#000000"}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
+
+              <Input
+                value={field.value || ""}
+                onChange={(e) => field.onChange(e.target.value)}
+                placeholder="#000000"
+                className="color-code-input p-0 border-0 outline-0 ring-0 focus-visible:ring-0"
+              />
+            </div>
+          )}
         />
       </div>
 
       <div className="col-span-2">
-        <Input
-          type="number"
-          {...register(`variants.${index}.price`, {
-            valueAsNumber: true,
-          })}
-          placeholder="Price"
-          className="form-input"
+        <Controller
+          control={control}
+          name={`variants.${index}.price`}
+          render={({ field }) => (
+            <Input
+              type="number"
+              {...field}
+              value={field.value || basePrice}
+              onChange={(e) => {
+                const value = e.target.value;
+                field.onChange(value === "" ? 0 : Number(value));
+              }}
+              placeholder="Price"
+              className="form-input"
+            />
+          )}
         />
       </div>
 
