@@ -59,6 +59,8 @@ export const productImagesSchema = z.object({
 
 export type ProductImagesFormType = z.infer<typeof productImagesSchema>;
 
+export type VariantType = ProductVariantsFormType["variants"][number];
+
 // Product Variant
 export const productVariantsSchema = z.object({
   variants: z
