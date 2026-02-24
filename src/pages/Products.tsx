@@ -1,28 +1,22 @@
-import { useState, useEffect } from "react";
 import { useProducts } from "@/features/products/hooks/useProducts";
 import { DataTable } from "@/components/data-table/DataTable";
 import DataTableToolbar from "@/components/data-table/DataTableToolbar";
 import { productColumns } from "@/features/products/columns";
-import type { SortingState } from "@tanstack/react-table";
 import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
 import { Link } from "react-router-dom";
 import Icon from "@/components/shared/Icon";
 import { ROUTE_PATHS } from "@/routes/paths";
-import type { Product } from "@/features/products/types";
 import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import { PRODUCT_PAGE_SIZE_OPTIONS } from "@/features/products/constants";
+import { useDebounce } from "@/features/products/hooks/useDebounce";
+import { useProductsTable } from "@/features/products/hooks/useProductsTable";
+import { useProductDelete } from "@/features/products/hooks/useProductDelete";
 
 export default function ProductsPage() {
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 });
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
+  const { pagination, setPagination, sorting, setSorting, search, setSearch } =
+    useProductsTable();
 
-  // Debounce search to avoid firing API on every keystroke
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedSearch(search), 500);
-    return () => clearTimeout(handler);
-  }, [search]);
+  const debouncedSearch = useDebounce(search);
 
   const {
     data: products,
@@ -36,32 +30,13 @@ export default function ProductsPage() {
     search: debouncedSearch,
   });
 
-  const handleProductDelete = (id: number) => {
-    const product = products?.data.find((product) => product.id === id);
-    if (product) setProductToDelete(product);
-  };
-
-  const handleConfirmDelete = () => {
-    if (!productToDelete) return;
-
-    deleteProduct.mutate(productToDelete.id, {
-      onSuccess: () => {
-        setProductToDelete(null);
-      },
-    });
-  };
-
-  const handleCancelDelete = () => {
-    setProductToDelete(null);
-  };
+  const { productToDelete, setProductToDelete, openDelete, confirmDelete } =
+    useProductDelete(deleteProduct);
 
   const columns = productColumns((id) => {
-    handleProductDelete(id);
+    const product = products?.data.find((p) => p.id === id);
+    if (product) openDelete(product);
   });
-
-  if (error) {
-    console.error("Error fetching products:", error);
-  }
 
   return (
     <DashboardPageLayout
@@ -92,15 +67,16 @@ export default function ProductsPage() {
           pageCount={products?.totalPages ?? 0}
           sorting={sorting}
           onSortingChange={setSorting}
+          pageSizeOptions={PRODUCT_PAGE_SIZE_OPTIONS}
+          error={error}
         />
 
-        <ConfirmDeleteModal<Product>
+        <ConfirmDeleteModal
           item={productToDelete}
           setItem={setProductToDelete}
           itemLabel="product"
-          getDisplayName={(product) => product.name}
-          onConfirm={handleConfirmDelete}
-          onCancel={handleCancelDelete}
+          getDisplayName={(p) => p.name}
+          onConfirm={confirmDelete}
           isPending={deleteProduct.status === "pending"}
         />
       </div>
