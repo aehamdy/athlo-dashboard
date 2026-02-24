@@ -21,11 +21,15 @@ export default function ProductsPage() {
     return () => clearTimeout(handler);
   }, [search]);
 
-  const { data, isLoading, error } = useProducts({
+  const { data, isLoading, error, deleteProduct } = useProducts({
     pageIndex: pagination.pageIndex,
     pageSize: pagination.pageSize,
     sorting,
     search: debouncedSearch,
+  });
+
+  const columns = productColumns((id) => {
+    deleteProduct.mutate(id);
   });
 
   if (error) {
@@ -54,7 +58,7 @@ export default function ProductsPage() {
 
         <DataTable
           data={data?.data ?? []}
-          columns={productColumns}
+          columns={columns}
           isLoading={isLoading}
           pagination={pagination}
           onPaginationChange={setPagination}
