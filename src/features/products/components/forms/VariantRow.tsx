@@ -12,6 +12,7 @@ import {
 import { Controller, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import type { ProductVariantsFormType } from "../../schemas";
+import { Label } from "@/components/ui/label";
 
 interface VariantRowProps {
   index: number;
@@ -42,8 +43,26 @@ function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
   }, [basePrice, index, setValue]);
 
   return (
-    <div className="grid grid-cols-12 gap-4 items-center py-base px-xs border-b border-gray-200">
-      <div className="col-span-2">
+    <div className="grid grid-cols-6 gap-2 md:grid-cols-12 md:gap-4 items-center mb-xs py-base bg-gray-50 px-xs border-b border-gray-200">
+      <div className="col-span-6 flex justify-between items-center md:hidden">
+        <h4 className="text-sm font-medium">Variant {index + 1}</h4>
+
+        {totalRows > 1 && (
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => remove(index)}
+            className="group bg-transparent"
+          >
+            <Icon
+              name="Trash2"
+              className="text-gray-400 group-hover:text-red-500 duration-normal"
+            />
+          </Button>
+        )}
+      </div>
+
+      <div className="col-span-3 md:col-span-2">
         <Controller
           control={control}
           name={`variants.${index}.size`}
@@ -67,7 +86,7 @@ function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
         />
       </div>
 
-      <div className="col-span-3">
+      <div className="col-span-3 md:col-span-3">
         <Input
           {...register(`variants.${index}.color`)}
           placeholder="Color Name"
@@ -75,37 +94,45 @@ function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
         />
       </div>
 
-      <div className="col-span-2 flex items-center gap-4 px-compact bg-gray-100 rounded-md">
-        <Controller
-          control={control}
-          name={`variants.${index}.colorCode`}
-          render={({ field }) => (
-            <div className="flex justify-between items-center gap-[30px]">
-              <div className="relative">
-                <div
-                  className="w-8 h-6 border border-gray-400 rounded-xl shadow-sm"
-                  style={{ backgroundColor: field.value || "#000000" }}
-                />
-                <input
-                  type="color"
-                  value={field.value || "#000000"}
+      <div className="col-span-6 md:col-span-2">
+        <Label className="md:hidden ms-xs mb-xs text-gray-400">
+          Color Code
+        </Label>
+
+        <div className="flex items-center gap-4 px-compact bg-gray-100 rounded-md">
+          <Controller
+            control={control}
+            name={`variants.${index}.colorCode`}
+            render={({ field }) => (
+              <div className="flex justify-between items-center gap-[30px]">
+                <div className="relative">
+                  <div
+                    className="w-8 h-6 border border-gray-400 rounded-xl shadow-sm"
+                    style={{ backgroundColor: field.value || "#000000" }}
+                  />
+                  <input
+                    type="color"
+                    value={field.value || "#000000"}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  />
+                </div>
+
+                <Input
+                  value={field.value || ""}
                   onChange={(e) => field.onChange(e.target.value)}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  placeholder="#000000"
+                  className="color-code-input p-0 border-0 outline-0 ring-0 focus-visible:ring-0 shadow-none"
                 />
               </div>
-
-              <Input
-                value={field.value || ""}
-                onChange={(e) => field.onChange(e.target.value)}
-                placeholder="#000000"
-                className="color-code-input p-0 border-0 outline-0 ring-0 focus-visible:ring-0"
-              />
-            </div>
-          )}
-        />
+            )}
+          />
+        </div>
       </div>
 
-      <div className="col-span-2">
+      <div className="col-span-3 md:col-span-2">
+        <Label className="md:hidden ms-xs mb-xs text-gray-400">Price</Label>
+
         <Controller
           control={control}
           name={`variants.${index}.price`}
@@ -125,7 +152,9 @@ function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
         />
       </div>
 
-      <div className="col-span-2">
+      <div className="col-span-3 md:col-span-2">
+        <Label className="md:hidden ms-xs mb-xs text-gray-400">Quantity</Label>
+
         <Input
           type="number"
           {...register(`variants.${index}.stock`, {
@@ -136,13 +165,13 @@ function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
         />
       </div>
 
-      <div className="col-span-1 flex justify-center">
+      <div className="hidden md:col-span-1 md:flex md:justify-center">
         {totalRows > 1 && (
           <Button
             type="button"
             variant="ghost"
             onClick={() => remove(index)}
-            className="group"
+            className="group bg-transparent hover:bg-transparent"
           >
             <Icon
               name="Trash2"
