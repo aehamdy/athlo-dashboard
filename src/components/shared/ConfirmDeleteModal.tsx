@@ -14,8 +14,8 @@ type ConfirmDeleteModalProps<T> = {
   setItem: (item: T | null) => void;
   itemLabel: string;
   getDisplayName: (item: T) => string;
-  onConfirm: (item: T) => void;
-  onCancel: () => void;
+  onConfirm: () => void;
+  onCancel?: () => void;
   isPending?: boolean;
 };
 
@@ -26,8 +26,17 @@ function ConfirmDeleteModal<T>({
   getDisplayName,
   onConfirm,
   onCancel,
-  isPending,
+  isPending = false,
 }: ConfirmDeleteModalProps<T>) {
+  const isOpen = !!item;
+
+  const handleClose = () => {
+    setItem(null);
+    onCancel?.();
+  };
+
+  if (!isOpen || !item) return null;
+
   return (
     <Dialog open={!!item} onOpenChange={(open) => !open && setItem(null)}>
       <DialogContent className="max-w-[390px] sm:max-w-[400px]">
@@ -59,7 +68,7 @@ function ConfirmDeleteModal<T>({
         <div className="flex flex-col gap-sm">
           <Button
             variant="destructive"
-            onClick={() => item && onConfirm(item)}
+            onClick={() => item && onConfirm()}
             disabled={!item || isPending}
             className="text-light active:text-dark bg-red-500 hover:bg-red-600 active:bg-red-600 hover:shadow-md transform duration-normal cursor-pointer"
           >
@@ -76,7 +85,7 @@ function ConfirmDeleteModal<T>({
           <Button
             variant="outline"
             disabled={isPending}
-            onClick={onCancel}
+            onClick={handleClose}
             className="active:bg-accent-strong hover:shadow-md transform duration-normal cursor-pointer"
           >
             No, Keep It.

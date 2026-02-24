@@ -6,7 +6,7 @@ import { useCategories } from "@/features/categories/hooks/useCategories";
 import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
 import CategoriesGrid from "@/features/categories/components/CategoriesGrid";
 import CategoryForm from "@/features/categories/components/CategoryForm";
-import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
 import Icon from "@/components/shared/Icon";
 
 function Categories() {
