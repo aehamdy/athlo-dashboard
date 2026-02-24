@@ -11,26 +11,30 @@ import { Label } from "../ui/label";
 type CustomSelectProps<T = string | number> = {
   value: T | null | undefined;
   onChange: (value: T) => void;
-  options: number[];
+  options: number[] | { id: number; value: T; label: string }[];
   placeholder?: string;
   className?: string;
+  label?: string;
 };
 
 export default function CustomSelect<T>({
   value,
   onChange,
   options,
-  placeholder = "Select...",
+  label,
+  placeholder = "",
   className,
 }: CustomSelectProps<T>) {
   return (
     <div className="flex items-center gap-sm">
-      <Label
-        htmlFor="selectElement"
-        className="text-muted-foreground whitespace-nowrap"
-      >
-        {placeholder}
-      </Label>
+      {label && (
+        <Label
+          htmlFor="selectElement"
+          className="text-muted-foreground whitespace-nowrap"
+        >
+          {label}
+        </Label>
+      )}
 
       <Select
         value={value != null ? String(value) : undefined}
@@ -46,8 +50,13 @@ export default function CustomSelect<T>({
         <SelectContent>
           <SelectGroup>
             {options.map((option) => (
-              <SelectItem key={String(option)} value={String(option)}>
-                {option}
+              <SelectItem
+                key={String(typeof option === "object" ? option.id : option)}
+                value={String(
+                  typeof option === "object" ? option.value : option,
+                )}
+              >
+                {typeof option === "object" ? option.label : String(option)}
               </SelectItem>
             ))}
           </SelectGroup>
