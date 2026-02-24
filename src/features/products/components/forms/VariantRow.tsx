@@ -1,18 +1,12 @@
 import Icon from "@/components/shared/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Controller, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 import type { ProductVariantsFormType } from "../../schemas";
 import { Label } from "@/components/ui/label";
+import CustomSelect from "@/components/shared/CustomSelect";
+import { PRODUCT_SIZES_OPTIONS } from "../../constants";
 
 interface VariantRowProps {
   index: number;
@@ -20,16 +14,6 @@ interface VariantRowProps {
   totalRows: number;
   basePrice: number;
 }
-
-const sizes = [
-  { id: 1, value: "xs", label: "XS" },
-  { id: 2, value: "s", label: "S" },
-  { id: 3, value: "m", label: "M" },
-  { id: 4, value: "l", label: "L" },
-  { id: 5, value: "xl", label: "XL" },
-  { id: 6, value: "2xl", label: "2XL" },
-  { id: 7, value: "3xl", label: "3XL" },
-];
 
 function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
   const { register, control, setValue } =
@@ -67,21 +51,12 @@ function VariantRow({ index, remove, totalRows, basePrice }: VariantRowProps) {
           control={control}
           name={`variants.${index}.size`}
           render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className="w-full form-input">
-                <SelectValue placeholder="Size" />
-              </SelectTrigger>
-
-              <SelectContent>
-                <SelectGroup>
-                  {sizes.map((size) => (
-                    <SelectItem key={size.id} value={size.value}>
-                      {size.label}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <CustomSelect
+              options={PRODUCT_SIZES_OPTIONS}
+              value={field.value}
+              onChange={field.onChange}
+              placeholder="Select Size"
+            />
           )}
         />
       </div>
