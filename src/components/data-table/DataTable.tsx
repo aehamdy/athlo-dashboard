@@ -13,6 +13,7 @@ import {
   TableRow,
 } from "../ui/table";
 import DataTablePagination from "./DataTablePagination";
+import CustomSelect from "../shared/CustomSelect";
 
 export function DataTable<TData extends object>({
   data,
@@ -23,6 +24,7 @@ export function DataTable<TData extends object>({
   pageCount,
   sorting,
   onSortingChange,
+  pageSizeOptions,
   className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
@@ -119,18 +121,36 @@ export function DataTable<TData extends object>({
         </div>
       </div>
 
-      {!isLoading &&
-        pagination &&
-        onPaginationChange &&
-        pageCount &&
-        data &&
-        data.length > 0 && (
-          <DataTablePagination
-            table={table}
-            pagination={pagination}
-            pageCount={pageCount}
-          />
+      <div className="flex justify-between items-center">
+        {pageSizeOptions && (
+          <div className="flex items-center gap-sm">
+            <CustomSelect<number>
+              placeholder="Items per page"
+              value={pagination?.pageSize ?? 15}
+              onChange={(value) =>
+                onPaginationChange?.({
+                  pageIndex: 0,
+                  pageSize: value,
+                })
+              }
+              options={pageSizeOptions ?? []}
+            />
+          </div>
         )}
+
+        {!isLoading &&
+          pagination &&
+          onPaginationChange &&
+          pageCount &&
+          data &&
+          data.length > 0 && (
+            <DataTablePagination
+              table={table}
+              pagination={pagination}
+              pageCount={pageCount}
+            />
+          )}
+      </div>
     </div>
   );
 }
