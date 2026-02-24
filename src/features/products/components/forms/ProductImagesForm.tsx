@@ -163,43 +163,11 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
           </div>
         )}
 
-        <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-compact">
-          <Button
-            type="button"
-            variant="plain"
-            className="w-full md:w-fit text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
-            disabled={uploadMutation.isPending}
-            onClick={onBack}
-          >
-            <ArrowLeft />
-            Previous
-          </Button>
-
-          <div className="flex flex-col md:flex-row items-center gap-regular w-full md:w-fit">
+        <div className="grid grid-cols-12 gap-compact">
+          <div className="col-span-12 md:col-start-10 md:col-end-13 md:order-3">
             <Button
               type="button"
-              variant="plain"
-              className="group w-full md:w-fit hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:opacity-70 transform-colors duration-normal cursor-pointer"
-              disabled={uploadMutation.isPending || !images?.length}
-              onClick={() => handleUpload("finish")}
-            >
-              {uploadMutation.isPending && activeButton === "finish" ? (
-                <div className="flex items-center gap-xs">
-                  <Loading />
-                  Processing...
-                </div>
-              ) : (
-                <div className="flex items-center gap-xs">
-                  <CircleCheck className="text-accent group-hover:text-dark group-active:text-dark transform-colors duration-normal" />
-                  Save & Finish
-                </div>
-              )}
-            </Button>
-
-            <Button
-              type="button"
-              variant="plain"
-              className="w-full md:w-fit text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-70 transform-colors duration-normal"
+              className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-70 transform-colors duration-normal"
               disabled={uploadMutation.isPending || !images?.length}
               onClick={() => handleUpload("variants")}
             >
@@ -213,6 +181,41 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
                   Continue to Variants
                   <ArrowRight />
                 </>
+              )}
+            </Button>
+          </div>
+
+          <div className="col-span-6 md:col-start-1 md:col-end-3 md:order-1 w-full">
+            <Button
+              type="button"
+              variant="ghost"
+              className="w-full text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
+              disabled={uploadMutation.isPending}
+              onClick={onBack}
+            >
+              <ArrowLeft />
+              Previous
+            </Button>
+          </div>
+
+          <div className="col-span-6 md:col-start-7 md:col-end-10 md:order-2 w-full">
+            <Button
+              type="button"
+              variant="outline"
+              className="group w-full hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:opacity-70 transform-colors duration-normal cursor-pointer"
+              disabled={uploadMutation.isPending || !images?.length}
+              onClick={() => handleUpload("finish")}
+            >
+              {uploadMutation.isPending && activeButton === "finish" ? (
+                <div className="flex items-center gap-xs">
+                  <Loading />
+                  Processing...
+                </div>
+              ) : (
+                <div className="flex items-center gap-xs">
+                  <CircleCheck className="text-accent group-hover:text-dark group-active:text-dark transform-colors duration-normal" />
+                  Save & Finish
+                </div>
               )}
             </Button>
           </div>
