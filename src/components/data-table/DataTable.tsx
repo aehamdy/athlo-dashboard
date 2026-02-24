@@ -14,6 +14,7 @@ import {
 } from "../ui/table";
 import DataTablePagination from "./DataTablePagination";
 import CustomSelect from "../shared/CustomSelect";
+import Error from "../shared/Error";
 
 export function DataTable<TData extends object>({
   data,
@@ -25,6 +26,7 @@ export function DataTable<TData extends object>({
   sorting,
   onSortingChange,
   pageSizeOptions,
+  error,
   className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
@@ -41,6 +43,10 @@ export function DataTable<TData extends object>({
     pageCount,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  if (error) {
+    return <Error title="Products" message="Failed to load data" />;
+  }
 
   return (
     <div
