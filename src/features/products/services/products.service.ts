@@ -22,4 +22,14 @@ export const productService = {
 
     return response.data;
   },
+
+  delete: async (id: number): Promise<void> => {
+    try {
+      await http.delete<void>(API_ENDPOINTS.products.delete(id));
+    } catch (error: unknown) {
+      const axiosError = error as { response?: { data: unknown } };
+      console.log("Delete error response:", axiosError.response?.data);
+      throw error;
+    }
+  },
 };

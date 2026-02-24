@@ -3,7 +3,9 @@ import type { Product } from "./types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
-export const productColumns: ColumnDef<Product>[] = [
+export const productColumns = (
+  onDelete: (id: number) => void,
+): ColumnDef<Product>[] => [
   {
     accessorKey: "name",
     header: "Product",
@@ -102,9 +104,7 @@ export const productColumns: ColumnDef<Product>[] = [
           <Button
             size="sm"
             variant="destructive"
-            onClick={() => {
-              console.log("Delete", row.original.id);
-            }}
+            onClick={() => onDelete(row.original.id)}
           >
             Delete
           </Button>
