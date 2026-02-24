@@ -15,6 +15,7 @@ export interface DataTableProps<TData> {
   sorting?: SortingState;
   onSortingChange?: OnChangeFn<SortingState>;
   pageSizeOptions?: number[];
+  error?: unknown;
   className?: string;
 }
 export interface Product {
