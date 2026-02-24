@@ -20,7 +20,7 @@ function DataTableToolbar({
           placeholder={placeholder}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="max-w-sm"
+          className="form-input"
         />
       </div>
       {children}
