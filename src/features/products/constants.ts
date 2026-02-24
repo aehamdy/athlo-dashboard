@@ -1,0 +1,1 @@
+export const PRODUCT_PAGE_SIZE_OPTIONS = [10, 15, 20, 25];
