@@ -131,6 +131,7 @@ export function DataTable<TData extends object>({
         {pageSizeOptions && (
           <div className="flex items-center gap-sm">
             <CustomSelect<number>
+              label="Items per page"
               placeholder="Items per page"
               value={pagination?.pageSize ?? 15}
               onChange={(value) =>
