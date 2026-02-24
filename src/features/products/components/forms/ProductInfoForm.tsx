@@ -36,8 +36,8 @@ function ProductInfoForm({ onSuccess }: Props) {
       clubAr: "",
       season: "",
       code: "",
-      categoryId: 0,
-      brandId: 0,
+      categoryId: undefined,
+      brandId: undefined,
       basePrice: 0,
     },
   });
@@ -165,7 +165,7 @@ function ProductInfoForm({ onSuccess }: Props) {
           <div className="flex flex-col">
             <FormSelect
               placeholder="Select Category"
-              value={categoryId ? categoryId.toString() : undefined}
+              value={categoryId?.toString() ?? ""}
               onValueChange={(val) =>
                 setValue("categoryId", Number(val), { shouldValidate: true })
               }
@@ -178,7 +178,7 @@ function ProductInfoForm({ onSuccess }: Props) {
           <div className="flex flex-col">
             <FormSelect
               placeholder="Select Brand"
-              value={brandId ? brandId.toString() : undefined}
+              value={brandId?.toString() ?? ""}
               onValueChange={(val) =>
                 setValue("brandId", Number(val), { shouldValidate: true })
               }
