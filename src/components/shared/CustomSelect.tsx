@@ -38,7 +38,7 @@ export default function CustomSelect<T>({
       >
         <SelectTrigger
           id="selectElement"
-          className={`min-w-20 w-full form-input ${className ?? ""}`}
+          className={`min-w-14 md:min-w-20 w-full form-input ${className ?? ""}`}
         >
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
