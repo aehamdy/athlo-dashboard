@@ -5,7 +5,7 @@ import BrandForm from "@/features/brands/components/BrandForm";
 import BrandsGrid from "@/features/brands/components/BrandsGrid";
 import { useBrands } from "@/features/brands/hooks/useBrands";
 import type { Brand } from "@/features/brands/types";
-import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
 import { useState } from "react";
 import { toast } from "sonner";
 

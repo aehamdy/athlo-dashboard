@@ -6,7 +6,7 @@ import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
 import { Link } from "react-router-dom";
 import Icon from "@/components/shared/Icon";
 import { ROUTE_PATHS } from "@/routes/paths";
-import ConfirmDeleteModal from "@/features/products/components/ConfirmDeleteModal";
+import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
 import { PRODUCT_PAGE_SIZE_OPTIONS } from "@/features/products/constants";
 import { useDebounce } from "@/features/products/hooks/useDebounce";
 import { useProductsTable } from "@/features/products/hooks/useProductsTable";
