@@ -1,16 +1,13 @@
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import * as z from "zod";
-import { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
 import {
   Field,
@@ -20,75 +17,23 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { API_ENDPOINTS } from "@/api/endpoints";
-import { Spinner } from "../../../components/ui/spinner";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATHS } from "@/routes/paths";
-import { AUTH } from "@/constants/auth";
-import http from "@/api/http";
-
-const formSchema = z.object({
-  username: z.string().min(3, "Username is required"),
-  password: z.string().min(6, "Password is required"),
-});
-
-type LoginFormData = z.infer<typeof formSchema>;
+import { Spinner } from "@/components/ui/spinner";
+import { useLogin } from "../hooks/useLogin";
+import { loginSchema, type LoginFormData } from "../auth.schema";
 
 function LoginCard() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const { login, isLoading, error } = useLogin();
 
   const form = useForm<LoginFormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      setIsLoading(true);
-      setServerError(null);
-
-      const response = await http.post(API_ENDPOINTS.auth.login, {
-        userName: data.username,
-        password: data.password,
-      });
-
-      console.log("Login response:", response.data);
-
-      // If backend says login failed
-      if (!response.data.succeeded) {
-        setServerError(response.data.message || "Login failed");
-        return;
-      }
-
-      // Save tokens in cookies
-      Cookies.set(AUTH.COOKIE.ACCESS_TOKEN, response.data.data.accessToken, {
-        path: "/",
-        expires: 1, // 1 day
-      });
-      Cookies.set(
-        AUTH.COOKIE.REFRESH_TOKEN,
-        response.data.data.refreshToken.tokenString,
-        { path: "/", expires: 7 }, // refresh token lasts longer
-      );
-
-      // Redirect to dashboard
-      navigate(ROUTE_PATHS.dashboard.overview, { replace: true });
-    } catch (error) {
-      console.error("Login error:", error);
-      const axiosError = error as AxiosError<{ message?: string }>;
-      setServerError(
-        axiosError.response?.data?.message ||
-          "An error occurred. Please try again.",
-      );
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: LoginFormData) => {
+    login(data.username, data.password);
   };
 
   return (
@@ -109,19 +54,16 @@ function LoginCard() {
           className="space-y-4"
         >
           <FieldGroup>
-            {/* Username */}
             <Controller
               name="username"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="username">Username</FieldLabel>
+                  <FieldLabel>Username</FieldLabel>
                   <Input
                     {...field}
-                    id="username"
-                    placeholder="Enter your username"
                     autoComplete="username"
-                    className="focus-visible:ring-accent-focus focus-visible:border-none"
+                    className="form-input"
                   />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
@@ -130,20 +72,17 @@ function LoginCard() {
               )}
             />
 
-            {/* Password */}
             <Controller
               name="password"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="password">Password</FieldLabel>
+                  <FieldLabel>Password</FieldLabel>
                   <Input
-                    {...field}
-                    id="password"
                     type="password"
-                    placeholder="Enter your password"
+                    {...field}
                     autoComplete="current-password"
-                    className="focus-visible:ring-accent-focus focus-visible:border-none"
+                    className="form-input"
                   />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
@@ -153,10 +92,7 @@ function LoginCard() {
             />
           </FieldGroup>
 
-          {/* Server Error */}
-          {serverError && (
-            <p className="text-sm text-red-500 text-center">{serverError}</p>
-          )}
+          {error && <p className="text-sm text-red-500 text-center">{error}</p>}
         </form>
       </CardContent>
 
@@ -165,9 +101,17 @@ function LoginCard() {
           type="submit"
           form="login-form"
           disabled={isLoading}
-          className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong cursor-pointer"
+          className="w-full"
         >
-          {isLoading ? <Spinner className="text-dark" /> : "Login"}
+          {isLoading ? (
+            <div className="flex items-center gap-sm">
+              <Spinner />
+
+              <span>Logging in...</span>
+            </div>
+          ) : (
+            "Login"
+          )}
         </Button>
       </CardFooter>
     </Card>
