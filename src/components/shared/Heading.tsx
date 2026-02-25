@@ -1,6 +1,6 @@
 // components/sharedComponents/Heading.tsx
-import { cn } from "@/lib/utils";
 import { type VariantProps, cva } from "class-variance-authority";
+import clsx from "clsx";
 import type { HTMLAttributes } from "react";
 
 const headingVariants = cva("font-bold text-gray-900 dark:text-white", {
@@ -20,7 +20,8 @@ const headingVariants = cva("font-bold text-gray-900 dark:text-white", {
 });
 
 interface HeadingProps
-  extends HTMLAttributes<HTMLHeadingElement>,
+  extends
+    HTMLAttributes<HTMLHeadingElement>,
     VariantProps<typeof headingVariants> {
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }
@@ -34,7 +35,7 @@ function Heading({
 }: HeadingProps) {
   return (
     <Component
-      className={cn(headingVariants({ size: size || Component, className }))}
+      className={clsx(headingVariants({ size: size || Component, className }))}
       {...props}
     >
       {children}

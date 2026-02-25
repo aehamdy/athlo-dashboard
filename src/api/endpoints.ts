@@ -8,10 +8,6 @@ export const API_ENDPOINTS = {
   },
   products: {
     getAll: `${BASE_URL}/Api/V1/Product/List`,
-    getById: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
-    create: `${BASE_URL}/Api/V1/Product/Create`,
-    update: `${BASE_URL}/Api/V1/Product/Edit`,
-    delete: (id: number) => `${BASE_URL}/Api/V1/Product/${id}`,
     paginated: (
       pageNumber: number,
       pageSize: number,
@@ -30,8 +26,16 @@ export const API_ENDPOINTS = {
 
       return url;
     },
+    getById: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
+    create: `${BASE_URL}/Api/V1/Product/Create`,
     addImages: `${BASE_URL}/Api/V1/ProductImage/CreateProductImages`,
     addVariants: `${BASE_URL}/Api/V1/ProductVariant/CreateRange`,
+    update: `${BASE_URL}/Api/V1/Product/Edit`,
+    updateImages: `${BASE_URL}/Api/V1/ProductImage/EditProductImage`,
+    updateVariants: `${BASE_URL}/Api/V1/ProductVariant/Edit`,
+    delete: (id: number) => `${BASE_URL}/Api/V1/Product/${id}`,
+    // deleteImage: `${BASE_URL}/Api/V1/ProductImage/DeleteProductImage`,
+    // deleteVariant: (id: number) => `${BASE_URL}/Api/V1/ProductVariant/${id}`,
   },
   brands: {
     getAll: `${BASE_URL}/Api/V1/Brand/List`,
