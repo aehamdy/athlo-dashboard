@@ -2,6 +2,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { Product } from "./types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ROUTE_PATHS } from "@/routes/paths";
+import { Link } from "react-router-dom";
 
 export const productColumns = (
   onDelete: (id: number) => void,
@@ -91,15 +93,12 @@ export const productColumns = (
     cell: ({ row }) => {
       return (
         <div className="flex justify-end gap-2">
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              console.log("Edit", row.original.id);
-            }}
+          <Link
+            to={ROUTE_PATHS.dashboard.editProduct(row.original.id, "info")}
+            className="main-link"
           >
             Edit
-          </Button>
+          </Link>
 
           <Button
             size="sm"
