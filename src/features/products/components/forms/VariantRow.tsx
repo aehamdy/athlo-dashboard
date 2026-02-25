@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Controller, useFormContext } from "react-hook-form";
 import { useEffect } from "react";
-import type { ProductVariantsFormType } from "../../schemas";
+import type { ProductVariantsFormType } from "../../products.schema";
 import { Label } from "@/components/ui/label";
 import CustomSelect from "@/components/shared/CustomSelect";
 import { PRODUCT_SIZES_OPTIONS } from "../../constants";

@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Brand } from "../types";
-import { brandsService } from "../services/brands.service";
+import { brandsService } from "../services/brandsService";
 
 export const brandKeys = {
   all: ["brands"] as const,

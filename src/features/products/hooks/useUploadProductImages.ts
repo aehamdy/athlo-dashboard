@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { ProductImagesFormType } from "../schemas";
+import type { ProductImagesFormType } from "../products.schema";
 import http from "@/api/http";
 import { API_ENDPOINTS } from "@/api/endpoints";
 

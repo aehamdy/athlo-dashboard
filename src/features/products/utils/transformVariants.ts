@@ -1,4 +1,4 @@
-import type { VariantType } from "../schemas";
+import type { VariantType } from "../products.schema";
 
 export function transformVariants(variants: VariantType[]) {
   return variants.map((variant) => ({
