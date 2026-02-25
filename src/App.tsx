@@ -13,6 +13,7 @@ import OrdersPage from "./features/orders/pages/OrdersPage";
 import CouponsPage from "./features/coupons/pages/CouponsPage";
 import UsersPage from "./features/users/pages/UsersPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import EditProductPage from "./features/products/pages/EditProductPage";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
           <Route
             path={ROUTE_PATHS.dashboard.addProduct}
             element={<AddProductPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.editProductPath}
+            element={<Navigate to="info" replace />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.editProductTabPath}
+            element={<EditProductPage />}
           />
           <Route
             path={ROUTE_PATHS.dashboard.categories}
