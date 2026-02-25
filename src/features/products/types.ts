@@ -51,3 +51,7 @@ export interface GetProductsParams {
   }[];
   search?: string;
 }
+
+import { EDIT_PRODUCT_TABS } from "./constants";
+
+export type EditProductTab = (typeof EDIT_PRODUCT_TABS)[number]["key"];
