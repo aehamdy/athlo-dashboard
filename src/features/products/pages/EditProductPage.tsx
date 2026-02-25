@@ -1,0 +1,47 @@
+import { Navigate, useParams } from "react-router-dom";
+import EditProductLayout from "../components/EditProductLayout";
+import type { EditProductTab } from "../types";
+import { ROUTE_PATHS } from "@/routes/paths";
+import { DEFAULT_EDIT_PRODUCT_TAB, EDIT_PRODUCT_TABS } from "../constants";
+import ProductInfoTab from "../components/tabs/ProductInfoTab";
+import ProductVariantsTab from "../components/tabs/ProductVariantsTab";
+import ProductMediaTab from "../components/tabs/ProductMediaTab";
+import { useProduct } from "../hooks/useProduct";
+
+function EditProductPage() {
+  const { id, tab } = useParams<{
+    id: string;
+    tab?: EditProductTab;
+  }>();
+
+  const { product } = useProduct(Number(id));
+
+  if (!id) {
+    return <Navigate to={ROUTE_PATHS.dashboard.products} replace />;
+  }
+
+  const currentTab = tab ?? DEFAULT_EDIT_PRODUCT_TAB;
+
+  if (!EDIT_PRODUCT_TABS.some((tab) => tab.key === currentTab)) {
+    return (
+      <Navigate
+        to={ROUTE_PATHS.dashboard.editProduct(id, DEFAULT_EDIT_PRODUCT_TAB)}
+        replace
+      />
+    );
+  }
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <EditProductLayout product={product} activeTab={currentTab}>
+      {currentTab === "info" && <ProductInfoTab product={product} />}
+      {currentTab === "media" && <ProductMediaTab product={product} />}
+      {currentTab === "variants" && <ProductVariantsTab product={product} />}
+    </EditProductLayout>
+  );
+}
+
+export default EditProductPage;
