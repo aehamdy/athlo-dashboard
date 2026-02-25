@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import type { Product } from "@/types";
 
 export const useProduct = (id: number | null) => {

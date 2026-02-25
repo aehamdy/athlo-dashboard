@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import { ArrowRight } from "lucide-react";
 import Heading from "@/components/shared/Heading";
 import useBrands from "@/features/brands/api/useBrands";

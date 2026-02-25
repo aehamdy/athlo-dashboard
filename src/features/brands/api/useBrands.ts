@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import http from "@/api/http";
 import type { Brand } from "@/types";
 

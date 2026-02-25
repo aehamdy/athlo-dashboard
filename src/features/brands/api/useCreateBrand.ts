@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import type { Brand } from "@/types";
 
 export const useCreateBrand = () => {

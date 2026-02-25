@@ -1,6 +1,6 @@
 import http from "@/api/http";
 import type { Category } from "../types";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const categoriesService = {
   getAll: async (): Promise<Category[]> => {

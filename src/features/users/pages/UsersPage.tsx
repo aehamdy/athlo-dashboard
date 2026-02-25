@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useFetchPaginatedData from "@/hooks/useFetchPaginatedData";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import { useState } from "react";
 import Loading from "@/components/shared/Loading";
 import Error from "@/components/shared/Error";
