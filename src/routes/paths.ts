@@ -6,8 +6,10 @@ export const ROUTE_PATHS = {
     overview: "/overview",
     products: "/products",
     addProduct: "/products/add",
-    editProductImages: (id: string) => `/products/${id}/edit?step=images`,
-    editProductVariants: (id: string) => `/products/${id}/edit?step=variants`,
+    editProductPath: "/products/:id/edit",
+    editProductTabPath: "/products/:id/edit/:tab",
+    editProduct: (id: string | number, tab?: string) =>
+      tab ? `/products/${id}/edit/${tab}` : `/products/${id}/edit`,
     categories: "/categories",
     brands: "/brands",
     orders: "/orders",
