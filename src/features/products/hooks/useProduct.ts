@@ -16,5 +16,5 @@ export const useProduct = (id: number | null) => {
     enabled: !!id,
   });
 
-  return { basePrice: data?.basePrice ?? 0 };
+  return { product: data, basePrice: data?.basePrice ?? 0 };
 };
