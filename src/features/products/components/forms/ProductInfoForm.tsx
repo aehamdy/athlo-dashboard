@@ -1,4 +1,7 @@
-import { productInfoSchema, type ProductInfoFormType } from "../../schemas";
+import {
+  productInfoSchema,
+  type ProductInfoFormType,
+} from "../../products.schema";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";

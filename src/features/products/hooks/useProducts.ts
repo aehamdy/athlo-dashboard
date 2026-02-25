@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import type { GetProductsParams, PaginatedProductsResponse } from "../types";
-import { productService } from "../services/products.service";
+import { productService } from "../services/productsService";
 import { toast } from "sonner";
 import type { UseQueryResult } from "@tanstack/react-query";
 

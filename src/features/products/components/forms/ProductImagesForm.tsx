@@ -1,7 +1,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef, useState } from "react";
-import { productImagesSchema, type ProductImagesFormType } from "../../schemas";
+import {
+  productImagesSchema,
+  type ProductImagesFormType,
+} from "../../products.schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

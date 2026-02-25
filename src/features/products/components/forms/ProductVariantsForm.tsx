@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   productVariantsSchema,
   type ProductVariantsFormType,
-} from "../../schemas";
+} from "../../products.schema";
 import { Button } from "@/components/ui/button";
 import VariantsHeader from "./VariantsHeader";
 import VariantRow from "./VariantRow";

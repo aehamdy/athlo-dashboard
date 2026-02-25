@@ -7,7 +7,10 @@ import type { Product } from "@/types";
 import { Label } from "../../../../components/ui/label";
 import FormSelect from "@/components/shared/FormSelect";
 import { useForm } from "react-hook-form";
-import { productInfoSchema, type ProductInfoFormType } from "../../schemas";
+import {
+  productInfoSchema,
+  type ProductInfoFormType,
+} from "../../products.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useBrands from "@/features/brands/api/useBrands";
 import { useCategories } from "@/features/categories/hooks/useCategories";
