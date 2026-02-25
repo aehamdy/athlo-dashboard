@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import { Spinner } from "../../../components/ui/spinner";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";

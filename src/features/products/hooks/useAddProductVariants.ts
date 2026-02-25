@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import type { ProductVariantsFormType } from "../schemas";
 import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import { ROUTE_PATHS } from "@/routes/paths";
 import { transformVariants } from "../utils/transformVariants";
 

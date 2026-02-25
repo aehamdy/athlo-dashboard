@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import type { Product } from "@/types";
 import { Label } from "../../../../components/ui/label";
 import FormSelect from "@/components/shared/FormSelect";

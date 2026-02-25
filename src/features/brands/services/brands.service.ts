@@ -1,4 +1,4 @@
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 import type { Brand } from "../types";
 import http from "@/api/http";
 

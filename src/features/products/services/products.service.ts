@@ -1,6 +1,6 @@
 import http from "@/api/http";
 import type { PaginatedProductsResponse, GetProductsParams } from "../types";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const productService = {
   getPaginated: async ({

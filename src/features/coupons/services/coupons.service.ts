@@ -1,6 +1,6 @@
 import http from "@/api/http";
 import type { Coupon } from "../types";
-import { API_ENDPOINTS } from "@/api/endPoints";
+import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const couponsService = {
   getAll: async (): Promise<Coupon[]> => {
