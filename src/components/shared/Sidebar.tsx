@@ -1,6 +1,6 @@
 import Nav from "../Nav";
 import Logo from "./Logo";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../../features/auth/components/LogoutButton";
 
 function Sidebar() {
   return (

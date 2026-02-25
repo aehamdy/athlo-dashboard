@@ -11,7 +11,7 @@ import { Button } from "../ui/button";
 import { Menu } from "lucide-react";
 import Nav from "../Nav";
 import Heading from "./Heading";
-import LogoutButton from "./LogoutButton";
+import LogoutButton from "../../features/auth/components/LogoutButton";
 import Logo from "./Logo";
 
 function Header() {

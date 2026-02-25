@@ -1,17 +1,14 @@
-import Cookies from "js-cookie";
-import { Button } from "../ui/button";
-import { AUTH } from "@/constants/auth";
+import { Button } from "../../../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/paths";
-import Icon from "./Icon";
+import Icon from "../../../components/shared/Icon";
+import { logout } from "../services/authService";
 
 function LogoutButton() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    Cookies.remove(AUTH.COOKIE.ACCESS_TOKEN);
-    Cookies.remove(AUTH.COOKIE.REFRESH_TOKEN);
-
+    logout();
     navigate(ROUTE_PATHS.login, { replace: true });
   };
 
