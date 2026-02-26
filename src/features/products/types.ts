@@ -21,15 +21,37 @@ export interface DataTableProps<TData> {
 export interface Product {
   id: number;
   code: string;
-  name: string;
-  description: string;
-  club: string | null;
+  name?: string;
+  nameEn?: string;
+  nameAr?: string;
+  description?: string;
+  descriptionEn?: string;
+  descriptionAr?: string;
+  club?: string | null;
+  clubEn?: string | null;
+  clubAr?: string | null;
   basePrice: number;
   priceAfterDiscount: number;
   season: string;
-  brandName: string;
-  categoryName: string;
+  brandName?: string;
+  brandId?: number;
+  categoryName?: string;
+  categoryId?: number;
   images: string[];
+}
+
+export interface ProductForm {
+  nameEn: string;
+  nameAr: string;
+  descriptionEn: string;
+  descriptionAr: string;
+  clubEn: string;
+  clubAr: string;
+  categoryId: number | undefined;
+  brandId: number | undefined;
+  code: string;
+  season: string;
+  basePrice: number;
 }
 
 export interface PaginatedProductsResponse {
