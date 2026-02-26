@@ -230,6 +230,10 @@ body {
   @apply py-xs px-sm text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong rounded-lg transition-all duration-normal cursor-pointer;
 }
 
+.outline-link {
+  @apply flex justify-center items-center gap-sm py-xs px-md text-dark bg-light hover:bg-accent border border-accent rounded-md transition-all duration-normal;
+}
+
 .form-label {
   @apply absolute top-0 start-1 -translate-y-1/2 px-1 text-tiny text-neutral-400 bg-light;
 }
