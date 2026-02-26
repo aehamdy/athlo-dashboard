@@ -27,13 +27,17 @@ export const API_ENDPOINTS = {
       return url;
     },
     getById: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
+    getByIdToEdit: (id: number) => `${BASE_URL}/Api/V1/Product/${id}/To-Edit`,
+    getProductWithVariants: (id: number) =>
+      `${BASE_URL}/Api/V1/Product/${id}/With-Variants`,
     create: `${BASE_URL}/Api/V1/Product/Create`,
+    update: `${BASE_URL}/Api/V1/Product/Edit`,
     addImages: `${BASE_URL}/Api/V1/ProductImage/CreateProductImages`,
     addVariants: `${BASE_URL}/Api/V1/ProductVariant/CreateRange`,
-    update: `${BASE_URL}/Api/V1/Product/Edit`,
     updateImages: `${BASE_URL}/Api/V1/ProductImage/EditProductImage`,
     updateVariants: `${BASE_URL}/Api/V1/ProductVariant/Edit`,
     delete: (id: number) => `${BASE_URL}/Api/V1/Product/${id}`,
+
     // deleteImage: `${BASE_URL}/Api/V1/ProductImage/DeleteProductImage`,
     // deleteVariant: (id: number) => `${BASE_URL}/Api/V1/ProductVariant/${id}`,
   },
