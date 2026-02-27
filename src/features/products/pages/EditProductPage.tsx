@@ -3,10 +3,10 @@ import EditProductLayout from "../components/EditProductLayout";
 import type { EditProductTab } from "../types";
 import { ROUTE_PATHS } from "@/routes/paths";
 import { DEFAULT_EDIT_PRODUCT_TAB, EDIT_PRODUCT_TABS } from "../constants";
-import ProductInfoTab from "../components/tabs/ProductInfoTab";
-import ProductVariantsTab from "../components/tabs/ProductVariantsTab";
-import ProductMediaTab from "../components/tabs/ProductMediaTab";
-import { useProduct } from "../hooks/useProduct";
+import useFetchProductInfo from "../hooks/useFetchProductInfo";
+import EditProductInfoTab from "../components/tabs/EditProductInfoTab";
+import EditProductMediaTab from "../components/tabs/EditProductMediaTab";
+import EditProductVariantsTab from "../components/tabs/EditProductVariantsTab";
 
 function EditProductPage() {
   const { id, tab } = useParams<{
@@ -14,7 +14,7 @@ function EditProductPage() {
     tab?: EditProductTab;
   }>();
 
-  const { product } = useProduct(Number(id));
+  const { data: product, isLoading } = useFetchProductInfo(Number(id));
 
   if (!id) {
     return <Navigate to={ROUTE_PATHS.dashboard.products} replace />;
@@ -31,15 +31,17 @@ function EditProductPage() {
     );
   }
 
-  if (!product) {
+  if (isLoading || !product) {
     return <div>Loading...</div>;
   }
 
   return (
     <EditProductLayout product={product} activeTab={currentTab}>
-      {currentTab === "info" && <ProductInfoTab product={product} />}
-      {currentTab === "media" && <ProductMediaTab product={product} />}
-      {currentTab === "variants" && <ProductVariantsTab product={product} />}
+      {currentTab === "info" && <EditProductInfoTab product={product} />}
+      {currentTab === "media" && <EditProductMediaTab product={product} />}
+      {currentTab === "variants" && (
+        <EditProductVariantsTab product={product} />
+      )}
     </EditProductLayout>
   );
 }
