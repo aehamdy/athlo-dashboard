@@ -1,5 +1,9 @@
 import http from "@/api/http";
-import type { PaginatedProductsResponse, GetProductsParams } from "../types";
+import type {
+  PaginatedProductsResponse,
+  GetProductsParams,
+  ProductForm,
+} from "../types";
 import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const productService = {
@@ -20,6 +24,18 @@ export const productService = {
       ),
     );
 
+    return response.data;
+  },
+
+  getProductInfo: async (id: number) => {
+    // Get product info without media and variants
+    const product = await http.get(API_ENDPOINTS.products.getByIdToEdit(id));
+    return product.data.data;
+  },
+
+  updateProductInfo: async (data: ProductForm) => {
+    // Update only product info without media and variants
+    const response = await http.put(API_ENDPOINTS.products.update, data);
     return response.data;
   },
 
