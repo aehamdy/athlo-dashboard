@@ -1,4 +1,4 @@
-import { useProducts } from "@/features/products/hooks/useProducts";
+import useFetchPaginatedProducts from "@/features/products/hooks/useFetchPaginatedProducts";
 import { DataTable } from "@/components/data-table/DataTable";
 import DataTableToolbar from "@/components/data-table/DataTableToolbar";
 import { productColumns } from "@/features/products/columns";
@@ -23,7 +23,7 @@ export default function ProductsPage() {
     isLoading,
     error,
     deleteProduct,
-  } = useProducts({
+  } = useFetchPaginatedProducts({
     pageIndex: pagination.pageIndex,
     pageSize: pagination.pageSize,
     sorting,

@@ -21,7 +21,9 @@ type UseProductsReturn = UseQueryResult<PaginatedProductsResponse> & {
   deleteProduct: ReturnType<typeof useMutation<void, DeleteError, number>>;
 };
 
-export function useProducts(params: GetProductsParams): UseProductsReturn {
+function useFetchPaginatedProducts(
+  params: GetProductsParams,
+): UseProductsReturn {
   const queryClient = useQueryClient();
 
   const query = useQuery<PaginatedProductsResponse>({
@@ -48,3 +50,5 @@ export function useProducts(params: GetProductsParams): UseProductsReturn {
 
   return { ...query, deleteProduct };
 }
+
+export default useFetchPaginatedProducts;
