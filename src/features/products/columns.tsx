@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Icon from "@/components/shared/Icon";
+import AppImage from "@/components/shared/AppImage";
 
 export const productColumns = (
   onDelete: (id: number) => void,
@@ -20,8 +21,18 @@ export const productColumns = (
   {
     accessorKey: "name",
     header: "Product",
-    cell: ({ getValue }) => (
-      <div className="font-medium text-foreground">{getValue<string>()}</div>
+    cell: ({ row }) => (
+      <div className="flex items-center gap-compact font-medium text-foreground">
+        <div className="w-16 h-16 rounded-md overflow-hidden">
+          <AppImage
+            src={row.original.images[0]}
+            alt={row.original.name || "Product image"}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {row.original.name || "Unnamed Product"}
+      </div>
     ),
   },
   {
