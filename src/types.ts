@@ -39,19 +39,3 @@ export type Order = {
   paymentStatus: string;
   createdAt: string;
 };
-
-export type Product = {
-  id: number;
-  code: string;
-  name: string;
-  description: string;
-  season: string;
-  club: string;
-  basePrice: number;
-  priceAfterDiscount: number;
-  brandId: number;
-  categoryId: number;
-  brandName: string;
-  categoryName: string;
-  images: string[];
-};
