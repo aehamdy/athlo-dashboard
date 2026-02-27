@@ -14,11 +14,11 @@ import VariantsHeader from "./VariantsHeader";
 import VariantRow from "./VariantRow";
 import Icon from "@/components/shared/Icon";
 import Heading from "@/components/shared/Heading";
-import { useProduct } from "../../hooks/useProduct";
 import { toast } from "sonner";
 import { useAddProductVariants } from "../../hooks/useAddProductVariants";
 import { isVariantsComplete } from "../../utils/isVariantsComplete";
 import parseApiError from "../../utils/parseApiError";
+import { useFetchProductById } from "../../hooks/useFetchProductById";
 
 type Props = {
   productId: number;
@@ -27,7 +27,7 @@ type Props = {
 };
 
 function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
-  const { basePrice } = useProduct(productId);
+  const { basePrice } = useFetchProductById(productId);
   const { submitVariants } = useAddProductVariants(productId);
 
   const form = useForm<ProductVariantsFormType>({
