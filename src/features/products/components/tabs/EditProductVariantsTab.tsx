@@ -1,10 +1,10 @@
-import type { Product } from "@/types";
+import type { Product } from "@/features/products/types";
 
 interface Props {
   product: Product;
 }
 
-function ProductVariantsTab({ product }: Props) {
+function EditProductVariantsTab({ product }: Props) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">Product Variants</h2>
@@ -16,4 +16,4 @@ function ProductVariantsTab({ product }: Props) {
   );
 }
 
-export default ProductVariantsTab;
+export default EditProductVariantsTab;

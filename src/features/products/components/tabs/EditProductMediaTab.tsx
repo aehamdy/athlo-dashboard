@@ -1,10 +1,10 @@
-import type { Product } from "@/types";
+import type { Product } from "@/features/products/types";
 
 interface Props {
   product: Product;
 }
 
-function ProductMediaTab({ product }: Props) {
+function EditProductMediaTab({ product }: Props) {
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">Product Media</h2>
@@ -16,4 +16,4 @@ function ProductMediaTab({ product }: Props) {
   );
 }
 
-export default ProductMediaTab;
+export default EditProductMediaTab;
