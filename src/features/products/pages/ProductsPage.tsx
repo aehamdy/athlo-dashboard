@@ -77,7 +77,7 @@ export default function ProductsPage() {
           item={productToDelete}
           setItem={setProductToDelete}
           itemLabel="product"
-          getDisplayName={(p) => p.name}
+          getDisplayName={(p) => p?.name ?? ""}
           onConfirm={confirmDelete}
           isPending={deleteProduct.status === "pending"}
         />
