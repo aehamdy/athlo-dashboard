@@ -41,6 +41,7 @@ export interface Product {
 }
 
 export interface ProductForm {
+  id: number;
   nameEn: string;
   nameAr: string;
   descriptionEn: string;
