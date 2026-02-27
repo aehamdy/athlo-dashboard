@@ -9,7 +9,7 @@ import type { Brand, Category } from "@/types";
 
 type Props = {
   placeholder: string;
-  value?: string;
+  value?: string | number;
   onValueChange: (value: string) => void;
   options: Brand[] | Category[];
   error?: string;
@@ -26,7 +26,11 @@ function FormSelect({
 }: Props) {
   return (
     <div className="flex flex-col gap-1">
-      <Select value={value} onValueChange={onValueChange} disabled={disabled}>
+      <Select
+        value={String(value ?? "")}
+        onValueChange={onValueChange}
+        disabled={disabled}
+      >
         <SelectTrigger className="form-input w-full">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
