@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
 import { ROUTE_PATHS } from "@/routes/paths";
 import { EDIT_PRODUCT_TABS } from "../constants";
+import type { Product } from "@/features/products/types";
 
 interface Props {
-  productId: string;
+  product: Product;
   activeTab: string;
 }
 
-function EditProductTabs({ productId, activeTab }: Props) {
+function EditProductTabs({ product, activeTab }: Props) {
   return (
     <div className="flex gap-6 border-b">
       {EDIT_PRODUCT_TABS.map((tab) => (
         <Link
           key={tab.key}
-          to={ROUTE_PATHS.dashboard.editProduct(productId, tab.key)}
+          to={ROUTE_PATHS.dashboard.editProduct(product.id, tab.key)}
           className={`pb-sm font-medium text-sm capitalize transition ${
             activeTab === tab.key
               ? "border-b-2 border-accent text-accent"
