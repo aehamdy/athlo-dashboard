@@ -47,6 +47,19 @@ export const productService = {
     return response.data;
   },
 
+  updateProductMedia: async (
+    formData: FormData,
+  ): Promise<{ images: string[] }> => {
+    const response = await http.put(
+      API_ENDPOINTS.products.updateImages,
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+    return response.data;
+  },
+
   delete: async (id: number): Promise<void> => {
     try {
       await http.delete<void>(API_ENDPOINTS.products.delete(id));
