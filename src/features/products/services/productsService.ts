@@ -33,6 +33,14 @@ export const productService = {
     return product.data.data;
   },
 
+  getProductImagesAndVariants: async (id: number) => {
+    // Get product images and variants
+    const product = await http.get(
+      API_ENDPOINTS.products.getProductWithVariants(id),
+    );
+    return product.data.data;
+  },
+
   updateProductInfo: async (data: ProductForm) => {
     // Update only product info without media and variants
     const response = await http.put(API_ENDPOINTS.products.update, data);
