@@ -11,8 +11,8 @@ interface Props {
 
 function EditProductLayout({ product, activeTab, children }: Props) {
   return (
-    <section className="h-full space-y-compact rounded-xl overflow-hidden">
-      <div className="flex items-center justify-between p-compact bg-light rounded-xl">
+    <section className="flex flex-col h-full rounded-xl overflow-hidden">
+      <div className="p-compact bg-light rounded-xl">
         <Heading as="h1" className="text-lg md:text-xl">
           Edit Product{" "}
           <span className="text-accent">
@@ -21,10 +21,10 @@ function EditProductLayout({ product, activeTab, children }: Props) {
         </Heading>
       </div>
 
-      <div className="h-full space-y-compact p-compact bg-light rounded-xl overflow-hidden">
+      <div className="flex flex-col flex-1 min-h-0 p-compact bg-light rounded-xl">
         <EditProductTabs product={product} activeTab={activeTab} />
 
-        <div className="h-full p-0 md:p-md bg-background rounded-xl">
+        <div className="flex-1 min-h-0 mt-sm bg-background rounded-xl">
           {children}
         </div>
       </div>
