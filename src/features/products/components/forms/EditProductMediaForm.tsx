@@ -3,7 +3,7 @@ import Icon from "@/components/shared/Icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ROUTE_PATHS } from "@/routes/paths";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import useUpdateProductMedia from "../../hooks/useUpdateProductMedia";
 import Loading from "@/components/shared/Loading";
@@ -15,10 +15,12 @@ interface Props {
 }
 
 function EditProductMediaForm({ productId, productImages }: Props) {
-  const { mutate: updateMedia, isPending } = useUpdateProductMedia();
+  const { mutateAsync: updateMedia, isPending } =
+    useUpdateProductMedia(productId);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedOldUrl, setSelectedOldUrl] = useState<string | null>(null);
   const [newImage, setNewImage] = useState<File | null>(null);
+  const navigate = useNavigate();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -32,7 +34,7 @@ function EditProductMediaForm({ productId, productImages }: Props) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!selectedOldUrl) {
@@ -50,7 +52,9 @@ function EditProductMediaForm({ productId, productImages }: Props) {
     formData.append("oldImageUrl", selectedOldUrl);
     formData.append("newImage", newImage);
 
-    updateMedia(formData);
+    await updateMedia(formData);
+
+    navigate(ROUTE_PATHS.dashboard.products);
   };
 
   return (
@@ -155,9 +159,9 @@ function EditProductMediaForm({ productId, productImages }: Props) {
               <Button
                 type="button"
                 onClick={() => setNewImage(null)}
-                className="absolute top-2 right-2 bg-black/60 text-white rounded-full"
+                className="group absolute top-2 right-2 bg-black/60 text-white rounded-full"
               >
-                <Icon name="X" />
+                <Icon name="X" className="text-light group-hover:text-dark" />
               </Button>
             </div>
           </div>

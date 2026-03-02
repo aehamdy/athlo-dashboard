@@ -3,7 +3,7 @@ import { productService } from "../services/productsService";
 import { toast } from "sonner";
 import parseApiError from "../utils/parseApiError";
 
-function useUpdateProductMedia() {
+function useUpdateProductMedia(productId: number) {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -11,15 +11,15 @@ function useUpdateProductMedia() {
       productService.updateProductMedia(formData),
 
     onSuccess: () => {
-      toast.success("Product media updated successfully");
+      toast.success("Image replaced successfully.");
       // Refetch product media after update
       queryClient.invalidateQueries({
-        queryKey: ["product-media"],
+        queryKey: ["product-media", productId],
       });
 
       // Invalidate main product info
       queryClient.invalidateQueries({
-        queryKey: ["product-info"],
+        queryKey: ["product-info", productId],
       });
     },
 
