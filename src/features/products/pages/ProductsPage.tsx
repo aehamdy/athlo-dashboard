@@ -11,8 +11,14 @@ import { PRODUCT_PAGE_SIZE_OPTIONS } from "@/features/products/constants";
 import { useDebounce } from "@/features/products/hooks/useDebounce";
 import { useProductsTable } from "@/features/products/hooks/useProductsTable";
 import { useProductDelete } from "@/features/products/hooks/useProductDelete";
+import { useState } from "react";
+import type { Product } from "../types";
+import DetailsPanel from "@/components/shared/DetailsPanel";
+import ProductDetails from "../components/ProductDetails";
 
 export default function ProductsPage() {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { pagination, setPagination, sorting, setSorting, search, setSearch } =
     useProductsTable();
 
@@ -37,6 +43,11 @@ export default function ProductsPage() {
     const product = products?.data.find((p) => p.id === id);
     if (product) openDelete(product);
   });
+
+  const handleRowClick = (product: Product) => {
+    setSelectedProduct(product);
+    setIsSheetOpen(true);
+  };
 
   return (
     <DashboardPageLayout
@@ -71,6 +82,7 @@ export default function ProductsPage() {
           onSortingChange={setSorting}
           pageSizeOptions={PRODUCT_PAGE_SIZE_OPTIONS}
           error={error}
+          onRowClick={handleRowClick}
         />
 
         <ConfirmDeleteModal
@@ -81,6 +93,12 @@ export default function ProductsPage() {
           onConfirm={confirmDelete}
           isPending={deleteProduct.status === "pending"}
         />
+
+        {selectedProduct && (
+          <DetailsPanel open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+            <ProductDetails product={selectedProduct} />
+          </DetailsPanel>
+        )}
       </div>
     </DashboardPageLayout>
   );
