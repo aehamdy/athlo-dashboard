@@ -27,6 +27,7 @@ export function DataTable<TData extends object>({
   onSortingChange,
   pageSizeOptions,
   error,
+  onRowClick,
   className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
@@ -43,6 +44,7 @@ export function DataTable<TData extends object>({
     pageCount,
     getCoreRowModel: getCoreRowModel(),
   });
+  const isClickable = !!onRowClick;
 
   if (error) {
     return <Error title="Products" message="Failed to load data" />;
@@ -92,10 +94,21 @@ export function DataTable<TData extends object>({
                 table.getRowModel().rows.map((row, rowIndex) => (
                   <TableRow
                     key={row.id}
+                    role={isClickable ? "button" : undefined}
+                    tabIndex={isClickable ? 0 : undefined}
+                    aria-label={isClickable ? "View details" : undefined}
+                    onClick={() => onRowClick?.(row.original)}
+                    onKeyDown={(e) => {
+                      if (!onRowClick) return;
+
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onRowClick(row.original);
+                      }
+                    }}
                     className={`
-                    transition-colors
                     hover:bg-muted/50
-                    ${rowIndex % 2 === 0 ? "bg-background" : "bg-muted/20"}
+                    ${rowIndex % 2 === 0 ? "bg-background" : "bg-muted/20"} focus-visible:outline-accent transition-colors cursor-pointer
                   `}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -148,7 +161,7 @@ export function DataTable<TData extends object>({
         {!isLoading &&
           pagination &&
           onPaginationChange &&
-          pageCount &&
+          pageCount !== undefined &&
           data &&
           data.length > 0 && (
             <DataTablePagination
