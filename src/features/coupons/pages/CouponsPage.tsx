@@ -6,8 +6,12 @@ import type { Coupon } from "../types";
 import { useState } from "react";
 import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
 import useDeleteCoupon from "../hooks/useDeleteCoupon";
+import DetailsPanel from "@/components/shared/DetailsPanel";
+import CouponDetails from "../components/CouponDetails";
 
 function Coupons() {
+  const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [couponToDelete, setCouponToDelete] = useState<Coupon | null>(null);
   const { data: coupons, isLoading, isError } = useFetchAllCoupons();
   const deleteCoupon = useDeleteCoupon();
@@ -25,6 +29,11 @@ function Coupons() {
     });
   };
 
+  const handleRowClick = (coupon: Coupon) => {
+    setSelectedCoupon(coupon);
+    setIsSheetOpen(true);
+  };
+
   return (
     <DashboardPageLayout
       title="Coupons"
@@ -36,6 +45,7 @@ function Coupons() {
           isLoading={isLoading}
           error={isError}
           columns={columns}
+          onRowClick={handleRowClick}
         />
       </div>
 
@@ -46,7 +56,20 @@ function Coupons() {
           itemLabel="coupon"
           getDisplayName={(coupon) => coupon.code}
           onConfirm={handleConfirmDelete}
+          isPending={deleteCoupon.isPending}
         />
+      )}
+
+      {selectedCoupon && (
+        <DetailsPanel
+          open={isSheetOpen}
+          onOpenChange={setIsSheetOpen}
+          title="Coupon Details"
+          description="View and manage coupon details"
+          width="min-w-[95%] md:min-w-1/2 lg:min-w-1/4"
+        >
+          <CouponDetails coupon={selectedCoupon} />
+        </DetailsPanel>
       )}
     </DashboardPageLayout>
   );
