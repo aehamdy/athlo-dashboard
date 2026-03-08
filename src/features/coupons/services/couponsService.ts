@@ -8,6 +8,11 @@ export const couponsService = {
     return data.data;
   },
 
+  getById: async (id: number): Promise<Coupon> => {
+    const { data } = await http.get(API_ENDPOINTS.coupons.getById(id));
+    return data.data;
+  },
+
   create: async (payload: FormData): Promise<Coupon> => {
     const { data } = await http.post(API_ENDPOINTS.coupons.create, payload, {
       headers: { "Content-Type": "multipart/form-data" },
@@ -18,7 +23,7 @@ export const couponsService = {
 
   update: async (payload: FormData): Promise<Coupon> => {
     const { data } = await http.put(API_ENDPOINTS.coupons.update, payload, {
-      headers: { "Content-Type": "mutltipart/form-data" },
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
     return data;
