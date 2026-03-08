@@ -1,3 +1,5 @@
+export type CouponStatus = "Active" | "Scheduled" | "Expired";
+
 export type Coupon = {
   id: number;
   code: string;
