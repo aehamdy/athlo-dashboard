@@ -1,5 +1,10 @@
 export type CouponStatus = "Active" | "Scheduled" | "Expired";
 
+export type CouponTypeOption = {
+  value: number;
+  label: string;
+};
+
 export type Coupon = {
   id: number;
   code: string;
@@ -15,7 +20,7 @@ export type couponFormValue = {
   nameEn: string;
   nameAr: string;
   percentage: number;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
   type: number;
 };
