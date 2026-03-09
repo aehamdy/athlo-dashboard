@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Icon from "@/components/shared/Icon";
 import getCouponStatus from "./utils/getCouponStatus";
-import getCouponStatusStyles from "./utils/getCouponStatusStyles";
+import { couponStatusConfig } from "./utils/couponStatusConfig";
 
 const couponsColumns = (
   onDelete: (id: number) => void,
@@ -28,16 +28,16 @@ const couponsColumns = (
     header: "Status",
     cell: ({ row }) => {
       const coupon = row.original;
-      const { date: startDate } = formatDateTime(coupon.startDate);
-      const { date: endDate } = formatDateTime(coupon.endDate);
+      const status = getCouponStatus({
+        startDate: new Date(coupon.startDate),
+        endDate: new Date(coupon.endDate),
+      });
 
-      const status = getCouponStatus({ startDate, endDate });
+      const config = couponStatusConfig[status];
 
       return (
-        <Badge
-          className={`uppercase rounded-md ${getCouponStatusStyles(status)}`}
-        >
-          {status}
+        <Badge className={`uppercase rounded-md ${config.className}`}>
+          {config.label}
         </Badge>
       );
     },
@@ -96,7 +96,9 @@ const couponsColumns = (
       <div className="flex justify-end items-center gap-sm">
         <Button
           variant="icon"
-          onClick={() => {}}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
           className="group hover:bg-gray-100"
         >
           <Icon name="Pencil" className="group-hover:text-blue-400" />
@@ -104,7 +106,10 @@ const couponsColumns = (
 
         <Button
           variant="icon"
-          onClick={() => onDelete(row.original.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(row.original.id);
+          }}
           className="group hover:bg-gray-100"
         >
           <Icon name="Trash2" className="group-hover:text-red-400" />
