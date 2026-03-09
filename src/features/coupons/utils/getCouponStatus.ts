@@ -1,5 +1,3 @@
-import type { CouponStatus } from "../types";
-
 type DateInput = string | Date;
 
 type CouponDateRange = {
@@ -7,13 +5,18 @@ type CouponDateRange = {
   endDate: DateInput;
 };
 
-function getCouponStatus({
-  startDate,
-  endDate,
-}: CouponDateRange): CouponStatus {
-  const now = new Date();
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+export function parseDate(date: DateInput): Date {
+  // remove fractional seconds
+  const normalized =
+    typeof date === "string" ? date.replace(/\.\d+/, "") : date.toISOString();
+  return new Date(normalized);
+}
+
+function getCouponStatus({ startDate, endDate }: CouponDateRange) {
+  const now = Date.now();
+
+  const start = parseDate(startDate).getTime();
+  const end = parseDate(endDate).getTime();
 
   if (now < start) return "Scheduled";
   if (now > end) return "Expired";
