@@ -12,7 +12,10 @@ type CouponDetailsProps = {
 function CouponDetails({ coupon }: CouponDetailsProps) {
   const { date: startDate } = formatDateTime(coupon.startDate);
   const { date: endDate } = formatDateTime(coupon.endDate);
-  const couponStatus = getCouponStatus({ startDate, endDate });
+  const couponStatus = getCouponStatus({
+    startDate: new Date(coupon.startDate),
+    endDate: new Date(coupon.endDate),
+  });
   const couponStatusClass = getCouponStatusStyles(couponStatus);
 
   return (
@@ -45,60 +48,64 @@ function CouponDetails({ coupon }: CouponDetailsProps) {
         </div>
       </section>
 
-      <section className="flex flex-col gap-sm py-sm border-b">
-        <Heading
-          as="h5"
-          className="font-semibold text-tiny md:text-tiny text-gray-400 uppercase tracking-widest"
-        >
-          Configuration
-        </Heading>
+      <section className="h-[310px] overflow-y-auto">
+        <section className="flex flex-col gap-sm py-tiny border-b">
+          <Heading
+            as="h5"
+            className="font-semibold text-tiny md:text-tiny text-gray-400 uppercase tracking-widest"
+          >
+            Configuration
+          </Heading>
 
-        <div className="space-y-xs">
-          <div className="flex justify-between items-center">
-            <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
-              Status
-            </p>
+          <div className="space-y-xs">
+            <div className="flex justify-between items-center">
+              <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
+                Status
+              </p>
 
-            <Badge
-              variant="default"
-              className={`uppercase rounded-md ${couponStatusClass}`}
-            >
-              {couponStatus}
-            </Badge>
+              <Badge
+                variant="default"
+                className={`uppercase rounded-md ${couponStatusClass}`}
+              >
+                {couponStatus}
+              </Badge>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
+                Discount Type
+              </p>
+              <p className="font-semibold text-xs text-zinc-800">
+                {coupon.type}
+              </p>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
+                Discount Value
+              </p>
+              <p className="font-semibold text-xs text-red-600">
+                -{coupon.percentage}%
+              </p>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
+                Start Date
+              </p>
+              <p className="font-semibold text-xs text-zinc-800">{startDate}</p>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
+                End Date
+              </p>
+              <p className="font-semibold text-xs text-zinc-800">{endDate}</p>
+            </div>
+
+            <div className=""></div>
           </div>
-
-          <div className="flex justify-between items-center">
-            <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
-              Discount Type
-            </p>
-            <p className="font-semibold text-xs text-zinc-800">{coupon.type}</p>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
-              Discount Value
-            </p>
-            <p className="font-semibold text-xs text-zinc-800">
-              {coupon.percentage}%
-            </p>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
-              Start Date
-            </p>
-            <p className="font-semibold text-xs text-zinc-800">{startDate}</p>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <p className="font-medium text-tiny text-gray-500 uppercase tracking-widest">
-              End Date
-            </p>
-            <p className="font-semibold text-xs text-zinc-800">{endDate}</p>
-          </div>
-
-          <div className=""></div>
-        </div>
+        </section>
       </section>
     </section>
   );
