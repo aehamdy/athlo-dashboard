@@ -8,6 +8,9 @@ import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
 import useDeleteCoupon from "../hooks/useDeleteCoupon";
 import DetailsPanel from "@/components/shared/DetailsPanel";
 import CouponDetails from "../components/CouponDetails";
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/shared/Icon";
+import AddCouponForm from "../components/AddCouponForm";
 
 function Coupons() {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
@@ -37,7 +40,15 @@ function Coupons() {
   return (
     <DashboardPageLayout
       title="Coupons"
-      description="Create, manage, and track discount coupons for your store."
+      dialogLabel="Add New Coupon"
+      description="Fill in the details to create a new coupon"
+      action={
+        <Button className="flex items-center gap-sm">
+          <Icon name="Plus" />
+          New Coupon
+        </Button>
+      }
+      formComponent={<AddCouponForm />}
     >
       <div className="flex flex-col gap-base h-full">
         <DataTable
