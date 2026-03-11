@@ -9,6 +9,7 @@ import { couponStatusConfig } from "./utils/couponStatusConfig";
 
 const couponsColumns = (
   onDelete: (id: number) => void,
+  onEdit: (id: number) => void,
 ): ColumnDef<Coupon>[] => [
   {
     accessorKey: "code",
@@ -62,11 +63,7 @@ const couponsColumns = (
     accessorKey: "startDate",
     header: "Start Date",
     cell: ({ row }) => {
-      const { date: startDate } = formatDateTime(
-        typeof row.original.startDate === "string"
-          ? row.original.startDate
-          : row.original.startDate.toISOString(),
-      );
+      const { date: startDate } = formatDateTime(row.original.startDate);
 
       return <span className="font-medium text-cyan-600">{startDate}</span>;
     },
@@ -75,11 +72,7 @@ const couponsColumns = (
     accessorKey: "endDate",
     header: "End Date",
     cell: ({ row }) => {
-      const { date: endDate } = formatDateTime(
-        typeof row.original.endDate === "string"
-          ? row.original.endDate
-          : row.original.endDate.toISOString(),
-      );
+      const { date: endDate } = formatDateTime(row.original.endDate);
 
       return <span className="font-medium text-cyan-600">{endDate}</span>;
     },
@@ -87,7 +80,14 @@ const couponsColumns = (
   {
     accessorKey: "type",
     header: "Type",
-    cell: ({ row }) => <span className="">{row.original.type}</span>,
+    cell: ({ row }) => {
+      const typeValue = row.original.type;
+      const type =
+        typeof typeValue === "string" && typeValue.toLowerCase() === "global"
+          ? "Global"
+          : "Specific";
+      return <span className="">{type}</span>;
+    },
   },
   {
     accessorKey: "actions",
@@ -98,6 +98,7 @@ const couponsColumns = (
           variant="icon"
           onClick={(e) => {
             e.stopPropagation();
+            onEdit(row.original.id);
           }}
           className="group hover:bg-gray-100"
         >
