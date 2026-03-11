@@ -1,5 +1,6 @@
 import http from "@/api/http";
 import type { Coupon, couponFormValue } from "../types";
+import type { CouponFormValues } from "../coupons.schema";
 import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const couponsService = {
@@ -21,10 +22,10 @@ export const couponsService = {
     return data;
   },
 
-  update: async (payload: FormData): Promise<Coupon> => {
-    const { data } = await http.put(API_ENDPOINTS.coupons.update, payload, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+  update: async (
+    payload: CouponFormValues & { id: number },
+  ): Promise<Coupon> => {
+    const { data } = await http.put(API_ENDPOINTS.coupons.update, payload);
 
     return data;
   },
