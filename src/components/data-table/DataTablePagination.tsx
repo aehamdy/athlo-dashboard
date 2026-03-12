@@ -5,7 +5,7 @@ import type { Table, PaginationState } from "@tanstack/react-table";
 type DataTablePaginationProps<TData = unknown> = {
   table: Table<TData>;
   pagination: PaginationState;
-  pageCount: number;
+  pageCount?: number;
 };
 
 function DataTablePagination<TData = unknown>({
@@ -29,7 +29,7 @@ function DataTablePagination<TData = unknown>({
         </span>
 
         <span className="hidden md:inline">
-          Page {pagination.pageIndex + 1} of {pageCount}
+          Page {pagination?.pageIndex + 1} of {pageCount}
         </span>
       </span>
 

@@ -34,7 +34,7 @@ function CouponsPage() {
   const [search, setSearch] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: DEFAULT_PAGE_SIZE_OPTIONS[1],
   });
 
   const queryClient = useQueryClient();

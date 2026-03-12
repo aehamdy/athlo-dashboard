@@ -17,6 +17,7 @@ import {
 import DataTablePagination from "./DataTablePagination";
 import CustomSelect from "../shared/CustomSelect";
 import Error from "../shared/Error";
+import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
 
 export function DataTable<TData extends object>({
   data,
@@ -37,13 +38,13 @@ export function DataTable<TData extends object>({
     data,
     columns,
     state: {
-      pagination,
+      pagination: pagination ?? { pageIndex: 0, pageSize: 10 },
       sorting,
       globalFilter,
     },
     onPaginationChange,
     onSortingChange,
-    manualPagination: !!pageCount,
+    manualPagination: !!pagination && !!pageCount,
     manualSorting: !!onSortingChange,
     pageCount,
     getCoreRowModel: getCoreRowModel(),
@@ -146,20 +147,20 @@ export function DataTable<TData extends object>({
         </div>
       </div>
 
-      <div className="flex justify-between items-center">
-        {pageSizeOptions && (
+      <div className="flex justify-between items-center px-compact md:px-regular lg:px-sm">
+        {pagination && pageSizeOptions && onPaginationChange && (
           <div className="flex items-center gap-sm">
             <CustomSelect<number>
               label="Items per page"
               placeholder="Items per page"
-              value={pagination?.pageSize ?? 15}
+              value={pagination?.pageSize ?? DEFAULT_PAGE_SIZE_OPTIONS[0]}
               onChange={(value) =>
                 onPaginationChange?.({
                   pageIndex: 0,
                   pageSize: value,
                 })
               }
-              options={pageSizeOptions ?? []}
+              options={pageSizeOptions}
             />
           </div>
         )}
@@ -168,11 +169,7 @@ export function DataTable<TData extends object>({
           pagination &&
           onPaginationChange &&
           table.getPageCount() > 1 && (
-            <DataTablePagination
-              table={table}
-              pagination={pagination}
-              pageCount={pageCount ?? table.getPageCount()}
-            />
+            <DataTablePagination table={table} pagination={pagination} />
           )}
       </div>
     </div>
