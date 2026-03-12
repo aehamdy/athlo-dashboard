@@ -1,5 +1,3 @@
-export const PRODUCT_PAGE_SIZE_OPTIONS = [10, 15, 20, 25];
-
 export const PRODUCT_SIZES_OPTIONS = [
   { id: 1, value: "xs", label: "XS" },
   { id: 2, value: "s", label: "S" },

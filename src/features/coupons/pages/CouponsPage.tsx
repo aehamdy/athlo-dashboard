@@ -25,6 +25,7 @@ import { couponKeys } from "../couponKeys";
 import { couponsService } from "../services/couponsService";
 import DataTableToolbar from "@/components/data-table/DataTableToolbar";
 import type { PaginationState } from "@tanstack/react-table";
+import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
 
 function CouponsPage() {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
@@ -136,7 +137,7 @@ function CouponsPage() {
           globalFilter={search}
           pagination={pagination}
           onPaginationChange={setPagination}
-          pageSizeOptions={[10, 15, 20, 30]}
+          pageSizeOptions={DEFAULT_PAGE_SIZE_OPTIONS}
         />
       </div>
 
