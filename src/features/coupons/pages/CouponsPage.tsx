@@ -23,11 +23,13 @@ import Loading from "@/components/shared/Loading";
 import { useQueryClient } from "@tanstack/react-query";
 import { couponKeys } from "../couponKeys";
 import { couponsService } from "../services/couponsService";
+import DataTableToolbar from "@/components/data-table/DataTableToolbar";
 
 function Coupons() {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -36,6 +38,7 @@ function Coupons() {
   const [editingCouponId, setEditingCouponId] = useState<number | null>(null);
 
   const { data: coupons, isLoading, isError } = useFetchAllCoupons();
+
   const { data: couponDetails, isLoading: isCouponLoading } =
     useFetchCoupon(editingCouponId);
   const deleteCoupon = useDeleteCoupon();
@@ -99,13 +102,22 @@ function Coupons() {
         />
       }
     >
-      <div className="flex flex-col gap-base h-full">
+      <div className="flex flex-col gap-xs h-full">
+        <div className="md:w-1/4">
+          <DataTableToolbar
+            search={search}
+            onSearchChange={setSearch}
+            placeholder="Search coupons..."
+          />
+        </div>
+
         <DataTable
           data={coupons ?? []}
           isLoading={isLoading}
           error={isError}
           columns={columns}
           onRowClick={handleRowClick}
+          globalFilter={search}
         />
       </div>
 
