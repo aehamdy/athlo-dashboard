@@ -1,3 +1,7 @@
+import { EDIT_PRODUCT_TABS } from "./constants";
+
+export type EditProductTab = (typeof EDIT_PRODUCT_TABS)[number]["key"];
+
 import type {
   ColumnDef,
   PaginationState,
@@ -67,15 +71,11 @@ export interface PaginatedProductsResponse {
 }
 
 export interface GetProductsParams {
-  pageIndex: number;
-  pageSize: number;
+  pageIndex?: number;
+  pageSize?: number;
   sorting?: {
     id: string;
     desc: boolean;
   }[];
   search?: string;
 }
-
-import { EDIT_PRODUCT_TABS } from "./constants";
-
-export type EditProductTab = (typeof EDIT_PRODUCT_TABS)[number]["key"];
