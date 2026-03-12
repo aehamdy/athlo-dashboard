@@ -20,11 +20,18 @@ import {
 } from "@/components/ui/dialog";
 import useFetchCoupon from "../hooks/useFetchCoupon";
 import Loading from "@/components/shared/Loading";
+import { useQueryClient } from "@tanstack/react-query";
+import { couponKeys } from "../couponKeys";
+import { couponsService } from "../services/couponsService";
+import ProductPickerDialog from "../components/ProductPickerDialog";
 
 function Coupons() {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const [couponToDelete, setCouponToDelete] = useState<Coupon | null>(null);
 
@@ -61,6 +68,15 @@ function Coupons() {
   const handleRowClick = (coupon: Coupon) => {
     setSelectedCoupon(coupon);
     setIsDetailsOpen(true);
+
+    if (coupon.type === "ProductSpecific") {
+      queryClient.prefetchQuery({
+        queryKey: couponKeys.applicableProducts(coupon.id),
+        queryFn: () =>
+          couponsService.getApplicableProducts({ discountId: coupon.id }),
+        staleTime: 1000 * 60 * 5,
+      });
+    }
   };
 
   return (
@@ -112,9 +128,12 @@ function Coupons() {
           onOpenChange={setIsDetailsOpen}
           title="Coupon Details"
           description="View and manage coupon details"
-          width="min-w-[95%] md:min-w-1/2 lg:min-w-1/4"
+          width="min-w-[95%] md:min-w-1/2 lg:min-w-1/3"
         >
-          <CouponDetails coupon={selectedCoupon} />
+          <CouponDetails
+            coupon={selectedCoupon}
+            setIsPickerOpen={setIsPickerOpen}
+          />
         </DetailsPanel>
       )}
 
@@ -152,6 +171,14 @@ function Coupons() {
             )}
           </DialogContent>
         </Dialog>
+      )}
+
+      {isPickerOpen && (
+        <ProductPickerDialog
+          open={isPickerOpen}
+          onOpenChange={setIsPickerOpen}
+          couponId={selectedCoupon?.id ?? 0}
+        />
       )}
     </DashboardPageLayout>
   );

@@ -15,9 +15,7 @@ export const couponsService = {
   },
 
   create: async (payload: couponFormValue): Promise<Coupon> => {
-    const { data } = await http.post(API_ENDPOINTS.coupons.create, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const { data } = await http.post(API_ENDPOINTS.coupons.create, payload);
 
     return data;
   },
@@ -34,16 +32,33 @@ export const couponsService = {
     await http.delete(API_ENDPOINTS.coupons.delete(id));
   },
 
-  // Applicable Products
-  getApplicableProducts: async (discountId: number) => {
+  getApplicableProducts: async ({
+    discountId,
+    pageNumber = 1,
+    pageSize = 50,
+  }: {
+    discountId: number;
+    pageNumber?: number;
+    pageSize?: number;
+  }) => {
     const response = await http.get(
       API_ENDPOINTS.coupons.getApplicableProducts,
       {
-        params: { DiscountId: discountId, pageNumber: 1, pageSize: 50 },
+        params: {
+          DiscountId: discountId,
+          PageNumber: pageNumber,
+          PageSize: pageSize,
+        },
       },
     );
 
-    console.log("API response:", response.data);
     return response.data.data;
+  },
+
+  addProductsToCoupon: (payload: {
+    discountId: number;
+    productIds: number[];
+  }) => {
+    return http.post(API_ENDPOINTS.coupons.addApplicableProduct, payload);
   },
 };
