@@ -11,7 +11,7 @@ import {
 import TableHeadRow from "@/components/shared/TableHeadRow";
 import { Badge } from "@/components/ui/badge";
 import { COUPON_TABLE_COLUMNS } from "@/config/tableColumns";
-import { formatDateTime } from "@/utils/formatDateTime ";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 type CouponData = {
   id: number;

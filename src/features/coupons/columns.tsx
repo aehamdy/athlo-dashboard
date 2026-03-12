@@ -1,4 +1,4 @@
-import { formatDateTime } from "@/utils/formatDateTime ";
+import { formatDateTime } from "@/utils/formatDateTime";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Coupon } from "./types";
 import { Badge } from "@/components/ui/badge";

@@ -1,6 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { User } from "./types";
-import { formatDateTime } from "@/utils/formatDateTime ";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 const usersColumns = (): ColumnDef<User>[] => [
   {
