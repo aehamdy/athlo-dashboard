@@ -17,7 +17,6 @@ import { useState } from "react";
 
 type CouponDetailsProps = {
   coupon: Coupon;
-  // setIsPickerOpen: (open: boolean) => void;
 };
 
 function CouponDetails({ coupon }: CouponDetailsProps) {
@@ -149,7 +148,7 @@ function CouponDetails({ coupon }: CouponDetailsProps) {
         <ProductPickerDialog
           open={isPickerOpen}
           onOpenChange={setIsPickerOpen}
-          couponId={coupon?.id ?? 417}
+          couponId={coupon?.id ?? 0}
         />
       )}
     </section>
