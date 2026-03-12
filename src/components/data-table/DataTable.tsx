@@ -38,7 +38,7 @@ export function DataTable<TData extends object>({
     data,
     columns,
     state: {
-      pagination: pagination ?? { pageIndex: 0, pageSize: 10 },
+      ...(pagination ? { pagination } : {}),
       sorting,
       globalFilter,
     },
@@ -49,7 +49,8 @@ export function DataTable<TData extends object>({
     pageCount,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
+    getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
   });
   const isClickable = !!onRowClick;
 
@@ -165,12 +166,13 @@ export function DataTable<TData extends object>({
           </div>
         )}
 
-        {!isLoading &&
-          pagination &&
-          onPaginationChange &&
-          table.getPageCount() > 1 && (
-            <DataTablePagination table={table} pagination={pagination} />
-          )}
+        {pagination && onPaginationChange && table.getPageCount() > 1 && (
+          <DataTablePagination
+            table={table}
+            pagination={pagination}
+            pageCount={table.getPageCount()}
+          />
+        )}
       </div>
     </div>
   );
