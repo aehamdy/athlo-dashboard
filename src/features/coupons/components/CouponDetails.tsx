@@ -14,10 +14,15 @@ import {
 import { formatDateTime } from "@/utils/formatDateTime";
 import ProductPickerDialog from "./ProductPickerDialog";
 import { useState } from "react";
+import ProductPickerDialog from "./ProductPickerDialog";
+import { useState } from "react";
 
 type CouponDetailsProps = {
   coupon: Coupon;
 };
+
+function CouponDetails({ coupon }: CouponDetailsProps) {
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
 
 function CouponDetails({ coupon }: CouponDetailsProps) {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
