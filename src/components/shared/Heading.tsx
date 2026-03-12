@@ -1,7 +1,7 @@
 // components/sharedComponents/Heading.tsx
 import { type VariantProps, cva } from "class-variance-authority";
-import clsx from "clsx";
 import type { HTMLAttributes } from "react";
+import { twMerge } from "tailwind-merge";
 
 const headingVariants = cva("font-bold text-gray-900 dark:text-white", {
   variants: {
@@ -35,7 +35,10 @@ function Heading({
 }: HeadingProps) {
   return (
     <Component
-      className={clsx(headingVariants({ size: size || Component, className }))}
+      className={twMerge(
+        headingVariants({ size: size || Component }),
+        className,
+      )}
       {...props}
     >
       {children}
