@@ -62,7 +62,7 @@ export default function ProductsPage() {
         </Link>
       }
     >
-      <div className="flex flex-col gap-base h-full">
+      <div className="flex flex-col gap-xs h-full">
         <div className="md:w-1/4">
           <DataTableToolbar
             search={search}
