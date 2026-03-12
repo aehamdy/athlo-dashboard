@@ -103,7 +103,7 @@ export const API_ENDPOINTS = {
     // Applicable Product Discount endpoints
     getApplicableProducts: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/ GetProductsByDiscountIdPaginated`,
     addApplicableProduct: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/AddDiscountToProducts`,
-    deleteApplicableProducts: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/RemoveDiscountFromProducts`,
+    deleteAllApplicableProducts: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/RemoveDiscountFromProducts`,
   },
   users: {
     delete: (id: number) => `${API_VERSION_PATH}${CONTROLLER_PATH.user}/${id}`,
