@@ -1,80 +1,114 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_VERSION_PATH = `${BASE_URL}/Api/V1`;
+const CONTROLLER_PATH = {
+  authentication: "/Authentication",
+  product: "/Product",
+  brand: "/Brand",
+  category: "/Category",
+  order: "/Order",
+  coupon: "/Discount",
+  productCoupon: "/Product_Discount",
+  user: "/User",
+};
 
 export const API_ENDPOINTS = {
   auth: {
-    login: `${BASE_URL}/Api/V1/Authentication/SignIn`,
-    refreshToken: `${BASE_URL}/Api/V1/Authentication/Refresh-Token`,
-    validateToken: `${BASE_URL}/Api/V1/Authentication/Validate-Token`,
+    login: `${API_VERSION_PATH}${CONTROLLER_PATH.authentication}/SignIn`,
+    refreshToken: `${API_VERSION_PATH}${CONTROLLER_PATH.authentication}/Refresh-Token`,
+    validateToken: `${API_VERSION_PATH}${CONTROLLER_PATH.authentication}/Validate-Token`,
   },
   products: {
-    getAll: `${BASE_URL}/Api/V1/Product/List`,
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.product}/List`,
     paginated: (
-      pageNumber: number,
-      pageSize: number,
+      pageNumber?: number,
+      pageSize?: number,
       search?: string,
       ordering?: string,
     ) => {
-      let url = `${BASE_URL}/Api/V1/Product/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+      // let url = `${API_VERSION_PATH}/Product/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
-      if (search && search.trim()) {
-        url += `&search=${encodeURIComponent(search)}`;
-      }
+      // if (search && search.trim()) {
+      //   url += `&search=${encodeURIComponent(search)}`;
+      // }
 
-      if (ordering && ordering.trim()) {
-        url += `&ordering=${encodeURIComponent(ordering)}`;
-      }
+      // if (ordering && ordering.trim()) {
+      //   url += `&ordering=${encodeURIComponent(ordering)}`;
+      // }
 
-      return url;
+      // return url;
+      const url = `${API_VERSION_PATH}/Product/Paginated?`;
+
+      const params = new URLSearchParams();
+
+      if (pageNumber !== undefined)
+        params.append("pageNumber", pageNumber.toString());
+      if (pageSize !== undefined)
+        params.append("pageSize", pageSize.toString());
+      if (search) params.append("search", search);
+      if (ordering) params.append("ordering", ordering);
+
+      return url + params.toString();
     },
-    getById: (id: string) => `${BASE_URL}/Api/V1/Product/${id}`,
-    getByIdToEdit: (id: number) => `${BASE_URL}/Api/V1/Product/${id}/To-Edit`,
+    getById: (id: string) => `${API_VERSION_PATH}/Product/${id}`,
+    getByIdToEdit: (id: number) => `${API_VERSION_PATH}/Product/${id}/To-Edit`,
     getProductWithVariants: (id: number) =>
-      `${BASE_URL}/Api/V1/Product/${id}/With-Variants`,
-    create: `${BASE_URL}/Api/V1/Product/Create`,
-    update: `${BASE_URL}/Api/V1/Product/Edit`,
-    addImages: `${BASE_URL}/Api/V1/ProductImage/CreateProductImages`,
-    addVariants: `${BASE_URL}/Api/V1/ProductVariant/CreateRange`,
-    updateImages: `${BASE_URL}/Api/V1/ProductImage/EditProductImage`,
-    updateVariants: `${BASE_URL}/Api/V1/ProductVariant/Edit`,
-    delete: (id: number) => `${BASE_URL}/Api/V1/Product/${id}`,
+      `${API_VERSION_PATH}/Product/${id}/With-Variants`,
+    create: `${API_VERSION_PATH}/Product/Create`,
+    update: `${API_VERSION_PATH}/Product/Edit`,
+    addImages: `${API_VERSION_PATH}/ProductImage/CreateProductImages`,
+    addVariants: `${API_VERSION_PATH}/ProductVariant/CreateRange`,
+    updateImages: `${API_VERSION_PATH}/ProductImage/EditProductImage`,
+    updateVariants: `${API_VERSION_PATH}/ProductVariant/Edit`,
+    delete: (id: number) => `${API_VERSION_PATH}/Product/${id}`,
 
-    // deleteImage: `${BASE_URL}/Api/V1/ProductImage/DeleteProductImage`,
-    // deleteVariant: (id: number) => `${BASE_URL}/Api/V1/ProductVariant/${id}`,
+    // deleteImage: `${API_VERSION_PATH}/ProductImage/DeleteProductImage`,
+    // deleteVariant: (id: number) => `${API_VERSION_PATH}/ProductVariant/${id}`,
   },
   brands: {
-    getAll: `${BASE_URL}/Api/V1/Brand/List`,
-    getById: (id: string) => `${BASE_URL}/Api/V1/Brand/GetById/${id}`,
-    create: `${BASE_URL}/Api/V1/Brand/Create`,
-    update: `${BASE_URL}/Api/V1/Brand/Edit`,
-    delete: (id: number) => `${BASE_URL}/Api/V1/Brand/${id}`,
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.brand}/List`,
+    getById: (id: string) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.brand}/GetById/${id}`,
+    create: `${API_VERSION_PATH}${CONTROLLER_PATH.brand}/Create`,
+    update: `${API_VERSION_PATH}${CONTROLLER_PATH.brand}/Edit`,
+    delete: (id: number) => `${API_VERSION_PATH}${CONTROLLER_PATH.brand}/${id}`,
   },
   categories: {
-    getAll: `${BASE_URL}/Api/V1/Category/List`,
-    getById: (id: string) => `${BASE_URL}/Api/V1/Category/${id}`,
-    create: `${BASE_URL}/Api/V1/Category/Create`,
-    update: `${BASE_URL}/Api/V1/Category/Edit`,
-    delete: (id: number) => `${BASE_URL}/Api/V1/Category/${id}`,
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.category}/List`,
+    getById: (id: string) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.category}/${id}`,
+    create: `${API_VERSION_PATH}${CONTROLLER_PATH.category}/Create`,
+    update: `${API_VERSION_PATH}${CONTROLLER_PATH.category}/Edit`,
+    delete: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.category}/${id}`,
   },
   orders: {
-    getAll: `${BASE_URL}/Api/V1/Order/List`,
-    getById: (id: string) => `${BASE_URL}/Api/V1/Order/${id}`,
-    create: `${BASE_URL}/Api/V1/Order/Create`,
-    getMyOrders: `${BASE_URL}/Api/V1/Order/My-Orders`,
-    orderStatus: `${BASE_URL}/Api/V1/Order/order-status`,
-    paymentStatus: `${BASE_URL}/Api/V1/Order/payment-status`,
-    userOrder: (userId: string) => `${BASE_URL}/Api/V1/Order/user/${userId}`,
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/List`,
+    getById: (id: string) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.order}/${id}`,
+    create: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/Create`,
+    getMyOrders: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/My-Orders`,
+    orderStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/order-status`,
+    paymentStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/payment-status`,
+    userOrder: (userId: string) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.order}/user/${userId}`,
   },
   coupons: {
-    getAll: `${BASE_URL}/Api/V1/Discount/List`,
-    getById: (id: number) => `${BASE_URL}/Api/V1/Discount/${id}`,
-    create: `${BASE_URL}/Api/V1/Discount/Create`,
-    update: `${BASE_URL}/Api/V1/Discount/Edit`,
-    delete: (id: number) => `${BASE_URL}/Api/V1/Discount/${id}`,
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/List`,
+    getById: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/${id}/To-Edit`,
+    create: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/Create`,
+    update: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/Edit`,
+    delete: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/${id}`,
+    // Applicable Product Discount endpoints
+    getApplicableProducts: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/ GetProductsByDiscountIdPaginated`,
+    addApplicableProduct: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/AddDiscountToProducts`,
+    deleteApplicableProducts: `${API_VERSION_PATH}${CONTROLLER_PATH.productCoupon}/RemoveDiscountFromProducts`,
   },
   users: {
-    delete: (id: number) => `${BASE_URL}/Api/V1/User/${id}`,
+    delete: (id: number) => `${API_VERSION_PATH}${CONTROLLER_PATH.user}/${id}`,
     paginated: (pageNumber: number, pageSize: number) => {
-      const url = `${BASE_URL}/Api/V1/User/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+      const url = `${API_VERSION_PATH}${CONTROLLER_PATH.user}/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
       return url;
     },
