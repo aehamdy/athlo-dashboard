@@ -1,6 +1,6 @@
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Order } from "./types";
-import { formatDateTime } from "@/utils/formatDateTime ";
+import { formatDateTime } from "@/utils/formatDateTime";
 import { Badge } from "@/components/ui/badge";
 
 const ordersColumns = (): ColumnDef<Order>[] => [

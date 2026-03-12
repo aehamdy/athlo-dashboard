@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { couponsService } from "../services/couponsService";
 import { toast } from "sonner";
-import { couponKeys } from "./couponKeys";
+import { couponKeys } from "../couponKeys";
 import type { CouponFormValues } from "../coupons.schema";
 
 function useUpdateCoupon() {
