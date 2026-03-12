@@ -95,7 +95,12 @@ export default function ProductsPage() {
         />
 
         {selectedProduct && (
-          <DetailsPanel open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+          <DetailsPanel
+            open={isSheetOpen}
+            onOpenChange={setIsSheetOpen}
+            title="Product Details"
+            description="Explore the full product details."
+          >
             <ProductDetails product={selectedProduct} />
           </DetailsPanel>
         )}
