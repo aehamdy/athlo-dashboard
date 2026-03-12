@@ -12,13 +12,17 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { formatDateTime } from "@/utils/formatDateTime";
+import ProductPickerDialog from "./ProductPickerDialog";
+import { useState } from "react";
 
 type CouponDetailsProps = {
   coupon: Coupon;
-  setIsPickerOpen: (open: boolean) => void;
+  // setIsPickerOpen: (open: boolean) => void;
 };
 
-function CouponDetails({ coupon, setIsPickerOpen }: CouponDetailsProps) {
+function CouponDetails({ coupon }: CouponDetailsProps) {
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
   const { date: startDate } = formatDateTime(coupon.startDate);
   const { date: endDate } = formatDateTime(coupon.endDate);
   const couponStatus = getCouponStatus({
@@ -140,6 +144,14 @@ function CouponDetails({ coupon, setIsPickerOpen }: CouponDetailsProps) {
           />
         )}
       </section>
+
+      {isPickerOpen && (
+        <ProductPickerDialog
+          open={isPickerOpen}
+          onOpenChange={setIsPickerOpen}
+          couponId={coupon?.id ?? 417}
+        />
+      )}
     </section>
   );
 }
