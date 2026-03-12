@@ -12,17 +12,17 @@ export const productService = {
     pageSize,
     sorting,
     search,
-  }: GetProductsParams) => {
+  }: GetProductsParams = {}) => {
     const sort = sorting?.[0];
 
-    const response = await http.get<PaginatedProductsResponse>(
-      API_ENDPOINTS.products.paginated(
-        pageIndex + 1,
-        pageSize,
-        search,
-        sort ? `${sort.desc ? "-" : ""}${sort.id}` : undefined,
-      ),
+    const url = API_ENDPOINTS.products.paginated(
+      pageIndex !== undefined ? pageIndex + 1 : undefined,
+      pageSize,
+      search?.trim() ? search : undefined,
+      sort ? `${sort.desc ? "-" : ""}${sort.id}` : undefined,
     );
+
+    const response = await http.get<PaginatedProductsResponse>(url);
 
     return response.data;
   },
