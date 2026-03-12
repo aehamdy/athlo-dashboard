@@ -2,6 +2,7 @@ import {
   useReactTable,
   getCoreRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
   flexRender,
 } from "@tanstack/react-table";
 import type { DataTableProps } from "@/features/products/types";
@@ -42,11 +43,12 @@ export function DataTable<TData extends object>({
     },
     onPaginationChange,
     onSortingChange,
-    manualPagination: !!pagination,
-    manualSorting: !!sorting,
+    manualPagination: !!pageCount,
+    manualSorting: !!onSortingChange,
     pageCount,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
   const isClickable = !!onRowClick;
 
@@ -165,13 +167,11 @@ export function DataTable<TData extends object>({
         {!isLoading &&
           pagination &&
           onPaginationChange &&
-          pageCount !== undefined &&
-          data &&
-          data.length > 0 && (
+          table.getPageCount() > 1 && (
             <DataTablePagination
               table={table}
               pagination={pagination}
-              pageCount={pageCount}
+              pageCount={pageCount ?? table.getPageCount()}
             />
           )}
       </div>

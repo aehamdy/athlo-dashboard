@@ -24,12 +24,17 @@ import { useQueryClient } from "@tanstack/react-query";
 import { couponKeys } from "../couponKeys";
 import { couponsService } from "../services/couponsService";
 import DataTableToolbar from "@/components/data-table/DataTableToolbar";
+import type { PaginationState } from "@tanstack/react-table";
 
-function Coupons() {
+function CouponsPage() {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const queryClient = useQueryClient();
 
@@ -80,6 +85,17 @@ function Coupons() {
     }
   };
 
+  const handleSearchChange = (value: string) => {
+    const cleaned = value.trim();
+
+    setSearch(cleaned);
+
+    setPagination((prev) => ({
+      ...prev,
+      pageIndex: 0,
+    }));
+  };
+
   return (
     <DashboardPageLayout
       title="Coupons"
@@ -106,7 +122,7 @@ function Coupons() {
         <div className="md:w-1/4">
           <DataTableToolbar
             search={search}
-            onSearchChange={setSearch}
+            onSearchChange={handleSearchChange}
             placeholder="Search coupons..."
           />
         </div>
@@ -118,6 +134,9 @@ function Coupons() {
           columns={columns}
           onRowClick={handleRowClick}
           globalFilter={search}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          pageSizeOptions={[10, 15, 20, 30]}
         />
       </div>
 
@@ -183,4 +202,4 @@ function Coupons() {
   );
 }
 
-export default Coupons;
+export default CouponsPage;
