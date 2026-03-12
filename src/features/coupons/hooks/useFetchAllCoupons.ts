@@ -4,7 +4,7 @@ import { couponKeys } from "../couponKeys";
 
 function useFetchAllCoupons() {
   return useQuery({
-    queryKey: couponKeys.all,
+    queryKey: couponKeys.list(),
     queryFn: () => couponsService.getAll(),
   });
 }

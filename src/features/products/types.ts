@@ -21,6 +21,7 @@ export interface DataTableProps<TData> {
   pageSizeOptions?: number[];
   error?: unknown;
   onRowClick?: (row: TData) => void;
+  globalFilter?: string;
   className?: string;
 }
 export interface Product {

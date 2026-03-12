@@ -4,8 +4,11 @@ import type { CouponFormValues } from "../coupons.schema";
 import { API_ENDPOINTS } from "@/api/endpoints";
 
 export const couponsService = {
-  getAll: async (): Promise<Coupon[]> => {
-    const { data } = await http.get(API_ENDPOINTS.coupons.getAll);
+  getAll: async (search?: string): Promise<Coupon[]> => {
+    const { data } = await http.get(API_ENDPOINTS.coupons.getAll, {
+      params: search ? { search } : undefined,
+    });
+
     return data.data;
   },
 

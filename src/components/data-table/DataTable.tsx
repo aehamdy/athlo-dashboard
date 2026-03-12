@@ -1,6 +1,7 @@
 import {
   useReactTable,
   getCoreRowModel,
+  getFilteredRowModel,
   flexRender,
 } from "@tanstack/react-table";
 import type { DataTableProps } from "@/features/products/types";
@@ -28,6 +29,7 @@ export function DataTable<TData extends object>({
   pageSizeOptions,
   error,
   onRowClick,
+  globalFilter,
   className,
 }: DataTableProps<TData>) {
   const table = useReactTable({
@@ -36,6 +38,7 @@ export function DataTable<TData extends object>({
     state: {
       pagination,
       sorting,
+      globalFilter,
     },
     onPaginationChange,
     onSortingChange,
@@ -43,6 +46,7 @@ export function DataTable<TData extends object>({
     manualSorting: !!sorting,
     pageCount,
     getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
   const isClickable = !!onRowClick;
 

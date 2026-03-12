@@ -14,6 +14,7 @@ const couponsColumns = (
   {
     accessorKey: "code",
     header: "Code",
+    enableGlobalFilter: true,
     cell: ({ row }) => (
       <span className="">
         <Badge className="relative py-2 px-3 bg-accent/50 text-dark border border-white rounded-sm">
@@ -27,6 +28,7 @@ const couponsColumns = (
   {
     accessorKey: "status",
     header: "Status",
+    enableGlobalFilter: true,
     cell: ({ row }) => {
       const coupon = row.original;
       const status = getCouponStatus({
