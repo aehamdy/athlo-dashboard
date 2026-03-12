@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import Icon from "@/components/shared/Icon";
 import { Skeleton } from "@/components/ui/skeleton";
 import AppImage from "@/components/shared/AppImage";
+import useRemoveAllApplicableProducts from "../hooks/useRemoveAllApplicableProducts";
+import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
 
 type CouponApplicableProductsProps = {
   couponId: number;
@@ -23,11 +25,32 @@ function CouponApplicableProducts({
   setIsPickerOpen,
 }: CouponApplicableProductsProps) {
   const [openValue, setOpenValue] = useState<string>();
+  const [confirmRemoveAll, setConfirmRemoveAll] = useState(false);
+
   const isOpen = openValue === "applicable";
+
   const { data: products, isLoading } = useFetchApplicableProducts({
     couponId,
     enabled: isOpen,
   });
+
+  const removeAllProducts = useRemoveAllApplicableProducts();
+
+  const handleRemoveAll = () => {
+    if (!products || products.length === 0) return;
+
+    removeAllProducts.mutate(
+      {
+        discountId: couponId,
+        productIds: products.map((p: Product) => p.id),
+      },
+      {
+        onSuccess: () => {
+          setConfirmRemoveAll(false);
+        },
+      },
+    );
+  };
 
   return (
     <section className="border-b">
@@ -93,11 +116,10 @@ function CouponApplicableProducts({
                 {products && products.length > 0 && (
                   <Button
                     variant="outline"
-                    onClick={() => {}}
+                    onClick={() => setConfirmRemoveAll(true)}
                     className="flex-1 flex-items-center gap-xs"
                   >
-                    <Icon name="Trash2" />
-                    Remove All
+                    Remove All ({products.length})
                   </Button>
                 )}
 
@@ -113,6 +135,17 @@ function CouponApplicableProducts({
           </AccordionContent>
         </AccordionItem>
       </Accordion>
+
+      {confirmRemoveAll && products && (
+        <ConfirmDeleteModal
+          item={products}
+          setItem={() => setConfirmRemoveAll(false)}
+          itemLabel="all related products"
+          getDisplayName={() => `${products.length} products`}
+          onConfirm={handleRemoveAll}
+          isPending={removeAllProducts.isPending}
+        />
+      )}
     </section>
   );
 }

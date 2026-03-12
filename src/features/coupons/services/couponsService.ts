@@ -61,4 +61,13 @@ export const couponsService = {
   }) => {
     return http.post(API_ENDPOINTS.coupons.addApplicableProduct, payload);
   },
+
+  removeAllApplicableProducts: (payload: {
+    discountId: number;
+    productIds: number[];
+  }) => {
+    return http.delete(API_ENDPOINTS.coupons.deleteAllApplicableProducts, {
+      data: payload,
+    });
+  },
 };
