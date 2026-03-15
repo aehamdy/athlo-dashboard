@@ -83,8 +83,8 @@ export const API_ENDPOINTS = {
   },
   orders: {
     getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/List`,
-    getById: (id: string) =>
-      `${API_VERSION_PATH}${CONTROLLER_PATH.order}/${id}`,
+    getById: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.order}/full-details/${id}`,
     create: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/Create`,
     getMyOrders: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/My-Orders`,
     orderStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/order-status`,
