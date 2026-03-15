@@ -7,6 +7,10 @@ const ordersService = {
 
     return response.data.data;
   },
+  getCouponDetails: async (id: number) => {
+    const response = await http.get(API_ENDPOINTS.orders.getById(id));
+    return response.data.data;
+  },
 };
 
 export default ordersService;
