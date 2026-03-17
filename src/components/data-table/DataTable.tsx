@@ -149,7 +149,7 @@ export function DataTable<TData extends object>({
       </div>
 
       <div className="flex justify-between items-center px-compact md:px-regular lg:px-sm">
-        {pagination && pageSizeOptions && onPaginationChange && (
+        {data.length > 0 && pagination && pageSizeOptions && onPaginationChange && (
           <div className="flex items-center gap-sm">
             <CustomSelect<number>
               label="Items per page"
@@ -166,7 +166,7 @@ export function DataTable<TData extends object>({
           </div>
         )}
 
-        {pagination && onPaginationChange && table.getPageCount() > 1 && (
+        {data.length > 0 && pagination && onPaginationChange && table.getPageCount() > 1 && (
           <DataTablePagination
             table={table}
             pagination={pagination}
