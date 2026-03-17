@@ -7,10 +7,17 @@ import type { Order } from "../types";
 import { useState } from "react";
 import DetailsPanel from "@/components/shared/DetailsPanel";
 import OrderDetails from "../components/OrderDetails";
+import type { PaginationState } from "@tanstack/react-table";
+import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
 
 function Orders() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: DEFAULT_PAGE_SIZE_OPTIONS[1],
+  });
+
   const { data: orders, isLoading, isError } = useFetchAllOrders();
 
   if (isError) {
@@ -31,6 +38,9 @@ function Orders() {
           error={isError}
           columns={ordersColumns()}
           onRowClick={handleRowClick}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+          pageSizeOptions={DEFAULT_PAGE_SIZE_OPTIONS}
         />
       </div>
 
