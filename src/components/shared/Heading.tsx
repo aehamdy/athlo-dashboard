@@ -1,4 +1,3 @@
-// components/sharedComponents/Heading.tsx
 import { type VariantProps, cva } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
@@ -21,8 +20,8 @@ const headingVariants = cva("font-bold text-gray-900 dark:text-white", {
 
 interface HeadingProps
   extends
-    HTMLAttributes<HTMLHeadingElement>,
-    VariantProps<typeof headingVariants> {
+  HTMLAttributes<HTMLHeadingElement>,
+  VariantProps<typeof headingVariants> {
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }
 
