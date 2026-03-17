@@ -52,3 +52,20 @@ export type OrderDetails = {
     }[];
   }[];
 };
+
+export type OrderItem = {
+  productVariantId: number;
+  productName: string;
+  sku: string;
+  unitPrice: number;
+  quantity: number;
+  totalPrice: number;
+  attributes: {
+    keyEn: string;
+    keyAr: string;
+    type: string;
+    valueEn: string;
+    valueAr: string;
+    colorHex: string | null;
+  }[];
+};
