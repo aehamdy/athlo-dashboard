@@ -2,6 +2,8 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { Order } from "./types";
 import { formatDateTime } from "@/utils/formatDateTime";
 import { Badge } from "@/components/ui/badge";
+import { orderStatusConfig } from "./utils/orderStatusConfig";
+import { paymentStatusConfig } from "./utils/paymentStatusConfig";
 
 const ordersColumns = (): ColumnDef<Order>[] => [
   {
@@ -36,24 +38,14 @@ const ordersColumns = (): ColumnDef<Order>[] => [
     accessorKey: "orderStatus",
     header: "Order Status",
     cell: ({ row }) => {
-      const orderStatus = row.original.orderStatus.toLowerCase();
-      const statusColor =
-        orderStatus === "pending"
-          ? "text-yellow-600 bg-yellow-200 border-yellow-300"
-          : orderStatus === "shipped"
-            ? "text-purple-700 bg-purple-200 border-purple-300"
-            : orderStatus === "paid"
-              ? "text-blue-700 bg-blue-200 border-blue-300"
-              : orderStatus === "completed"
-                ? "text-green-700 bg-green-200 border-green-300"
-                : orderStatus === "cancelled"
-                  ? "text-red-800 bg-red-200 border-red-300"
-                  : "text-light bg-zinc-700";
+      const orderStatus = row.original.orderStatus;
+      const statusColor = orderStatusConfig[orderStatus]?.className;
+      const orderStatusLabel = orderStatusConfig[orderStatus]?.label;
 
       return (
         <span className="">
           <Badge className={`${statusColor} border rounded-sm`}>
-            {orderStatus ? row.original.orderStatus : "Unknown"}
+            {orderStatusLabel}
           </Badge>
         </span>
       );
@@ -72,32 +64,30 @@ const ordersColumns = (): ColumnDef<Order>[] => [
     accessorKey: "paymentStatus",
     header: "Payment Status",
     cell: ({ row }) => {
-      const paymentStatus = row.original.paymentStatus.toLowerCase();
-      const indicatorColor =
-        paymentStatus === "pending"
-          ? "bg-yellow-500"
-          : paymentStatus === "completed"
-            ? "bg-green-500"
-            : paymentStatus === "failed" && "bg-red-500";
-      const statusColor =
-        paymentStatus === "pending"
-          ? "text-yellow-700 bg-yellow-100"
-          : paymentStatus === "completed"
-            ? "text-green-600 bg-green-100"
-            : paymentStatus === "failed"
-              ? "text-red-500 bg-red-100"
-              : "text-gray-500 bg-gray-100";
+      const rawStatus = row.original.paymentStatus;
+
+      const normalizedStatus =
+        rawStatus?.charAt(0).toUpperCase() + rawStatus?.slice(1).toLowerCase();
+
+      const config = paymentStatusConfig[normalizedStatus] ?? {
+        label: rawStatus ?? "Unknown",
+        indicatorColor: "bg-gray-400",
+        className: "text-gray-500 bg-gray-100",
+      };
+
+      const { label, indicatorColor, className } = config;
+
       return (
         <div className="">
-          <Badge className={`${statusColor} rounded-sm`}>
-            {(paymentStatus === "pending" ||
-              paymentStatus === "completed" ||
-              paymentStatus === "failed") && (
-              <span
-                className={`w-1.5 h-1.5 me-0.5 ${indicatorColor} rounded-full`}
-              />
-            )}
-            {paymentStatus ? row.original.paymentStatus : "Unknown"}
+          <Badge className={`${className} rounded-sm`}>
+            {(label === "Pending" ||
+              label === "Completed" ||
+              label === "Failed") && (
+                <span
+                  className={`w-1.5 h-1.5 me-0.5 ${indicatorColor} rounded-full`}
+                />
+              )}
+            {label}
           </Badge>
         </div>
       );

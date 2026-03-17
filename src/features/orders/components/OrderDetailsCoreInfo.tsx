@@ -2,6 +2,7 @@ import Heading from "@/components/shared/Heading";
 import Icon from "@/components/shared/Icon";
 import { Badge } from "@/components/ui/badge";
 import { formatDateTime } from "@/utils/formatDateTime";
+import { orderStatusConfig } from "../utils/orderStatusConfig";
 
 type OrderDetailsCoreInfoProps = {
   quantity: number;
@@ -20,6 +21,8 @@ function OrderDetailsCoreInfo({
 }: OrderDetailsCoreInfoProps) {
   const { date: orderDate, time: orderTime } = formatDateTime(createdAt);
   const orderTotalAmount = total.toLocaleString("en-GB");
+  const statusStyle = orderStatusConfig[orderStatus]?.className;
+  const status = orderStatusConfig[orderStatus]?.label ?? orderStatus;
 
   return (
     <div className="space-y-sm">
@@ -35,7 +38,7 @@ function OrderDetailsCoreInfo({
           </Heading>
         </div>
 
-        <Badge variant="outline" className="rounded-md">{orderStatus}</Badge>
+        <Badge variant="outline" className={`${statusStyle} rounded-md`}>{status}</Badge>
       </div>
 
       <div className="grid grid-cols-2 gap-sm">
