@@ -1,6 +1,7 @@
 import Heading from '@/components/shared/Heading';
 import Icon from '@/components/shared/Icon';
 import { Badge } from '@/components/ui/badge';
+import { shipmentStatusConfig } from '../utils/shipmentStatusConfig';
 
 type OrderDetailsShippingInfoProps = {
     city: string;
@@ -30,6 +31,9 @@ function OrderDetailsShippingInfo({
     shipmentStatus,
     notes,
 }: OrderDetailsShippingInfoProps) {
+    const shipmentStyle = shipmentStatusConfig[shipmentStatus]?.className;
+    const shipmentLabel = shipmentStatusConfig[shipmentStatus]?.label;
+
     return (
         <div className="space-y-sm">
             <div className="flex items-center gap-sm pb-xs border-b">
@@ -102,11 +106,9 @@ function OrderDetailsShippingInfo({
                             Method
                         </Heading>
 
-                        <div className="flex">
-                            <Badge className="px-tiny py-0 rounded-md">
-                                {shipmentStatus}
-                            </Badge>
-                        </div>
+                        <Badge className={`${shipmentStyle} px-tiny py-0 rounded-md`}>
+                            {shipmentLabel}
+                        </Badge>
                     </div>
 
                     <p className="font-semibold text-xs text-gray-700">{method}</p>

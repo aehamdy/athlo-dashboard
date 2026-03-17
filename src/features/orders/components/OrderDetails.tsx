@@ -36,17 +36,17 @@ function OrderDetails({ orderId }: OrderDetailsProps) {
       />
 
       <OrderDetailsShippingInfo
-        city={order?.shipmentInfo?.city || ""}
-        country={order?.shipmentInfo?.country || ""}
-        region={order?.shipmentInfo?.region || ""}
-        streetAddress={order?.shipmentInfo?.streetAddress || ""}
-        buildingNumber={order?.shipmentInfo?.buildingNumber || ""}
-        floor={order?.shipmentInfo?.floorNumber || ""}
-        apartmentNumber={order?.shipmentInfo?.apartmentNumber || ""}
-        phoneNumber={order?.shipmentInfo?.phoneNumber || ""}
-        method={order?.shipmentInfo?.shippingMethod || ""}
-        shipmentStatus={order?.shipmentInfo?.shipmentStatus || ""}
-        trackingNumber={order?.shipmentInfo?.trackingNumber || ""}
+        city={order?.shipmentInfo?.city}
+        country={order?.shipmentInfo?.country}
+        region={order?.shipmentInfo?.region}
+        streetAddress={order?.shipmentInfo?.streetAddress}
+        buildingNumber={order?.shipmentInfo?.buildingNumber}
+        floor={order?.shipmentInfo?.floorNumber}
+        apartmentNumber={order?.shipmentInfo?.apartmentNumber}
+        phoneNumber={order?.shipmentInfo?.phoneNumber}
+        method={order?.shipmentInfo?.shippingMethod}
+        shipmentStatus={order?.shipmentInfo?.shipmentStatus}
+        trackingNumber={order?.shipmentInfo?.trackingNumber}
         notes={order?.shipmentInfo?.notes}
       />
 
