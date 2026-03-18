@@ -4,8 +4,10 @@ import { formatDateTime } from "@/utils/formatDateTime";
 import { Badge } from "@/components/ui/badge";
 import { orderStatusConfig } from "./utils/orderStatusConfig";
 import { paymentStatusConfig } from "./utils/paymentStatusConfig";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { orderStatuses, statusStringToNumber } from "./constants";
 
-const ordersColumns = (): ColumnDef<Order>[] => [
+const ordersColumns = (onUpdateStatus: (data: { orderId: number; status: number }) => void): ColumnDef<Order>[] => [
   {
     accessorKey: "orderId",
     header: "Order ID",
@@ -25,6 +27,7 @@ const ordersColumns = (): ColumnDef<Order>[] => [
     header: "Date",
     cell: ({ row }) => {
       const { date, time } = formatDateTime(row.original.createdAt);
+
       return (
         <div className="flex justify-center items-center gap-xs font-medium">
           <span className="text-blue-500">{date}</span>
@@ -38,17 +41,44 @@ const ordersColumns = (): ColumnDef<Order>[] => [
     accessorKey: "orderStatus",
     header: "Order Status",
     cell: ({ row }) => {
+      const orderId = row.original.orderId
       const orderStatus = row.original.orderStatus;
-      const statusColor = orderStatusConfig[orderStatus]?.className;
-      const orderStatusLabel = orderStatusConfig[orderStatus]?.label;
+      const orderStatusNumber = statusStringToNumber[row.original.orderStatus] ?? 0;
 
       return (
-        <span className="">
-          <Badge className={`${statusColor} border rounded-sm`}>
-            {orderStatusLabel}
-          </Badge>
-        </span>
-      );
+        <div className="flex justify-center">
+          <Select
+            value={String(orderStatusNumber)}
+            onValueChange={(value) => {
+              onUpdateStatus({
+                orderId,
+                status: Number(value),
+              });
+            }}
+          >
+            <SelectTrigger className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${orderStatusConfig[orderStatus]?.className
+              } focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-accent-soft`}>
+              <SelectValue />
+            </SelectTrigger>
+
+            <SelectContent>
+              {orderStatuses.map((status) => {
+                const label = status.label;
+                const className = orderStatusConfig[label]?.className ?? '';
+                return (
+                  <SelectItem
+                    key={status.value}
+                    value={String(status.value)}
+                    className={`mb-tiny ${className} rounded-sm`}
+                  >
+                    {label}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+      )
     },
   },
   {
