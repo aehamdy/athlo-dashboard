@@ -4,22 +4,22 @@ export const orderStatusConfig: Record<
 > = {
   Pending: {
     label: 'Pending',
-    className: 'text-yellow-600 bg-yellow-200 border-yellow-300',
-  },
-  Cancelled: {
-    label: 'Cancelled',
-    className: 'text-red-800 bg-red-200 border-red-300',
-  },
-  Completed: {
-    label: 'Completed',
-    className: 'text-green-700 bg-green-200 border-green-300',
+    className: 'text-yellow-600 bg-yellow-100 border-yellow-300',
   },
   Shipped: {
     label: 'Shipped',
-    className: 'text-purple-700 bg-purple-200 border-purple-300',
+    className: 'text-purple-600 bg-purple-100 border-purple-300',
   },
   Paid: {
     label: 'Paid',
-    className: 'text-blue-700 bg-blue-200 border-blue-300',
+    className: 'text-blue-600 bg-blue-100 border-blue-300',
+  },
+  Completed: {
+    label: 'Completed',
+    className: 'text-green-600 bg-green-50 border-green-200',
+  },
+  Cancelled: {
+    label: 'Cancelled',
+    className: 'text-red-600 bg-red-50 border-red-200',
   },
 };
