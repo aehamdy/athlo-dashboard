@@ -4,11 +4,12 @@ import { DataTable } from "@/components/data-table/DataTable";
 import useFetchAllOrders from "../hooks/useFetchAllOrders";
 import ordersColumns from "../columns";
 import type { Order } from "../types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import DetailsPanel from "@/components/shared/DetailsPanel";
 import OrderDetails from "../components/OrderDetails";
 import type { PaginationState } from "@tanstack/react-table";
 import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
+import useUpdateOrderStatus from "../hooks/useUpdateOrderStatus";
 
 function Orders() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -19,6 +20,13 @@ function Orders() {
   });
 
   const { data: orders, isLoading, isError } = useFetchAllOrders();
+
+  const { mutate } = useUpdateOrderStatus();
+
+  const columns = useMemo(
+    () => ordersColumns(mutate),
+    [mutate]
+  );
 
   if (isError) {
     return <Error title="Orders" message="Failed to load orders" />;
@@ -36,7 +44,7 @@ function Orders() {
           data={orders ?? []}
           isLoading={isLoading}
           error={isError}
-          columns={ordersColumns()}
+          columns={columns}
           onRowClick={handleRowClick}
           pagination={pagination}
           onPaginationChange={setPagination}
