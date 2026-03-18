@@ -25,17 +25,6 @@ export const API_ENDPOINTS = {
       search?: string,
       ordering?: string,
     ) => {
-      // let url = `${API_VERSION_PATH}/Product/Paginated?pageNumber=${pageNumber}&pageSize=${pageSize}`;
-
-      // if (search && search.trim()) {
-      //   url += `&search=${encodeURIComponent(search)}`;
-      // }
-
-      // if (ordering && ordering.trim()) {
-      //   url += `&ordering=${encodeURIComponent(ordering)}`;
-      // }
-
-      // return url;
       const url = `${API_VERSION_PATH}/Product/Paginated?`;
 
       const params = new URLSearchParams();
