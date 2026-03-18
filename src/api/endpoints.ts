@@ -1,14 +1,14 @@
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_VERSION_PATH = `${BASE_URL}/Api/V1`;
 const CONTROLLER_PATH = {
-  authentication: "/Authentication",
-  product: "/Product",
-  brand: "/Brand",
-  category: "/Category",
-  order: "/Order",
-  coupon: "/Discount",
-  productCoupon: "/Product_Discount",
-  user: "/User",
+  authentication: '/Authentication',
+  product: '/Product',
+  brand: '/Brand',
+  category: '/Category',
+  order: '/Order',
+  coupon: '/Discount',
+  productCoupon: '/Product_Discount',
+  user: '/User',
 };
 
 export const API_ENDPOINTS = {
@@ -41,11 +41,11 @@ export const API_ENDPOINTS = {
       const params = new URLSearchParams();
 
       if (pageNumber !== undefined)
-        params.append("pageNumber", pageNumber.toString());
+        params.append('pageNumber', pageNumber.toString());
       if (pageSize !== undefined)
-        params.append("pageSize", pageSize.toString());
-      if (search) params.append("search", search);
-      if (ordering) params.append("ordering", ordering);
+        params.append('pageSize', pageSize.toString());
+      if (search) params.append('search', search);
+      if (ordering) params.append('ordering', ordering);
 
       return url + params.toString();
     },
@@ -87,8 +87,8 @@ export const API_ENDPOINTS = {
       `${API_VERSION_PATH}${CONTROLLER_PATH.order}/full-details/${id}`,
     create: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/Create`,
     getMyOrders: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/My-Orders`,
-    orderStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/order-status`,
-    paymentStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/payment-status`,
+    updateOrderStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/order-status`,
+    updatePaymentStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/payment-status`,
     userOrder: (userId: string) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.order}/user/${userId}`,
   },
