@@ -20,6 +20,14 @@ const ordersService = {
     });
     return response.data.data;
   },
+
+  updatePaymentStatus: async (data: { orderId: number; status: number }) => {
+    const response = await http.put(API_ENDPOINTS.orders.updatePaymentStatus, {
+      orderId: data.orderId,
+      status: data.status,
+    });
+    return response.data.data;
+  },
 };
 
 export default ordersService;
