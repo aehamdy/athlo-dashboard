@@ -120,13 +120,13 @@ function CouponsPage() {
       }
     >
       <div className="flex flex-col gap-xs h-full">
-        <div className="md:w-1/4">
+        {coupons && coupons.length > 0 && (<div className="md:w-1/4">
           <DataTableToolbar
             search={search}
             onSearchChange={handleSearchChange}
             placeholder="Search coupons..."
           />
-        </div>
+        </div>)}
 
         <DataTable
           data={coupons ?? []}

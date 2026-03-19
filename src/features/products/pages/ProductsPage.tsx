@@ -63,13 +63,13 @@ export default function ProductsPage() {
       }
     >
       <div className="flex flex-col gap-xs h-full">
-        <div className="md:w-1/4">
+        {products && products.data.length > 0 && (<div className="md:w-1/4">
           <DataTableToolbar
             search={search}
             onSearchChange={setSearch}
             placeholder="Search products..."
           />
-        </div>
+        </div>)}
 
         <DataTable
           data={products?.data ?? []}
