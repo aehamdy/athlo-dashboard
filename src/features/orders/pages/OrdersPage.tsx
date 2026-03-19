@@ -10,8 +10,9 @@ import OrderDetails from "../components/OrderDetails";
 import type { PaginationState } from "@tanstack/react-table";
 import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
 import useUpdateOrderStatus from "../hooks/useUpdateOrderStatus";
+import useUpdatePaymentStatus from "../hooks/useUpdatePaymentStatus";
 
-function Orders() {
+function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -21,11 +22,12 @@ function Orders() {
 
   const { data: orders, isLoading, isError } = useFetchAllOrders();
 
-  const { mutate } = useUpdateOrderStatus();
+  const { mutate: updateOrderStatus } = useUpdateOrderStatus();
+  const { mutate: updatePaymentStatus } = useUpdatePaymentStatus();
 
   const columns = useMemo(
-    () => ordersColumns(mutate),
-    [mutate]
+    () => ordersColumns(updateOrderStatus, updatePaymentStatus),
+    [updateOrderStatus, updatePaymentStatus]
   );
 
   if (isError) {
@@ -67,4 +69,4 @@ function Orders() {
   );
 }
 
-export default Orders;
+export default OrdersPage;

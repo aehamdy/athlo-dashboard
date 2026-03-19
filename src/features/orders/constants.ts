@@ -13,3 +13,15 @@ export const statusStringToNumber: Record<string, number> = {
   Completed: 3,
   Cancelled: 4,
 };
+
+export const paymentStatuses = [
+  { value: 0, label: 'Pending' },
+  { value: 1, label: 'Completed' },
+  { value: 2, label: 'Failed' },
+];
+
+export const paymentStatusStringToNumber: Record<string, number> = {
+  Pending: 0,
+  Completed: 1,
+  Failed: 2,
+};
