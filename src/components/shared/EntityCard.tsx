@@ -22,7 +22,7 @@ function EntityCard({ entity, onEdit, onDelete }: Props) {
   const displayName = name || nameEn;
 
   return (
-    <article className="group h-50 lg:h-90 rounded-xl overflow-hidden">
+    <article className="group h-70 lg:h-90 rounded-xl overflow-hidden">
       <div className="relative w-full h-full">
         <AppImage
           src={imageUrl}
