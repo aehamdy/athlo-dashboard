@@ -5,8 +5,7 @@ import { orderStatusConfig } from "./utils/orderStatusConfig";
 import { paymentStatusConfig } from "./utils/paymentStatusConfig";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { orderStatuses, paymentStatuses, paymentStatusStringToNumber, statusStringToNumber } from "./constants";
-import getAllowedOrderStatuses from "./utils/getAllowedOrderStatuses ";
-import getAllowedPaymentStatuses from "./utils/getAllowedPaymentStatuses";
+import getAllowedStatuses from "./utils/getAllowedStatuses";
 
 const ordersColumns = (
   onUpdateOrderStatus: (data: { orderId: number; status: number }) => void,
@@ -48,7 +47,7 @@ const ordersColumns = (
         const orderId = row.original.orderId
         const orderStatus = row.original.orderStatus;
         const orderStatusNumber = statusStringToNumber[orderStatus] ?? 0;
-        const allowedOptions = getAllowedOrderStatuses(orderStatusNumber);
+        const allowedOptions = getAllowedStatuses(orderStatusNumber, orderStatuses);
 
         return (
           <div className="flex justify-center">
@@ -104,7 +103,7 @@ const ordersColumns = (
         const orderId = row.original.orderId;
         const paymentStatus = row.original.paymentStatus;
         const paymentStatusNumber = paymentStatusStringToNumber[paymentStatus] ?? 0;
-        const allowedOptions = getAllowedPaymentStatuses(paymentStatusNumber);
+        const allowedOptions = getAllowedStatuses(paymentStatusNumber, paymentStatuses);
 
         return (
           <div className="flex justify-end">
@@ -116,6 +115,7 @@ const ordersColumns = (
                   status: Number(value),
                 });
               }}
+              disabled={paymentStatusNumber === 3}
             >
               <SelectTrigger
                 className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${paymentStatusConfig[paymentStatus]?.className} 
