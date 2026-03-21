@@ -5,6 +5,7 @@ import { orderStatusConfig } from "./utils/orderStatusConfig";
 import { paymentStatusConfig } from "./utils/paymentStatusConfig";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { orderStatuses, paymentStatuses, paymentStatusStringToNumber, statusStringToNumber } from "./constants";
+import getAllowedOrderStatuses from "./utils/getAllowedOrderStatuses ";
 
 const ordersColumns = (
   onUpdateOrderStatus: (data: { orderId: number; status: number }) => void,
@@ -46,6 +47,7 @@ const ordersColumns = (
         const orderId = row.original.orderId
         const orderStatus = row.original.orderStatus;
         const orderStatusNumber = statusStringToNumber[orderStatus] ?? 0;
+        const allowedOptions = getAllowedOrderStatuses(orderStatusNumber);
 
         return (
           <div className="flex justify-center">
@@ -57,6 +59,7 @@ const ordersColumns = (
                   status: Number(value),
                 });
               }}
+              disabled={orderStatusNumber === 4}
             >
               <SelectTrigger className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${orderStatusConfig[orderStatus]?.className
                 } focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-accent-soft`}>
@@ -64,9 +67,10 @@ const ordersColumns = (
               </SelectTrigger>
 
               <SelectContent>
-                {orderStatuses.map((status) => {
+                {allowedOptions.map((status) => {
                   const label = status.label;
                   const className = orderStatusConfig[label]?.className ?? '';
+
                   return (
                     <SelectItem
                       key={status.value}
