@@ -6,6 +6,7 @@ import { paymentStatusConfig } from "./utils/paymentStatusConfig";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { orderStatuses, paymentStatuses, paymentStatusStringToNumber, statusStringToNumber } from "./constants";
 import getAllowedOrderStatuses from "./utils/getAllowedOrderStatuses ";
+import getAllowedPaymentStatuses from "./utils/getAllowedPaymentStatuses";
 
 const ordersColumns = (
   onUpdateOrderStatus: (data: { orderId: number; status: number }) => void,
@@ -103,6 +104,7 @@ const ordersColumns = (
         const orderId = row.original.orderId;
         const paymentStatus = row.original.paymentStatus;
         const paymentStatusNumber = paymentStatusStringToNumber[paymentStatus] ?? 0;
+        const allowedOptions = getAllowedPaymentStatuses(paymentStatusNumber);
 
         return (
           <div className="flex justify-end">
@@ -123,7 +125,7 @@ const ordersColumns = (
               </SelectTrigger>
 
               <SelectContent>
-                {paymentStatuses.map((payment) => {
+                {allowedOptions.map((payment) => {
                   const label = payment.label;
                   const className = paymentStatusConfig[label]?.className ?? '';
 
