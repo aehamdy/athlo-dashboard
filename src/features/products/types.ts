@@ -1,13 +1,13 @@
-import { EDIT_PRODUCT_TABS } from "./constants";
+import { EDIT_PRODUCT_TABS } from './constants';
 
-export type EditProductTab = (typeof EDIT_PRODUCT_TABS)[number]["key"];
+export type EditProductTab = (typeof EDIT_PRODUCT_TABS)[number]['key'];
 
 import type {
   ColumnDef,
   PaginationState,
   SortingState,
   OnChangeFn,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 
 export interface DataTableProps<TData> {
   data: TData[];
@@ -79,4 +79,15 @@ export interface GetProductsParams {
     desc: boolean;
   }[];
   search?: string;
+}
+
+export interface IProductReview {
+  id: number;
+  productId: number;
+  productName: string;
+  userId: number;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
 }

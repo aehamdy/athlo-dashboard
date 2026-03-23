@@ -6,12 +6,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import ProductReviews from "./ProductReviews";
 
 type ProductDetailsProps = {
   product: Product;
 };
 
 function ProductDetails({ product }: ProductDetailsProps) {
+
+
   return (
     <section className="">
       <div className="py-base px-regular border-b">
@@ -60,22 +63,7 @@ function ProductDetails({ product }: ProductDetailsProps) {
           </Accordion>
         </section>
 
-        <section className="px-base border-b">
-          <Accordion type="single" collapsible>
-            <AccordionItem value="reviews">
-              <AccordionTrigger className="">
-                <Heading as="h5" className="text-base font-semibold">
-                  Reviews
-                </Heading>
-              </AccordionTrigger>
-
-              <AccordionContent>
-                We offer standard (5-7 days), express (2-3 days), and overnight
-                shipping. Free shipping on international orders.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </section>
+        <ProductReviews productId={product.id} />
       </section>
     </section>
   );
