@@ -1,10 +1,10 @@
-import http from "@/api/http";
+import http from '@/api/http';
 import type {
   PaginatedProductsResponse,
   GetProductsParams,
   ProductForm,
-} from "../types";
-import { API_ENDPOINTS } from "@/api/endpoints";
+} from '../types';
+import { API_ENDPOINTS } from '@/api/endpoints';
 
 export const productService = {
   getPaginated: async ({
@@ -19,7 +19,7 @@ export const productService = {
       pageIndex !== undefined ? pageIndex + 1 : undefined,
       pageSize,
       search?.trim() ? search : undefined,
-      sort ? `${sort.desc ? "-" : ""}${sort.id}` : undefined,
+      sort ? `${sort.desc ? '-' : ''}${sort.id}` : undefined,
     );
 
     const response = await http.get<PaginatedProductsResponse>(url);
@@ -54,7 +54,7 @@ export const productService = {
       API_ENDPOINTS.products.updateImages,
       formData,
       {
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
       },
     );
     return response.data;
@@ -65,8 +65,15 @@ export const productService = {
       await http.delete<void>(API_ENDPOINTS.products.delete(id));
     } catch (error: unknown) {
       const axiosError = error as { response?: { data: unknown } };
-      console.log("Delete error response:", axiosError.response?.data);
+      console.log('Delete error response:', axiosError.response?.data);
       throw error;
     }
+  },
+
+  getProductReviews: async (productId: number) => {
+    const response = await http.get(
+      API_ENDPOINTS.orderReviews.getById(productId),
+    );
+    return response.data.data;
   },
 };
