@@ -6,6 +6,7 @@ const CONTROLLER_PATH = {
   brand: '/Brand',
   category: '/Category',
   order: '/Order',
+  orderReview: '/Review',
   coupon: '/Discount',
   productCoupon: '/Product_Discount',
   user: '/User',
@@ -80,6 +81,10 @@ export const API_ENDPOINTS = {
     updatePaymentStatus: `${API_VERSION_PATH}${CONTROLLER_PATH.order}/payment-status`,
     userOrder: (userId: string) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.order}/user/${userId}`,
+  },
+  orderReviews: {
+    getById: (productId: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.orderReview}/product/${productId}`,
   },
   coupons: {
     getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/List`,
