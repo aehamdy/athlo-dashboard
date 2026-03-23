@@ -48,6 +48,7 @@ const ordersColumns = (
         const orderStatus = row.original.orderStatus;
         const orderStatusNumber = statusStringToNumber[orderStatus] ?? 0;
         const allowedOptions = getAllowedStatuses(orderStatusNumber, orderStatuses);
+        const orderStatusStyles = orderStatusConfig[orderStatus]?.className ?? '';
 
         return (
           <div className="flex justify-center">
@@ -61,8 +62,7 @@ const ordersColumns = (
               }}
               disabled={orderStatusNumber === 4}
             >
-              <SelectTrigger className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${orderStatusConfig[orderStatus]?.className
-                } focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-accent-soft`}>
+              <SelectTrigger className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${orderStatusStyles} focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-accent-soft`}>
                 <SelectValue />
               </SelectTrigger>
 
@@ -104,6 +104,7 @@ const ordersColumns = (
         const paymentStatus = row.original.paymentStatus;
         const paymentStatusNumber = paymentStatusStringToNumber[paymentStatus] ?? 0;
         const allowedOptions = getAllowedStatuses(paymentStatusNumber, paymentStatuses);
+        const paymentStatusStyles = paymentStatusConfig[paymentStatus]?.className ?? '';
 
         return (
           <div className="flex justify-end">
@@ -115,10 +116,10 @@ const ordersColumns = (
                   status: Number(value),
                 });
               }}
-              disabled={paymentStatusNumber === 3}
+              disabled={paymentStatusNumber === 2}
             >
               <SelectTrigger
-                className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${paymentStatusConfig[paymentStatus]?.className} 
+                className={`w-full max-w-[115px] py-[2px] px-[8px] max-h-[26px] rounded-xl ${paymentStatusStyles} 
                   focus-visible:border-transparent focus-visible:ring-2 focus-visible:ring-accent-soft`}
               >
                 <SelectValue />
