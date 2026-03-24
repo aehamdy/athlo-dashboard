@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { productService } from "../services/productsService";
-import { toast } from "sonner";
-import parseApiError from "../utils/parseApiError";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { productService } from '../services/productsService';
+import { toast } from 'sonner';
+import parseApiError from '../utils/parseApiError';
+import { productKeys } from '../productKeys';
 
 function useUpdateProductMedia(productId: number) {
   const queryClient = useQueryClient();
@@ -11,15 +12,15 @@ function useUpdateProductMedia(productId: number) {
       productService.updateProductMedia(formData),
 
     onSuccess: () => {
-      toast.success("Image replaced successfully.");
+      toast.success('Image replaced successfully.');
       // Refetch product media after update
       queryClient.invalidateQueries({
-        queryKey: ["product-media", productId],
+        queryKey: productKeys.media(productId),
       });
 
       // Invalidate main product info
       queryClient.invalidateQueries({
-        queryKey: ["product-info", productId],
+        queryKey: ['products'],
       });
     },
 

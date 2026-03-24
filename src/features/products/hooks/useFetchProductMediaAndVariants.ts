@@ -1,14 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { productService } from "../services/productsService";
+import { useQuery } from '@tanstack/react-query';
+import { productService } from '../services/productsService';
+import { productKeys } from '../productKeys';
 
-const useFetchProductMediaAndVariants = (id: number | null) => {
+const useFetchProductMediaAndVariants = (id: number) => {
   return useQuery({
-    queryKey: ["product", id, "media"],
-    queryFn: () => {
-      if (!id) throw new Error("Product ID is required");
-      return productService.getProductImagesAndVariants(id);
-    },
-    enabled: !!id,
+    queryKey: productKeys.media(id),
+    queryFn: () => productService.getProductImagesAndVariants(id),
   });
 };
 
