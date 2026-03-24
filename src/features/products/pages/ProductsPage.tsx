@@ -1,23 +1,25 @@
-import useFetchPaginatedProducts from "@/features/products/hooks/useFetchPaginatedProducts";
-import { DataTable } from "@/components/data-table/DataTable";
-import DataTableToolbar from "@/components/data-table/DataTableToolbar";
-import { productColumns } from "@/features/products/columns";
-import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
-import { Link } from "react-router-dom";
-import Icon from "@/components/shared/Icon";
-import { ROUTE_PATHS } from "@/routes/paths";
-import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
-import { useDebounce } from "@/features/products/hooks/useDebounce";
-import { useProductsTable } from "@/features/products/hooks/useProductsTable";
-import { useProductDelete } from "@/features/products/hooks/useProductDelete";
-import { useState } from "react";
-import type { Product } from "../types";
-import DetailsPanel from "@/components/shared/DetailsPanel";
-import ProductDetails from "../components/ProductDetails";
-import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
+import useFetchPaginatedProducts from '@/features/products/hooks/useFetchPaginatedProducts';
+import { DataTable } from '@/components/data-table/DataTable';
+import DataTableToolbar from '@/components/data-table/DataTableToolbar';
+import { productColumns } from '@/features/products/columns';
+import DashboardPageLayout from '@/components/shared/DashboardPageLayout';
+import { Link } from 'react-router-dom';
+import Icon from '@/components/shared/Icon';
+import { ROUTE_PATHS } from '@/routes/paths';
+import ConfirmDeleteModal from '@/components/shared/ConfirmDeleteModal';
+import { useDebounce } from '@/features/products/hooks/useDebounce';
+import { useProductsTable } from '@/features/products/hooks/useProductsTable';
+import { useProductDelete } from '@/features/products/hooks/useProductDelete';
+import { useState } from 'react';
+import type { Product } from '../types';
+import DetailsPanel from '@/components/shared/DetailsPanel';
+import ProductDetails from '../components/ProductDetails';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
 
 export default function ProductsPage() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null,
+  );
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { pagination, setPagination, sorting, setSorting, search, setSearch } =
     useProductsTable();
@@ -45,7 +47,7 @@ export default function ProductsPage() {
   });
 
   const handleRowClick = (product: Product) => {
-    setSelectedProduct(product);
+    setSelectedProductId(product.id);
     setIsSheetOpen(true);
   };
 
@@ -63,13 +65,15 @@ export default function ProductsPage() {
       }
     >
       <div className="flex flex-col gap-xs h-full">
-        {products && products.data.length > 0 && (<div className="md:w-1/4">
-          <DataTableToolbar
-            search={search}
-            onSearchChange={setSearch}
-            placeholder="Search products..."
-          />
-        </div>)}
+        {products && products.data.length > 0 && (
+          <div className="md:w-1/4">
+            <DataTableToolbar
+              search={search}
+              onSearchChange={setSearch}
+              placeholder="Search products..."
+            />
+          </div>
+        )}
 
         <DataTable
           data={products?.data ?? []}
@@ -89,19 +93,19 @@ export default function ProductsPage() {
           item={productToDelete}
           setItem={setProductToDelete}
           itemLabel="product"
-          getDisplayName={(p) => p?.name ?? ""}
+          getDisplayName={(p) => p?.name ?? ''}
           onConfirm={confirmDelete}
-          isPending={deleteProduct.status === "pending"}
+          isPending={deleteProduct.status === 'pending'}
         />
 
-        {selectedProduct && (
+        {selectedProductId && (
           <DetailsPanel
             open={isSheetOpen}
             onOpenChange={setIsSheetOpen}
             title="Product Details"
             description="Explore the full product details."
           >
-            <ProductDetails product={selectedProduct} />
+            <ProductDetails productId={selectedProductId} />
           </DetailsPanel>
         )}
       </div>
