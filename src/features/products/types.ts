@@ -46,6 +46,50 @@ export interface Product {
   images: string[];
 }
 
+export interface ProductDetails {
+  id: number;
+  code: string;
+  nameEn: string;
+  nameAr: string;
+  descriptionEn: string;
+  descriptionAr: string;
+  season: string;
+  clubEn: string;
+  clubAr: string;
+  brandId: number;
+  brandNameEn: string;
+  brandNameAr: string;
+  categoryId: number;
+  categoryNameEn: string;
+  categoryNameAr: string;
+  basePrice: number;
+  minPrice: number;
+  maxPrice: number;
+  minPriceAfterDiscount: number;
+  maxPriceAfterDiscount: number;
+  priceAfterDiscount: number;
+  hasVariants: boolean;
+  images: string[];
+  variants: ProductVariant[];
+}
+
+export interface ProductVariant {
+  id: number;
+  sku: string;
+  price: number;
+  priceAfterDiscount: number;
+  stockQuantity: number;
+  inStock: boolean;
+  attributes: {
+    keyEn: string;
+    keyAr: string;
+    type: string;
+    valueEn: string;
+    valueAr: string;
+    colorHex: string;
+  }[];
+}
+
 export interface ProductForm {
   id: number;
   nameEn: string;
