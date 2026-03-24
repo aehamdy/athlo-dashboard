@@ -1,67 +1,30 @@
-import Heading from "@/components/shared/Heading";
-import type { Product } from "../types";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import ProductReviews from "./ProductReviews";
+import ProductImages from './ProductImages';
+import { useFetchProductById } from '../hooks/useFetchProductById';
+import Loading from '@/components/shared/Loading';
+import ProductGeneralInfo from './ProductGeneralInfo';
+import ProductReviews from './ProductReviews';
+import ProductVariants from './ProductVariants';
 
 type ProductDetailsProps = {
-  product: Product;
+  productId: number;
 };
 
-function ProductDetails({ product }: ProductDetailsProps) {
+function ProductDetails({ productId }: ProductDetailsProps) {
+  const { data: product, isLoading: isLoadingProduct } =
+    useFetchProductById(productId);
 
+  if (isLoadingProduct || !product) {
+    return <Loading size="normal" />;
+  }
 
   return (
     <section className="">
-      <div className="py-base px-regular border-b">
-        <Heading as="h3" className="text-lg font-semibold">
-          Product Details
-        </Heading>
-      </div>
-
       <section className="h-full">
-        <section className="p-base border-b">
-          <div className="">
-            <Heading as="h5" className="text-base font-semibold">
-              Images
-            </Heading>
-          </div>
+        <ProductImages images={product.images} productName={product.nameEn} />
 
-          <div className=""></div>
-        </section>
+        <ProductGeneralInfo product={product} />
 
-        <section className="p-base border-b">
-          <div className="">
-            <Heading as="h5" className="text-base font-semibold">
-              Info
-            </Heading>
-
-            {product.name}
-          </div>
-
-          <div className=""></div>
-        </section>
-
-        <section className="px-base border-b">
-          <Accordion type="single" collapsible defaultValue="variants">
-            <AccordionItem value="variants">
-              <AccordionTrigger className="">
-                <Heading as="h5" className="text-base font-semibold">
-                  Variants
-                </Heading>
-              </AccordionTrigger>
-
-              <AccordionContent>
-                We offer standard (5-7 days), express (2-3 days), and overnight
-                shipping. Free shipping on international orders.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </section>
+        <ProductVariants variants={product.variants} />
 
         <ProductReviews productId={product.id} />
       </section>
