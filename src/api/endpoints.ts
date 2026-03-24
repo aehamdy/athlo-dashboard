@@ -26,7 +26,7 @@ export const API_ENDPOINTS = {
       search?: string,
       ordering?: string,
     ) => {
-      const url = `${API_VERSION_PATH}/Product/Paginated?`;
+      const url = `${API_VERSION_PATH}${CONTROLLER_PATH.product}/Paginated?`;
 
       const params = new URLSearchParams();
 
@@ -39,17 +39,20 @@ export const API_ENDPOINTS = {
 
       return url + params.toString();
     },
-    getById: (id: string) => `${API_VERSION_PATH}/Product/${id}`,
-    getByIdToEdit: (id: number) => `${API_VERSION_PATH}/Product/${id}/To-Edit`,
+    getById: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.product}/full-details/${id}`,
+    getByIdToEdit: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.product}/${id}/To-Edit`,
     getProductWithVariants: (id: number) =>
-      `${API_VERSION_PATH}/Product/${id}/With-Variants`,
-    create: `${API_VERSION_PATH}/Product/Create`,
-    update: `${API_VERSION_PATH}/Product/Edit`,
+      `${API_VERSION_PATH}${CONTROLLER_PATH.product}/${id}/With-Variants`,
+    create: `${API_VERSION_PATH}${CONTROLLER_PATH.product}/Create`,
+    update: `${API_VERSION_PATH}${CONTROLLER_PATH.product}/Edit`,
+    delete: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.product}/${id}`,
     addImages: `${API_VERSION_PATH}/ProductImage/CreateProductImages`,
     addVariants: `${API_VERSION_PATH}/ProductVariant/CreateRange`,
     updateImages: `${API_VERSION_PATH}/ProductImage/EditProductImage`,
     updateVariants: `${API_VERSION_PATH}/ProductVariant/Edit`,
-    delete: (id: number) => `${API_VERSION_PATH}/Product/${id}`,
 
     // deleteImage: `${API_VERSION_PATH}/ProductImage/DeleteProductImage`,
     // deleteVariant: (id: number) => `${API_VERSION_PATH}/ProductVariant/${id}`,
