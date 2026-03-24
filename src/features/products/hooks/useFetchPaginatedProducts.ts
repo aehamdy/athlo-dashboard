@@ -3,11 +3,12 @@ import {
   keepPreviousData,
   useMutation,
   useQueryClient,
-} from "@tanstack/react-query";
-import type { GetProductsParams, PaginatedProductsResponse } from "../types";
-import { productService } from "../services/productsService";
-import { toast } from "sonner";
-import type { UseQueryResult } from "@tanstack/react-query";
+} from '@tanstack/react-query';
+import type { GetProductsParams, PaginatedProductsResponse } from '../types';
+import { productService } from '../services/productsService';
+import { toast } from 'sonner';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { productKeys } from '../productKeys';
 
 type DeleteError = {
   response?: {
@@ -27,7 +28,7 @@ function useFetchPaginatedProducts(
   const queryClient = useQueryClient();
 
   const query = useQuery<PaginatedProductsResponse>({
-    queryKey: ["products", params],
+    queryKey: productKeys.list(params),
     queryFn: () => productService.getPaginated(params),
     placeholderData: keepPreviousData,
   });
@@ -36,13 +37,13 @@ function useFetchPaginatedProducts(
     mutationFn: productService.delete,
 
     onSuccess: () => {
-      toast.success("Product deleted successfully");
-      queryClient.invalidateQueries({ queryKey: ["products", params] });
+      toast.success('Product deleted successfully');
+      queryClient.invalidateQueries({ queryKey: ['products', params] });
     },
 
     onError: (error: DeleteError) => {
       const message =
-        error?.response?.data?.message || "Failed to delete product";
+        error?.response?.data?.message || 'Failed to delete product';
 
       toast.error(message);
     },

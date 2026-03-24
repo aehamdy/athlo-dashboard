@@ -1,14 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { productService } from "../services/productsService";
-import type { Product } from "../types";
+import { useQuery } from '@tanstack/react-query';
+import { productService } from '../services/productsService';
+import type { Product } from '../types';
+import { productKeys } from '../productKeys';
 
-const useFetchProductInfo = (id: number | null | undefined) => {
+const useFetchProductInfo = (id: number) => {
   return useQuery<Product>({
-    queryKey: ["product", id, "info"],
-    queryFn: () => {
-      if (!id) throw new Error("Product ID is required");
-      return productService.getProductInfo(id);
-    },
+    queryKey: productKeys.info(id),
+    queryFn: () => productService.getProductInfo(id),
     enabled: !!id,
   });
 };
