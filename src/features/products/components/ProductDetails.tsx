@@ -1,9 +1,9 @@
 import ProductImages from './ProductImages';
 import { useFetchProductById } from '../hooks/useFetchProductById';
-import Loading from '@/components/shared/Loading';
 import ProductGeneralInfo from './ProductGeneralInfo';
 import ProductReviews from './ProductReviews';
 import ProductVariants from './ProductVariants';
+import ProductDetailsSkeleton from './skeletons/ProductDetailsSkeleton';
 
 type ProductDetailsProps = {
   productId: number;
@@ -14,7 +14,7 @@ function ProductDetails({ productId }: ProductDetailsProps) {
     useFetchProductById(productId);
 
   if (isLoadingProduct || !product) {
-    return <Loading size="normal" />;
+    return <ProductDetailsSkeleton />;
   }
 
   return (

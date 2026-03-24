@@ -18,7 +18,7 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
 
       {/* Product price, variants, and code */}
       <div className="grid grid-cols-3 gap-sm pt-md border-t">
-        <div className="flex flex-col gap-sm p-sm bg-gray-100 rounded-md">
+        <div className="flex flex-col justify-between gap-sm p-sm bg-gray-100 rounded-md">
           <Heading
             as="h5"
             className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
@@ -43,7 +43,7 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-sm p-sm bg-gray-100 rounded-md">
+        <div className="flex flex-col justify-between gap-sm p-sm bg-gray-100 rounded-md">
           <Heading
             as="h5"
             className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
@@ -56,7 +56,7 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
           </p>
         </div>
 
-        <div className="flex flex-col gap-sm p-sm bg-gray-100 rounded-md">
+        <div className="flex flex-col justify-between gap-sm p-sm bg-gray-100 rounded-md">
           <Heading
             as="h5"
             className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
