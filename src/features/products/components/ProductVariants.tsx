@@ -55,7 +55,7 @@ function ProductVariants({ variants }: { variants: ProductVariant[] }) {
               </Badge>
             </div>
 
-            <ul className="flex flex-col gap-sm">
+            <ul className="flex flex-col gap-sm h-[300px] overflow-y-auto">
               {variants.map((variant) => (
                 <li key={variant.id}>
                   <article className="p-sm border rounded-md flex flex-col gap-xs">
