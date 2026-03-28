@@ -1,9 +1,9 @@
-import type { ColumnDef } from "@tanstack/react-table";
-import type { Product } from "./types";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ROUTE_PATHS } from "@/routes/paths";
-import { Link } from "react-router-dom";
+import type { ColumnDef } from '@tanstack/react-table';
+import type { Product } from './types';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { ROUTE_PATHS } from '@/routes/paths';
+import { Link } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,33 +11,33 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Icon from "@/components/shared/Icon";
-import AppImage from "@/components/shared/AppImage";
+} from '@/components/ui/dropdown-menu';
+import Icon from '@/components/shared/Icon';
+import AppImage from '@/components/shared/AppImage';
 
 export const productColumns = (
   onDelete: (id: number) => void,
 ): ColumnDef<Product>[] => [
   {
-    accessorKey: "name",
-    header: "Product",
+    accessorKey: 'name',
+    header: 'Product',
     cell: ({ row }) => (
       <div className="flex items-center gap-compact font-medium text-foreground">
         <div className="w-16 h-16 rounded-md overflow-hidden">
           <AppImage
             src={row.original.images[0]}
-            alt={row.original.name || "Product image"}
+            alt={row.original.name || 'Product image'}
             className="w-full h-full object-cover"
           />
         </div>
 
-        {row.original.name || "Unnamed Product"}
+        {row.original.name || 'Unnamed Product'}
       </div>
     ),
   },
   {
-    accessorKey: "categoryName",
-    header: "Category",
+    accessorKey: 'categoryName',
+    header: 'Category',
     cell: ({ getValue }) => (
       <span className="text-sm text-muted-foreground">
         {getValue<string>()}
@@ -45,8 +45,8 @@ export const productColumns = (
     ),
   },
   {
-    accessorKey: "brandName",
-    header: "Brand",
+    accessorKey: 'brandName',
+    header: 'Brand',
     cell: ({ getValue }) => (
       <span className="text-sm text-muted-foreground">
         {getValue<string>()}
@@ -54,8 +54,8 @@ export const productColumns = (
     ),
   },
   {
-    accessorKey: "season",
-    header: "Season",
+    accessorKey: 'season',
+    header: 'Season',
     cell: ({ getValue }) => (
       <Badge className="inline-flex items-center font-medium px-2 py-1 text-xs text-dark bg-muted rounded-md">
         {getValue<string>()}
@@ -63,8 +63,8 @@ export const productColumns = (
     ),
   },
   {
-    accessorKey: "basePrice",
-    header: "Base Price",
+    accessorKey: 'basePrice',
+    header: 'Base Price',
     cell: ({ getValue }) => {
       const value = getValue<number>();
 
@@ -72,8 +72,8 @@ export const productColumns = (
     },
   },
   {
-    id: "discountedPrice",
-    header: "Discounted",
+    id: 'discountedPrice',
+    header: 'Discounted',
     cell: ({ row }) => {
       const { basePrice, priceAfterDiscount } = row.original;
 
@@ -89,12 +89,12 @@ export const productColumns = (
     },
   },
   {
-    accessorKey: "club",
-    header: "Club",
+    accessorKey: 'club',
+    header: 'Club',
     cell: ({ row }) => {
       const club = row.original.club;
 
-      if (!club || club.trim() === "") {
+      if (!club || club.trim() === '') {
         return <span className="text-muted-foreground">-</span>;
       }
 
@@ -108,29 +108,20 @@ export const productColumns = (
     },
   },
   {
-    id: "actions",
-    header: "Actions",
+    id: 'actions',
+    header: 'Actions',
     cell: ({ row }) => {
       return (
-        // <div className="flex justify-end gap-2">
-        //   <Link
-        //     to={ROUTE_PATHS.dashboard.editProduct(row.original.id, "info")}
-        //     className="main-link"
-        //   >
-        //     Edit
-        //   </Link>
-
-        //   <Button
-        //     size="sm"
-        //     variant="destructive"
-        //     onClick={() => onDelete(row.original.id)}
-        //   >
-        //     Delete
-        //   </Button>
-        // </div>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild className="hover:bg-gray-100">
-            <Button variant="plain" className="focus-visible:ring-accent">
+          <DropdownMenuTrigger
+            asChild
+            className="bg-gray-100 hover:bg-gray-200"
+          >
+            <Button
+              variant="plain"
+              className="focus-visible:ring-accent"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Icon name="Ellipsis" />
             </Button>
           </DropdownMenuTrigger>
@@ -141,7 +132,7 @@ export const productColumns = (
                 <Link
                   to={ROUTE_PATHS.dashboard.editProduct(
                     row.original.id,
-                    "info",
+                    'info',
                   )}
                   className="flex items-center gap-xs"
                 >
@@ -154,7 +145,7 @@ export const productColumns = (
                 <Link
                   to={ROUTE_PATHS.dashboard.editProduct(
                     row.original.id,
-                    "media",
+                    'media',
                   )}
                   className="flex items-center gap-xs"
                 >
@@ -167,7 +158,7 @@ export const productColumns = (
                 <Link
                   to={ROUTE_PATHS.dashboard.editProduct(
                     row.original.id,
-                    "variants",
+                    'variants',
                   )}
                   className="flex items-center gap-xs"
                 >
@@ -183,7 +174,10 @@ export const productColumns = (
               <DropdownMenuItem
                 variant="destructive"
                 className="cursor-pointer"
-                onClick={() => onDelete(row.original.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(row.original.id);
+                }}
               >
                 <Icon name="TrashIcon" />
                 Delete
