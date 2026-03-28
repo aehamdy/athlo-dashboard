@@ -1,4 +1,4 @@
-import { Button } from "../ui/button";
+import { Button } from '../ui/button';
 import {
   Sheet,
   SheetClose,
@@ -7,7 +7,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-} from "../ui/sheet";
+} from '../ui/sheet';
 
 type DetailsPanelProps = {
   open: boolean;
@@ -30,7 +30,7 @@ function DetailsPanel({
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className={`${width || "min-w-[95%] md:min-w-3/4 lg:min-w-1/2"} flex flex-col gap-0 overflow-y-auto`}
+        className={`${width || 'min-w-[95%] md:min-w-3/4 lg:min-w-1/2'} flex flex-col gap-0 overflow-y-auto`}
       >
         <SheetHeader className="gap-tiny p-regular border-b">
           <SheetTitle>{title}</SheetTitle>
