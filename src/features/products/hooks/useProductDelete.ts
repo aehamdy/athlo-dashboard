@@ -1,9 +1,9 @@
-import { useState } from "react";
-import type { Product } from "../types";
+import { useState } from 'react';
+import type { Product } from '../types';
 
 type DeleteMutation = {
   mutate: (id: number, options?: { onSuccess?: () => void }) => void;
-  status: "idle" | "pending" | "success" | "error";
+  status: 'idle' | 'pending' | 'success' | 'error';
 };
 
 export function useProductDelete(deleteMutation: DeleteMutation) {
