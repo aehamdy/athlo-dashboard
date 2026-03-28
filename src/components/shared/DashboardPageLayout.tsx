@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
-import Heading from "./Heading";
+import type { ReactNode } from 'react';
+import Heading from './Heading';
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../ui/dialog";
+} from '../ui/dialog';
 
 type DashboardPageLayoutProps = {
   title: string;
@@ -44,7 +44,7 @@ function DashboardPageLayout({
           <DialogTrigger asChild>{action && action}</DialogTrigger>
 
           {(dialogLabel || description || formComponent) && (
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-106.25">
               <DialogHeader>
                 <DialogTitle>{dialogLabel}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
@@ -64,7 +64,7 @@ function DashboardPageLayout({
       )}
 
       {/* Main Content */}
-      <div className="h-full">{children}</div>
+      <div className="h-full overflow-hidden rounded-lg">{children}</div>
     </section>
   );
 }
