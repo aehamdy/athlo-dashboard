@@ -31,7 +31,9 @@ export const productColumns = (
           />
         </div>
 
-        {row.original.name || 'Unnamed Product'}
+        <span className="truncate max-w-49">
+          {row.original.name || 'Unnamed Product'}
+        </span>
       </div>
     ),
   },
@@ -54,41 +56,6 @@ export const productColumns = (
     ),
   },
   {
-    accessorKey: 'season',
-    header: 'Season',
-    cell: ({ getValue }) => (
-      <Badge className="inline-flex items-center font-medium px-2 py-1 text-xs text-dark bg-muted rounded-md">
-        {getValue<string>()}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: 'basePrice',
-    header: 'Base Price',
-    cell: ({ getValue }) => {
-      const value = getValue<number>();
-
-      return <span className="font-medium">${value.toLocaleString()}</span>;
-    },
-  },
-  {
-    id: 'discountedPrice',
-    header: 'Discounted',
-    cell: ({ row }) => {
-      const { basePrice, priceAfterDiscount } = row.original;
-
-      if (priceAfterDiscount < basePrice) {
-        return (
-          <span className="font-semibold text-green-600">
-            ${priceAfterDiscount.toLocaleString()}
-          </span>
-        );
-      }
-
-      return <span className="text-muted-foreground">-</span>;
-    },
-  },
-  {
     accessorKey: 'club',
     header: 'Club',
     cell: ({ row }) => {
@@ -108,15 +75,84 @@ export const productColumns = (
     },
   },
   {
+    accessorKey: 'season',
+    header: 'Season',
+    cell: ({ getValue }) => {
+      const season = getValue<string>();
+
+      if (!season || season.trim() === '') {
+        return <span className="text-muted-foreground">-</span>;
+      }
+
+      return (
+        <Badge className="inline-flex items-center font-medium px-2 py-1 text-xs text-dark bg-muted rounded-md">
+          {getValue<string>()}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: 'basePrice',
+    header: 'Price',
+    cell: ({ row }) => {
+      const { basePrice, minPrice, maxPrice } = row.original;
+
+      const productPrice =
+        minPrice && maxPrice && minPrice < maxPrice
+          ? `${minPrice.toLocaleString()} ~ ${maxPrice.toLocaleString()}`
+          : basePrice;
+
+      return <span className="font-medium">{productPrice} &pound;</span>;
+    },
+  },
+  {
+    id: 'discountedPrice',
+    header: 'Discounted',
+    cell: ({ row }) => {
+      const {
+        minPriceAfterDiscount,
+        maxPriceAfterDiscount,
+        minPrice,
+        maxPrice,
+      } = row.original;
+
+      const hasDiscount =
+        minPriceAfterDiscount! < minPrice! ||
+        maxPriceAfterDiscount! < maxPrice!;
+
+      if (!hasDiscount) {
+        return <span className="text-muted-foreground">-</span>;
+      }
+
+      return (
+        <div className="text-red-500">{`${minPriceAfterDiscount} &pound; ~ ${maxPriceAfterDiscount} &pound;`}</div>
+      );
+    },
+  },
+  {
+    accessorKey: 'variants',
+    header: 'Has Variants?',
+    cell: ({ row }) => {
+      const hasVariants = row.original.hasVariants;
+
+      if (!hasVariants) {
+        return <span className="text-muted-foreground">-</span>;
+      }
+
+      return (
+        <div className="flex justify-center items-center text-sm font-medium">
+          <Icon name="Check" className="text-accent" />
+        </div>
+      );
+    },
+  },
+  {
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
       return (
         <DropdownMenu>
-          <DropdownMenuTrigger
-            asChild
-            className="bg-gray-100 hover:bg-gray-200"
-          >
+          <DropdownMenuTrigger asChild className="bg-gray-50 hover:bg-gray-100">
             <Button
               variant="plain"
               className="focus-visible:ring-accent"

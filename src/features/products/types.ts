@@ -36,13 +36,22 @@ export interface Product {
   club?: string | null;
   clubEn?: string | null;
   clubAr?: string | null;
-  basePrice: number;
-  priceAfterDiscount: number;
-  season: string;
   brandName?: string;
+  brandNameEn?: string;
+  brandNameAr?: string;
   brandId?: number;
   categoryName?: string;
+  categoryNameEn?: string;
+  categoryNameAr?: string;
   categoryId?: number;
+  basePrice: number;
+  minPrice?: number;
+  maxPrice?: number;
+  priceAfterDiscount?: number;
+  minPriceAfterDiscount?: number;
+  maxPriceAfterDiscount?: number;
+  hasVariants?: boolean;
+  season: string;
   images: string[];
 }
 
