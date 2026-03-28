@@ -27,49 +27,34 @@ function ProductVariants({ variants }: { variants: ProductVariant[] }) {
 
           <AccordionContent>
             {/* Stock Quantity Badges */}
-            <div className="flex items-center gap-sm mb-md">
-              <Badge
-                variant={'outline'}
-                className={`${STOCK_QUANTITY_RULES[0].className} text-xs border-none rounded-md`}
-              >
-                Out Of Stock: {STOCK_QUANTITY_RULES[0].max}
-              </Badge>
-              <Badge
-                variant={'outline'}
-                className={`${STOCK_QUANTITY_RULES[1].className} text-xs border-none rounded-md`}
-              >
-                Low: 1 - {STOCK_QUANTITY_RULES[1].max}
-              </Badge>
-              <Badge
-                variant={'outline'}
-                className={`${STOCK_QUANTITY_RULES[2].className} text-xs border-none rounded-md`}
-              >
-                Medium: {STOCK_QUANTITY_RULES[1].max + 1} -{' '}
-                {STOCK_QUANTITY_RULES[2].max}
-              </Badge>
-              <Badge
-                variant={'outline'}
-                className={`${STOCK_QUANTITY_RULES[3].className} text-xs border-none rounded-md`}
-              >
-                High: {STOCK_QUANTITY_RULES[2].max + 1}+
-              </Badge>
-            </div>
+            <ul className="flex items-center gap-sm mb-md">
+              {STOCK_QUANTITY_RULES.map((rule) => (
+                <li key={rule.id} className="overflow-hidden">
+                  <Badge
+                    variant={'outline'}
+                    className={`${rule.className} text-xs border-none rounded-sm`}
+                  >
+                    {rule.label}: {rule.limit}
+                  </Badge>
+                </li>
+              ))}
+            </ul>
 
-            <ul className="flex flex-col gap-sm h-[300px] overflow-y-auto">
+            <ul className="flex flex-col gap-sm min-h-25 overflow-y-auto">
               {variants.map((variant) => (
                 <li key={variant.id}>
-                  <article className="p-sm border rounded-md flex flex-col gap-xs">
+                  <article className="p-sm border rounded-md flex flex-col gap-sm">
                     {/* Header */}
                     <header className="flex justify-between items-center">
                       <span className="text-sm font-semibold">
                         {variant.sku}
                       </span>
 
-                      <span
-                        className={`text-xs px-2 py-1 rounded ${getStockStatus(variant.stockQuantity)?.className}`}
+                      <Badge
+                        className={`${getStockStatus(variant.stockQuantity)?.className} rounded-sm`}
                       >
                         {getStockStatus(variant.stockQuantity)?.label}
-                      </span>
+                      </Badge>
                     </header>
 
                     {/* Attributes */}
