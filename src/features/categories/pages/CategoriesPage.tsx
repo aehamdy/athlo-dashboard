@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { toast } from "sonner";
-import type { Category } from "../types";
-import { Button } from "@/components/ui/button";
-import { useCategories } from "@/features/categories/hooks/useCategories";
-import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
-import CategoriesGrid from "@/features/categories/components/CategoriesGrid";
-import CategoryForm from "@/features/categories/components/CategoryForm";
-import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
-import Icon from "@/components/shared/Icon";
+import { useState } from 'react';
+import { toast } from 'sonner';
+import type { Category } from '../types';
+import { Button } from '@/components/ui/button';
+import { useCategories } from '@/features/categories/hooks/useCategories';
+import DashboardPageLayout from '@/components/shared/DashboardPageLayout';
+import CategoriesGrid from '@/features/categories/components/CategoriesGrid';
+import CategoryForm from '@/features/categories/components/CategoryForm';
+import ConfirmDeleteModal from '@/components/shared/ConfirmDeleteModal';
+import Icon from '@/components/shared/Icon';
 
 function Categories() {
   const [openForm, setOpenForm] = useState(false);
@@ -45,7 +45,7 @@ function Categories() {
         setCategoryToDelete(null);
       },
       onError: () => {
-        toast.error("Failed to delete category. Please try again.");
+        toast.error('Failed to delete category. Please try again.');
       },
     });
   };
@@ -58,10 +58,20 @@ function Categories() {
         open={openForm}
         onOpenChange={setOpenForm}
         title="Categories"
-        dialogLabel="Add Category"
-        description="Add new categories to your collection"
+        dialogLabel={selectedCategory ? 'Edit Category' : 'Add Category'}
+        description={
+          selectedCategory
+            ? 'Update an existing category'
+            : 'Add a new category to your collection'
+        }
         action={
-          <Button className="flex items-center gap-sm">
+          <Button
+            onClick={() => {
+              setSelectedCategory(null);
+              setOpenForm(true);
+            }}
+            className="flex items-center gap-sm"
+          >
             <Icon name="Plus" /> Add Category
           </Button>
         }
@@ -95,7 +105,7 @@ function Categories() {
           categoryToDelete && handleConfirmDelete(categoryToDelete)
         }
         onCancel={handleCancelDelete}
-        isPending={deleteCategory.status === "pending"}
+        isPending={deleteCategory.status === 'pending'}
       />
     </>
   );

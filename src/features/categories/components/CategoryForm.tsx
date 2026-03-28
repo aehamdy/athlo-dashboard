@@ -1,12 +1,13 @@
-import { useFormStatus } from "react-dom";
-import { Input } from "@/components/ui/input";
-import { DialogClose } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import type { UseMutationResult } from "@tanstack/react-query";
-import { useActionState } from "react";
-import { toast } from "sonner";
-import type { Category } from "../types";
-import Loading from "@/components/shared/Loading";
+import { Input } from '@/components/ui/input';
+import { DialogClose } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import type { UseMutationResult } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import type { Category, CategoryFormValues } from '../types';
+import Loading from '@/components/shared/Loading';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { categorySchema } from '../category.schema';
+import { Controller, useForm } from 'react-hook-form';
 
 type Props = {
   category: Category | null;
@@ -14,37 +15,6 @@ type Props = {
   updateCategory: UseMutationResult<Category, Error, FormData>;
   onSuccess: () => void;
 };
-
-function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
-  const { pending } = useFormStatus();
-
-  const defaultLabel = isEditMode ? "Update Category" : "Add Category";
-
-  return (
-    <Button type="submit" disabled={pending} className="main-button w-full">
-      {pending ? (
-        <div className="flex items-center gap-sm">
-          <Loading size="sm" />
-          {isEditMode ? " Updating..." : " Adding..."}
-        </div>
-      ) : (
-        defaultLabel
-      )}
-    </Button>
-  );
-}
-
-function CancelButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <DialogClose asChild>
-      <Button variant="outline" disabled={pending} className="w-full">
-        Cancel
-      </Button>
-    </DialogClose>
-  );
-}
 
 function CategoryForm({
   category,
@@ -54,70 +24,75 @@ function CategoryForm({
 }: Props) {
   const isEditMode = !!category;
 
-  const action = async (_: unknown, formData: FormData) => {
-    try {
-      const nameEn = formData.get("nameEn")?.toString();
-      const nameAr = formData.get("nameAr")?.toString();
-      if (!nameEn || !nameAr) throw new Error("Missing required field");
+  const form = useForm<CategoryFormValues>({
+    resolver: zodResolver(categorySchema(isEditMode)),
+    mode: 'onChange',
+    defaultValues: {
+      nameEn: category?.nameEn ?? '',
+      nameAr: category?.nameAr ?? '',
+      image: null,
+    },
+  });
 
-      if (!isEditMode) {
-        const image = formData.get("image") as File | null;
-        if (!image || image.size === 0) throw new Error("Image is required");
-      }
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = form;
+
+  const onSubmit = async (values: CategoryFormValues) => {
+    try {
+      const formData = new FormData();
+      formData.append('nameEn', values.nameEn);
+      formData.append('nameAr', values.nameAr);
+
+      if (values.image) formData.append('image', values.image);
 
       if (isEditMode) {
-        const image = formData.get("image") as File | null;
-
-        if (!image || image.size === 0) {
-          formData.delete("image");
-        }
-
-        formData.append("id", String(category!.id));
-
+        formData.append('id', String(category!.id));
         await updateCategory.mutateAsync(formData);
-
-        toast.success(`Category "${nameEn}" updated successfully`);
+        toast.success(`Category "${values.nameEn}" updated successfully`);
       } else {
         await createCategory.mutateAsync(formData);
-
-        toast.success(`Category "${nameEn}" added successfully!`);
+        toast.success(`Category "${values.nameEn}" added successfully`);
       }
 
       onSuccess();
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Something went wrong";
-
+        error instanceof Error ? error.message : 'Something went wrong';
       toast.error(message);
     }
-
-    return null;
   };
 
-  const [, formAction] = useActionState(action, null);
-
   return (
-    <form action={formAction} className="space-y-compact">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex flex-col gap-compact">
-        <div className="">
-          <Input
-            name="nameEn"
-            required
-            defaultValue={category?.nameEn ?? ""}
-            placeholder="Enter category's English name"
-            className="form-input w-full"
-          />
-        </div>
+        <Controller
+          name="nameEn"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="Enter category's English name"
+              disabled={isSubmitting}
+              className="form-input w-full"
+            />
+          )}
+        />
 
-        <div className="">
-          <Input
-            name="nameAr"
-            required
-            defaultValue={category?.nameAr ?? ""}
-            placeholder="ادخل اسم الفئة بالعربية"
-            className="form-input w-full"
-          />
-        </div>
+        <Controller
+          name="nameAr"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="ادخل اسم الفئة بالعربية"
+              disabled={isSubmitting}
+              className="form-input w-full"
+            />
+          )}
+        />
 
         {isEditMode && category?.imageUrl && (
           <img
@@ -128,19 +103,47 @@ function CategoryForm({
           />
         )}
 
-        <Input
-          type="file"
+        <Controller
           name="image"
-          required={!isEditMode}
-          className="form-input w-full"
+          control={control}
+          render={({ field }) => (
+            <Input
+              type="file"
+              name={field.name}
+              required={!isEditMode}
+              disabled={isSubmitting}
+              onChange={(e) => field.onChange(e.target.files?.[0] ?? undefined)}
+              ref={field.ref}
+              className="form-input w-full"
+            />
+          )}
         />
       </div>
 
       <div className="w-full">
-        <SubmitButton isEditMode={isEditMode} />
+        <Button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          className="main-button w-full"
+        >
+          {isSubmitting ? (
+            <div className="flex items-center gap-sm">
+              <Loading size="sm" />
+              {isEditMode ? ' Updating...' : ' Adding...'}
+            </div>
+          ) : isEditMode ? (
+            'Update Category'
+          ) : (
+            'Add Category'
+          )}
+        </Button>
       </div>
 
-      <CancelButton />
+      <DialogClose asChild>
+        <Button variant="outline" disabled={isSubmitting} className="w-full">
+          Cancel
+        </Button>
+      </DialogClose>
     </form>
   );
 }
