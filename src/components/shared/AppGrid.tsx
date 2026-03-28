@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 type AppGridProps = {
   children: ReactNode;
@@ -6,7 +6,7 @@ type AppGridProps = {
 
 export default function AppGrid({ children }: AppGridProps) {
   return (
-    <section className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-base h-[80dvh] lg:h-[75vh] 2xl:h-[78vh] px-[5px] overflow-y-auto scrollbar-thin">
+    <section className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-base h-full overflow-y-auto scrollbar-thin">
       {children}
     </section>
   );
