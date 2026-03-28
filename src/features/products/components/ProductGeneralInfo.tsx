@@ -3,6 +3,11 @@ import Icon from '@/components/shared/Icon';
 import type { ProductDetails } from '../types';
 
 function ProductGeneralInfo({ product }: { product: ProductDetails }) {
+  const hasPriceRange = product.maxPrice > product.minPrice;
+  const hasDiscount =
+    product.minPriceAfterDiscount < product.minPrice ||
+    product.maxPriceAfterDiscount < product.maxPrice;
+
   return (
     <section className="space-y-md p-base border-b">
       {/* Product name & description */}
@@ -21,32 +26,40 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
         <div className="flex flex-col justify-between gap-sm p-sm bg-gray-100 rounded-md">
           <Heading
             as="h5"
-            className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
+            className="font-semibold text-[10px] md:text-xs text-neutral-400 tracking-widest"
           >
             PRICE
           </Heading>
 
           <div
-            className={`flex items-center gap-sm font-semibold text-sm text-gray-700 ${product.minPriceAfterDiscount < product.minPrice && 'line-through'}`}
+            className={`flex items-center gap-sm font-semibold ${hasDiscount ? 'text-xs text-gray-400 line-through' : 'text-sm text-gray-700'}`}
           >
-            <p className="text-md">{product.minPrice} &pound;</p>
-            <span className="">-</span>
-            <p className="text-md">{product.maxPrice} &pound;</p>
+            {hasPriceRange ? (
+              <>
+                <p className="text-md">{product.minPrice} &pound;</p>
+                <span className="">-</span>
+                <p className="text-md">{product.maxPrice} &pound;</p>
+              </>
+            ) : (
+              <p className="text-md">{product.basePrice} &pound;</p>
+            )}
           </div>
 
-          <div
-            className={`flex items-center gap-sm font-semibold text-sm text-red-500 ${product.minPriceAfterDiscount < product.minPrice || product.maxPriceAfterDiscount < product.maxPrice ? 'block' : 'hidden'}`}
-          >
-            <p className="text-md">{product.minPriceAfterDiscount} &pound;</p>
-            <span className="">-</span>
-            <p className="text-md">{product.maxPriceAfterDiscount} &pound;</p>
-          </div>
+          {hasDiscount && (
+            <div
+              className={`flex items-center gap-sm font-semibold text-sm text-red-500 ${product.minPriceAfterDiscount < product.minPrice || product.maxPriceAfterDiscount < product.maxPrice ? 'block' : 'hidden'}`}
+            >
+              <p className="text-md">{product.minPriceAfterDiscount} &pound;</p>
+              <span className="">-</span>
+              <p className="text-md">{product.maxPriceAfterDiscount} &pound;</p>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col justify-between gap-sm p-sm bg-gray-100 rounded-md">
           <Heading
             as="h5"
-            className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
+            className="font-semibold text-[10px] md:text-xs text-neutral-400 tracking-widest"
           >
             VARIANTS
           </Heading>
@@ -59,7 +72,7 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
         <div className="flex flex-col justify-between gap-sm p-sm bg-gray-100 rounded-md">
           <Heading
             as="h5"
-            className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
+            className="font-semibold text-[10px] md:text-xs text-neutral-400 tracking-widest"
           >
             PRODUCT CODE
           </Heading>
@@ -108,10 +121,10 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
                 as="h6"
                 className="font-semibold text-xs md:text-xs text-neutral-400 tracking-widest"
               >
-                Brand
+                Club
               </Heading>
               <p className="font-semibold text-sm text-gray-700">
-                {product.brandNameEn}
+                {product.clubEn}
               </p>
             </div>
           )}
