@@ -26,15 +26,31 @@ export const EDIT_PRODUCT_TABS = [
 export const DEFAULT_EDIT_PRODUCT_TAB = 'info';
 
 export const STOCK_QUANTITY_RULES = [
-  { max: 0, label: 'Out Of Stock', className: 'bg-red-500 text-white' },
-  { max: 6, label: 'Low Stock', className: 'bg-red-100 text-red-700' },
   {
+    id: 1,
+    max: 0,
+    limit: '0',
+    label: 'Out Of Stock',
+    className: 'bg-red-500 text-white',
+  },
+  {
+    id: 2,
+    max: 6,
+    limit: '1 ~ 6',
+    label: 'Low Stock',
+    className: 'bg-red-100 text-red-700',
+  },
+  {
+    id: 3,
     max: 15,
+    limit: '7 ~ 15',
     label: 'Medium Stock',
     className: 'bg-yellow-100 text-yellow-700',
   },
   {
+    id: 4,
     max: Infinity,
+    limit: '16+',
     label: 'High Stock',
     className: 'bg-green-100 text-green-700',
   },
