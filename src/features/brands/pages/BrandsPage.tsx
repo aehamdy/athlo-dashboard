@@ -1,13 +1,13 @@
-import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
-import Icon from "@/components/shared/Icon";
-import { Button } from "@/components/ui/button";
-import BrandForm from "@/features/brands/components/BrandForm";
-import BrandsGrid from "@/features/brands/components/BrandsGrid";
-import { useBrands } from "@/features/brands/hooks/useBrands";
-import type { Brand } from "@/features/brands/types";
-import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
-import { useState } from "react";
-import { toast } from "sonner";
+import DashboardPageLayout from '@/components/shared/DashboardPageLayout';
+import Icon from '@/components/shared/Icon';
+import { Button } from '@/components/ui/button';
+import BrandForm from '@/features/brands/components/BrandForm';
+import BrandsGrid from '@/features/brands/components/BrandsGrid';
+import { useBrands } from '@/features/brands/hooks/useBrands';
+import type { Brand } from '@/features/brands/types';
+import ConfirmDeleteModal from '@/components/shared/ConfirmDeleteModal';
+import { useState } from 'react';
+import { toast } from 'sonner';
 
 function Brands() {
   const [openForm, setOpenForm] = useState(false);
@@ -33,12 +33,12 @@ function Brands() {
     deleteBrand.mutate(brand.id, {
       onSuccess: () => {
         toast.success(
-          `Brand "${brand.nameEn || brand.nameAr || brand.name || "Unknown"}" deleted successfully`,
+          `Brand "${brand.nameEn || brand.nameAr || brand.name || 'Unknown'}" deleted successfully`,
         );
         setBrandToDelete(null);
       },
       onError: () => {
-        toast.error("Failed to delete brand. Please try again.");
+        toast.error('Failed to delete brand. Please try again.');
       },
     });
   };
@@ -51,10 +51,20 @@ function Brands() {
         open={openForm}
         onOpenChange={setOpenForm}
         title="Brands"
-        dialogLabel="Add Brand"
-        description="Add new brands to your collection"
+        dialogLabel={selectedBrand ? 'Edit Brand ' : 'Add Brand'}
+        description={
+          selectedBrand
+            ? 'Update an existing brand'
+            : 'Add new brands to your collection'
+        }
         action={
-          <Button className="flex items-center gap-sm">
+          <Button
+            onClick={() => {
+              setSelectedBrand(null);
+              setOpenForm(true);
+            }}
+            className="flex items-center gap-sm"
+          >
             <Icon name="Plus" /> Add Brand
           </Button>
         }
@@ -85,7 +95,7 @@ function Brands() {
         getDisplayName={(brand) => brand.name || brand.nameEn}
         onConfirm={() => brandToDelete && handleConfirmDelete(brandToDelete)}
         onCancel={handleCancelDelete}
-        isPending={deleteBrand.status === "pending"}
+        isPending={deleteBrand.status === 'pending'}
       />
     </>
   );

@@ -1,12 +1,13 @@
-import Loading from "@/components/shared/Loading";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { DialogClose } from "@radix-ui/react-dialog";
-import type { Brand } from "../types";
-import type { UseMutationResult } from "@tanstack/react-query";
-import { useFormStatus } from "react-dom";
-import { toast } from "sonner";
-import { useActionState } from "react";
+import Loading from '@/components/shared/Loading';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { DialogClose } from '@/components/ui/dialog';
+import type { Brand, BrandFormValues } from '../types';
+import type { UseMutationResult } from '@tanstack/react-query';
+import { toast } from 'sonner';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { brandSchema } from '../brand.schema';
 
 type Props = {
   brand: Brand | null;
@@ -15,104 +16,80 @@ type Props = {
   onSuccess: () => void;
 };
 
-function SubmitButton({ isEditMode }: { isEditMode: boolean }) {
-  const { pending } = useFormStatus();
-
-  const defaultLabel = isEditMode ? "Update Brand" : "Add Brand";
-
-  return (
-    <Button type="submit" disabled={pending} className="main-button w-full">
-      {pending ? (
-        <div className="flex items-center gap-sm">
-          <Loading size="sm" />
-          {isEditMode ? " Updating..." : " Adding..."}
-        </div>
-      ) : (
-        defaultLabel
-      )}
-    </Button>
-  );
-}
-
-function CancelButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <DialogClose asChild>
-      <Button variant="outline" disabled={pending} className="w-full">
-        Cancel
-      </Button>
-    </DialogClose>
-  );
-}
-
 function BrandForm({ brand, createBrand, updateBrand, onSuccess }: Props) {
   const isEditMode = !!brand;
 
-  const action = async (_: unknown, formData: FormData) => {
-    try {
-      const nameEn = formData.get("nameEn")?.toString();
-      const nameAr = formData.get("nameAr")?.toString();
-      if (!nameEn || !nameAr) throw new Error("Missing required field");
+  const form = useForm<BrandFormValues>({
+    resolver: zodResolver(brandSchema(isEditMode)),
+    mode: 'onChange',
+    defaultValues: {
+      nameEn: brand?.nameEn ?? '',
+      nameAr: brand?.nameAr ?? '',
+      image: null,
+    },
+  });
 
-      if (!isEditMode) {
-        const image = formData.get("image") as File | null;
-        if (!image || image.size === 0) throw new Error("Image is required");
-      }
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+    reset,
+  } = form;
+
+  const onSubmit = async (values: BrandFormValues) => {
+    try {
+      const formData = new FormData();
+      formData.append('nameEn', values.nameEn);
+      formData.append('nameAr', values.nameAr);
+
+      if (values.image) formData.append('image', values.image);
 
       if (isEditMode) {
-        const image = formData.get("image") as File | null;
-
-        if (!image || image.size === 0) {
-          formData.delete("iamge");
-        }
-
-        formData.append("id", String(brand!.id));
-
+        formData.append('id', String(brand!.id));
         await updateBrand.mutateAsync(formData);
-
-        toast.success(`Brand "${nameEn}" updated successfully`);
+        toast.success(`Brand "${values.nameEn}" updated successfully`);
       } else {
         await createBrand.mutateAsync(formData);
-
-        toast.success(`Brand "${nameEn}" added successfully`);
+        toast.success(`Brand "${values.nameEn}" added successfully`);
       }
 
       onSuccess();
+      reset({ nameEn: '', nameAr: '', image: null });
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Something went wrong";
-
+        error instanceof Error ? error.message : 'Something went wrong';
       toast.error(message);
     }
-
-    return null;
   };
 
-  const [, formAction] = useActionState(action, null);
-
   return (
-    <form action={formAction} className="space-y-compact">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="flex flex-col gap-compact">
-        <div className="">
-          <Input
-            name="nameEn"
-            required
-            defaultValue={brand?.nameEn ?? ""}
-            placeholder="Enter brand's English name"
-            className="form-input w-full"
-          />
-        </div>
+        <Controller
+          name="nameEn"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="Enter brand's English name"
+              disabled={isSubmitting}
+              className="form-input w-full"
+            />
+          )}
+        />
 
-        <div className="">
-          <Input
-            name="nameAr"
-            required
-            defaultValue={brand?.nameAr ?? ""}
-            placeholder="ادخل اسم الفئة بالعربية"
-            className="form-input w-full"
-          />
-        </div>
+        <Controller
+          name="nameAr"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              placeholder="ادخل اسم العلامة التجارية بالعربية"
+              disabled={isSubmitting}
+              className="form-input w-full"
+            />
+          )}
+        />
 
         {isEditMode && brand?.imageUrl && (
           <img
@@ -123,19 +100,47 @@ function BrandForm({ brand, createBrand, updateBrand, onSuccess }: Props) {
           />
         )}
 
-        <Input
-          type="file"
+        <Controller
           name="image"
-          required={!isEditMode}
-          className="form-input w-full"
+          control={control}
+          render={({ field }) => (
+            <Input
+              type="file"
+              name={field.name}
+              required={!isEditMode}
+              disabled={isSubmitting}
+              onChange={(e) => field.onChange(e.target.files?.[0] ?? undefined)}
+              ref={field.ref}
+              className="form-input w-full"
+            />
+          )}
         />
       </div>
 
       <div className="w-full">
-        <SubmitButton isEditMode={isEditMode} />
+        <Button
+          type="submit"
+          disabled={!isValid || isSubmitting}
+          className="main-button w-full"
+        >
+          {isSubmitting ? (
+            <div className="flex items-center gap-sm">
+              <Loading size="sm" />
+              {isEditMode ? ' Updating...' : ' Adding...'}
+            </div>
+          ) : isEditMode ? (
+            'Update Brand'
+          ) : (
+            'Add Brand'
+          )}
+        </Button>
       </div>
 
-      <CancelButton />
+      <DialogClose asChild>
+        <Button variant="outline" disabled={isSubmitting} className="w-full">
+          Cancel
+        </Button>
+      </DialogClose>
     </form>
   );
 }
