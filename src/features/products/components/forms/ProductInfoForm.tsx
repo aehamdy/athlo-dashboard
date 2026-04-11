@@ -15,6 +15,7 @@ import type { Brand, Category } from '@/types';
 import FormSelect from '@/components/shared/FormSelect';
 import { useCategories } from '@/features/categories/hooks/useCategories';
 import { toast } from 'sonner';
+import FormLabel from '@/components/shared/FormLabel';
 
 type Props = {
   onSuccess: (id: number) => void;
@@ -54,12 +55,14 @@ function ProductInfoForm({ onSuccess }: Props) {
     data: Brand[];
     isLoading: boolean;
   };
+
   const { data: categories = [], isLoading: categoriesLoading } =
     useCategories() as { data: Category[]; isLoading: boolean };
 
   const onSubmit = async (data: ProductInfoFormType) => {
     try {
       const res = await http.post(API_ENDPOINTS.products.create, data);
+
       onSuccess(res.data.data);
     } catch (error) {
       if (error && typeof error === 'object' && 'response' in error) {
@@ -80,7 +83,7 @@ function ProductInfoForm({ onSuccess }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-compact h-full p-regular md:p-lg bg-light">
+    <div className="flex flex-col gap-compact w-full h-full p-regular md:p-lg bg-light overflow-y-auto">
       <Heading as="h3" className="mb-base text-zinc-700">
         Create New Product
       </Heading>
@@ -90,12 +93,17 @@ function ProductInfoForm({ onSuccess }: Props) {
         className="flex flex-col justify-between gap-base w-full h-full  bg-light rounded-lg"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="nameEn" required>
+              Product Name (English)
+            </FormLabel>
+
             <Input
               {...register('nameEn')}
-              placeholder="Product name (English)"
+              placeholder="e.g. Real Madrid Home Jersey"
               className="form-input"
             />
+
             {errors.nameEn && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.nameEn.message}
@@ -103,12 +111,17 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="nameAr" required>
+              Product Name (Arabic)
+            </FormLabel>
+
             <Input
               {...register('nameAr')}
-              placeholder="اسم المنتج (العربية)"
+              placeholder="مثال: قميص ريال مدريد الأساسي"
               className="form-input"
             />
+
             {errors.nameAr && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.nameAr.message}
@@ -116,10 +129,14 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="descriptionEn" required>
+              Description (English)
+            </FormLabel>
+
             <Input
               {...register('descriptionEn')}
-              placeholder="Description (English)"
+              placeholder="e.g. Official 2024/25 home kit made from breathable fabric"
               className="form-input"
             />
             {errors.descriptionEn && (
@@ -129,12 +146,17 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="descriptionAr" required>
+              Description (Arabic)
+            </FormLabel>
+
             <Input
               {...register('descriptionAr')}
-              placeholder="وصف المنتج (العربية)"
+              placeholder="مثال: الطقم الأساسي الرسمي لموسم 2024/2025 مصنوع من قماش مريح"
               className="form-input"
             />
+
             {errors.descriptionAr && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.descriptionAr.message}
@@ -142,12 +164,15 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="clubEn">Club (English)</FormLabel>
+
             <Input
               {...register('clubEn')}
-              placeholder="Club (English)"
+              placeholder="e.g. Real Madrid"
               className="form-input"
             />
+
             {errors.clubEn && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.clubEn.message}
@@ -155,12 +180,15 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="clubAr">Club (Arabic)</FormLabel>
+
             <Input
               {...register('clubAr')}
-              placeholder="النادي (العربية)"
+              placeholder="مثال: ريال مدريد"
               className="form-input"
             />
+
             {errors.clubAr && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.clubAr.message}
@@ -168,7 +196,11 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="categoryId" required>
+              Category
+            </FormLabel>
+
             <FormSelect
               placeholder="Select Category"
               value={categoryId?.toString() ?? ''}
@@ -181,7 +213,11 @@ function ProductInfoForm({ onSuccess }: Props) {
             />
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="brandId" required>
+              Brand
+            </FormLabel>
+
             <FormSelect
               placeholder="Select Brand"
               value={brandId?.toString() ?? ''}
@@ -194,12 +230,17 @@ function ProductInfoForm({ onSuccess }: Props) {
             />
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="code" required>
+              Product Code
+            </FormLabel>
+
             <Input
               {...register('code')}
-              placeholder="Product Code"
+              placeholder="e.g. RM-HOME-24"
               className="form-input"
             />
+
             {errors.code && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.code.message}
@@ -207,12 +248,17 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="season" required>
+              Season
+            </FormLabel>
+
             <Input
               {...register('season')}
-              placeholder="Season"
+              placeholder="e.g. 2024/2025"
               className="form-input"
             />
+
             {errors.season && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.season.message}
@@ -220,26 +266,38 @@ function ProductInfoForm({ onSuccess }: Props) {
             )}
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="attributeKeyEn">
+              Attribute Label (English)
+            </FormLabel>
+
             <Input
               {...register('attributeKeyEn')}
-              placeholder="Attribute Label (English)"
+              placeholder="e.g. Size, Color"
               className="form-input"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="attributeKeyAr">
+              Attribute Label (Arabic)
+            </FormLabel>
+
             <Input
               {...register('attributeKeyAr')}
-              placeholder="Attribute Label (Arabic)"
+              placeholder="مثال: المقاس، اللون"
               className="form-input"
             />
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col gap-xs">
+            <FormLabel htmlFor="basePrice" required>
+              Base Price
+            </FormLabel>
+
             <Input
               type="number"
               {...register('basePrice')}
-              placeholder="Base Price"
+              placeholder="e.g. 100"
               className="form-input"
             />
 
