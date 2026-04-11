@@ -1,7 +1,7 @@
-import { useState } from "react";
-import ProductInfoForm from "./forms/ProductInfoForm";
-import ProductImagesForm from "./forms/ProductImagesForm";
-import ProductVariantsForm from "./forms/ProductVariantsForm";
+import { useState } from 'react';
+import ProductInfoForm from './forms/ProductInfoForm';
+import ProductImagesForm from './forms/ProductImagesForm';
+import ProductVariantsForm from './forms/ProductVariantsForm';
 
 type stepType = 0 | 1 | 2;
 
@@ -18,7 +18,7 @@ function AddProductWizard() {
   };
 
   return (
-    <>
+    <section className="flex w-full h-full overflow-hidden">
       {step === 0 && (
         <ProductInfoForm
           onSuccess={(id) => {
@@ -43,7 +43,7 @@ function AddProductWizard() {
           onSuccess={handleSuccess}
         />
       )}
-    </>
+    </section>
   );
 }
 
