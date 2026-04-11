@@ -1,17 +1,17 @@
-import { useBrands } from "@/features/brands/hooks/useBrands";
-import { useCategories } from "@/features/categories/hooks/useCategories";
-import useUpdateProductInfo from "../../hooks/useUpdateProductInfo";
-import { Link, useNavigate } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
-import type { Product, ProductForm } from "../../types";
-import { ROUTE_PATHS } from "@/routes/paths";
-import { useEffect } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import FormSelect from "@/components/shared/FormSelect";
-import Icon from "@/components/shared/Icon";
-import { Button } from "@/components/ui/button";
-import Loading from "@/components/shared/Loading";
+import { useBrands } from '@/features/brands/hooks/useBrands';
+import { useCategories } from '@/features/categories/hooks/useCategories';
+import useUpdateProductInfo from '../../hooks/useUpdateProductInfo';
+import { Link, useNavigate } from 'react-router-dom';
+import { Controller, useForm } from 'react-hook-form';
+import type { Product, ProductForm } from '../../types';
+import { ROUTE_PATHS } from '@/routes/paths';
+import { useEffect } from 'react';
+import { Input } from '@/components/ui/input';
+import FormSelect from '@/components/shared/FormSelect';
+import Icon from '@/components/shared/Icon';
+import { Button } from '@/components/ui/button';
+import Loading from '@/components/shared/Loading';
+import FormLabel from '@/components/shared/FormLabel';
 
 interface Props {
   product: Product;
@@ -31,19 +31,21 @@ function EditProductInfoForm({ product }: Props) {
     formState: { errors, isValid },
   } = useForm<ProductForm>({
     defaultValues: {
-      nameEn: "",
-      nameAr: "",
-      descriptionEn: "",
-      descriptionAr: "",
-      clubEn: "",
-      clubAr: "",
+      nameEn: '',
+      nameAr: '',
+      descriptionEn: '',
+      descriptionAr: '',
+      clubEn: '',
+      clubAr: '',
       categoryId: undefined,
       brandId: undefined,
-      code: "",
-      season: "",
+      code: '',
+      season: '',
+      attributeKeyEn: '',
+      attributeKeyAr: '',
       basePrice: undefined,
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = (data: ProductForm) => {
@@ -61,16 +63,18 @@ function EditProductInfoForm({ product }: Props) {
   useEffect(() => {
     // Always reset first to clear any previous values
     reset({
-      nameEn: "",
-      nameAr: "",
-      descriptionEn: "",
-      descriptionAr: "",
-      clubEn: "",
-      clubAr: "",
+      nameEn: '',
+      nameAr: '',
+      descriptionEn: '',
+      descriptionAr: '',
+      clubEn: '',
+      clubAr: '',
       categoryId: undefined,
       brandId: undefined,
-      code: "",
-      season: "",
+      code: '',
+      season: '',
+      attributeKeyEn: '',
+      attributeKeyAr: '',
       basePrice: undefined,
     });
 
@@ -79,16 +83,18 @@ function EditProductInfoForm({ product }: Props) {
       // Use setTimeout to ensure reset happens first, then population
       setTimeout(() => {
         reset({
-          nameEn: product.nameEn || "",
-          nameAr: product.nameAr || "",
-          descriptionEn: product.descriptionEn || "",
-          descriptionAr: product.descriptionAr || "",
-          clubEn: product.clubEn || "",
-          clubAr: product.clubAr || "",
+          nameEn: product.nameEn || '',
+          nameAr: product.nameAr || '',
+          descriptionEn: product.descriptionEn || '',
+          descriptionAr: product.descriptionAr || '',
+          clubEn: product.clubEn || '',
+          clubAr: product.clubAr || '',
           categoryId: product.categoryId,
           brandId: product.brandId,
-          code: product.code || "",
-          season: product.season || "",
+          code: product.code || '',
+          season: product.season || '',
+          attributeKeyEn: product.attributeKeyEn || '',
+          attributeKeyAr: product.attributeKeyAr || '',
           basePrice: product.basePrice || 0,
         });
       }, 0);
@@ -98,16 +104,16 @@ function EditProductInfoForm({ product }: Props) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col justify-between gap-base w-full h-full  bg-light rounded-lg"
+      className="flex flex-col justify-between gap-base w-full h-full overflow-y-auto bg-light rounded-lg"
     >
       <div className="space-y-base">
         <div className="flex flex-col md:flex-row gap-sm flex-wrap">
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Name (English)</Label>
+            <FormLabel htmlFor="nameEn">Name (English)</FormLabel>
 
             <Input
-              {...register("nameEn", {
-                required: "English name is required",
+              {...register('nameEn', {
+                required: 'English name is required',
               })}
               placeholder="Product name (English)"
               className="form-input"
@@ -117,10 +123,10 @@ function EditProductInfoForm({ product }: Props) {
           </div>
 
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Name (Arabic)</Label>
+            <FormLabel htmlFor="nameAr">Name (Arabic)</FormLabel>
 
             <Input
-              {...register("nameAr")}
+              {...register('nameAr')}
               placeholder="اسم المنتج (العربية)"
               className="form-input"
             />
@@ -131,12 +137,10 @@ function EditProductInfoForm({ product }: Props) {
 
         <div className="flex flex-col md:flex-row gap-sm flex-wrap">
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">
-              Description (English)
-            </Label>
+            <FormLabel htmlFor="descriptionEn">Description (English)</FormLabel>
 
             <Input
-              {...register("descriptionEn")}
+              {...register('descriptionEn')}
               placeholder="Description (English)"
               className="form-input"
             />
@@ -147,12 +151,10 @@ function EditProductInfoForm({ product }: Props) {
           </div>
 
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">
-              Description (Arabic)
-            </Label>
+            <FormLabel htmlFor="descriptionAr">Description (Arabic)</FormLabel>
 
             <Input
-              {...register("descriptionAr")}
+              {...register('descriptionAr')}
               placeholder="وصف المنتج (العربية)"
               className="form-input"
             />
@@ -165,10 +167,10 @@ function EditProductInfoForm({ product }: Props) {
 
         <div className="flex justify-between items-center gap-regular">
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Club (English)</Label>
+            <FormLabel htmlFor="clubEn">Club (English)</FormLabel>
 
             <Input
-              {...register("clubEn")}
+              {...register('clubEn')}
               placeholder="Club (English)"
               className="form-input"
             />
@@ -181,10 +183,10 @@ function EditProductInfoForm({ product }: Props) {
           </div>
 
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Club (Arabic)</Label>
+            <FormLabel htmlFor="clubAr">Club (Arabic)</FormLabel>
 
             <Input
-              {...register("clubAr")}
+              {...register('clubAr')}
               placeholder="النادي (العربية)"
               className="form-input"
             />
@@ -199,7 +201,7 @@ function EditProductInfoForm({ product }: Props) {
 
         <div className="flex justify-between items-center gap-regular">
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Category</Label>
+            <FormLabel htmlFor="categoryId">Category</FormLabel>
 
             <Controller
               control={control}
@@ -218,7 +220,7 @@ function EditProductInfoForm({ product }: Props) {
           </div>
 
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Brand</Label>
+            <FormLabel htmlFor="brandId">Brand</FormLabel>
 
             <Controller
               control={control}
@@ -239,10 +241,10 @@ function EditProductInfoForm({ product }: Props) {
 
         <div className="flex justify-between items-center gap-regular">
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Product Code</Label>
+            <FormLabel htmlFor="code">Product Code</FormLabel>
 
             <Input
-              {...register("code")}
+              {...register('code')}
               placeholder="Product Code"
               className="form-input"
             />
@@ -255,10 +257,10 @@ function EditProductInfoForm({ product }: Props) {
           </div>
 
           <div className="flex flex-col gap-xs flex-1">
-            <Label className="text-muted-foreground">Season</Label>
+            <FormLabel htmlFor="season">Season</FormLabel>
 
             <Input
-              {...register("season")}
+              {...register('season')}
               placeholder="Season"
               className="form-input"
             />
@@ -271,12 +273,38 @@ function EditProductInfoForm({ product }: Props) {
           </div>
         </div>
 
+        <div className="flex justify-between items-center gap-regular">
+          <div className="flex flex-col gap-xs flex-1">
+            <FormLabel htmlFor="attributeKeyEn">
+              Attribute Key (English)
+            </FormLabel>
+
+            <Input
+              {...register('attributeKeyEn')}
+              placeholder="e.g. Size, Color"
+              className="form-input"
+            />
+          </div>
+
+          <div className="flex flex-col gap-xs flex-1">
+            <FormLabel htmlFor="attributeKeyAr">
+              Attribute Key (Arabic)
+            </FormLabel>
+
+            <Input
+              {...register('attributeKeyAr')}
+              placeholder="مثال: المقاس، اللون"
+              className="form-input"
+            />
+          </div>
+        </div>
+
         <div className="flex flex-col gap-xs">
-          <Label className="text-muted-foreground">Base Price ($)</Label>
+          <FormLabel htmlFor="basePrice">Base Price ($)</FormLabel>
 
           <Input
             type="number"
-            {...register("basePrice")}
+            {...register('basePrice')}
             placeholder="Base Price"
             className="form-input"
           />
@@ -301,7 +329,7 @@ function EditProductInfoForm({ product }: Props) {
         <Button
           type="submit"
           disabled={updateProduct.isPending || !isValid}
-          className={`main-button flex justify-self-end w-full md:w-fit ${(updateProduct.isPending || !isValid) && "cursor-not-allowed"}`}
+          className={`main-button flex justify-self-end w-full md:w-fit ${(updateProduct.isPending || !isValid) && 'cursor-not-allowed'}`}
         >
           {updateProduct.isPending ? (
             <div className="flex items-center gap-sm">

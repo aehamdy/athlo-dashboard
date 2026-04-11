@@ -50,6 +50,9 @@ export interface Product {
   priceAfterDiscount?: number;
   minPriceAfterDiscount?: number;
   maxPriceAfterDiscount?: number;
+  attributeKey?: string;
+  attributeKeyEn?: string;
+  attributeKeyAr?: string;
   hasVariants?: boolean;
   season: string;
   images: string[];
@@ -78,6 +81,8 @@ export interface ProductDetails {
   maxPriceAfterDiscount: number;
   priceAfterDiscount: number;
   hasVariants: boolean;
+  attributeKeyEn: string;
+  attributeKeyAr: string;
   images: string[];
   variants: ProductVariant[];
 }
@@ -111,6 +116,8 @@ export interface ProductForm {
   brandId: number | undefined;
   code: string;
   season: string;
+  attributeKeyEn: string;
+  attributeKeyAr: string;
   basePrice: number;
 }
 
