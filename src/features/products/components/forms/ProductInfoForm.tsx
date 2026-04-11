@@ -1,20 +1,20 @@
 import {
   productInfoSchema,
   type ProductInfoFormType,
-} from "../../products.schema";
-import { useForm, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import http from "@/api/http";
-import { API_ENDPOINTS } from "@/api/endpoints";
-import { ArrowRight } from "lucide-react";
-import Heading from "@/components/shared/Heading";
-import useBrands from "@/features/brands/api/useBrands";
-import type { Brand, Category } from "@/types";
-import FormSelect from "@/components/shared/FormSelect";
-import { useCategories } from "@/features/categories/hooks/useCategories";
-import { toast } from "sonner";
+} from '../../products.schema';
+import { useForm, useWatch } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import http from '@/api/http';
+import { API_ENDPOINTS } from '@/api/endpoints';
+import { ArrowRight } from 'lucide-react';
+import Heading from '@/components/shared/Heading';
+import useBrands from '@/features/brands/api/useBrands';
+import type { Brand, Category } from '@/types';
+import FormSelect from '@/components/shared/FormSelect';
+import { useCategories } from '@/features/categories/hooks/useCategories';
+import { toast } from 'sonner';
 
 type Props = {
   onSuccess: (id: number) => void;
@@ -29,24 +29,27 @@ function ProductInfoForm({ onSuccess }: Props) {
     formState: { errors, isValid, isSubmitting },
   } = useForm<ProductInfoFormType>({
     resolver: zodResolver(productInfoSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
-      nameEn: "",
-      nameAr: "",
-      descriptionEn: "",
-      descriptionAr: "",
-      clubEn: "",
-      clubAr: "",
-      season: "",
-      code: "",
+      nameEn: '',
+      nameAr: '',
+      descriptionEn: '',
+      descriptionAr: '',
+      clubEn: '',
+      clubAr: '',
+      season: '',
+      code: '',
       categoryId: undefined,
       brandId: undefined,
+      attributeKeyEn: '',
+      attributeKeyAr: '',
       basePrice: 0,
     },
   });
 
-  const categoryId = useWatch({ control, name: "categoryId" });
-  const brandId = useWatch({ control, name: "brandId" });
+  const categoryId = useWatch({ control, name: 'categoryId' });
+  const brandId = useWatch({ control, name: 'brandId' });
+
   const { data: brands = [], isLoading: brandsLoading } = useBrands() as {
     data: Brand[];
     isLoading: boolean;
@@ -59,7 +62,7 @@ function ProductInfoForm({ onSuccess }: Props) {
       const res = await http.post(API_ENDPOINTS.products.create, data);
       onSuccess(res.data.data);
     } catch (error) {
-      if (error && typeof error === "object" && "response" in error) {
+      if (error && typeof error === 'object' && 'response' in error) {
         const axiosError = error as {
           response?: {
             data?: {
@@ -89,7 +92,7 @@ function ProductInfoForm({ onSuccess }: Props) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-xl">
           <div className="flex flex-col">
             <Input
-              {...register("nameEn")}
+              {...register('nameEn')}
               placeholder="Product name (English)"
               className="form-input"
             />
@@ -102,7 +105,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("nameAr")}
+              {...register('nameAr')}
               placeholder="اسم المنتج (العربية)"
               className="form-input"
             />
@@ -115,7 +118,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("descriptionEn")}
+              {...register('descriptionEn')}
               placeholder="Description (English)"
               className="form-input"
             />
@@ -128,7 +131,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("descriptionAr")}
+              {...register('descriptionAr')}
               placeholder="وصف المنتج (العربية)"
               className="form-input"
             />
@@ -141,7 +144,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("clubEn")}
+              {...register('clubEn')}
               placeholder="Club (English)"
               className="form-input"
             />
@@ -154,7 +157,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("clubAr")}
+              {...register('clubAr')}
               placeholder="النادي (العربية)"
               className="form-input"
             />
@@ -168,9 +171,9 @@ function ProductInfoForm({ onSuccess }: Props) {
           <div className="flex flex-col">
             <FormSelect
               placeholder="Select Category"
-              value={categoryId?.toString() ?? ""}
+              value={categoryId?.toString() ?? ''}
               onValueChange={(val) =>
-                setValue("categoryId", Number(val), { shouldValidate: true })
+                setValue('categoryId', Number(val), { shouldValidate: true })
               }
               options={categories}
               error={errors.categoryId?.message}
@@ -181,9 +184,9 @@ function ProductInfoForm({ onSuccess }: Props) {
           <div className="flex flex-col">
             <FormSelect
               placeholder="Select Brand"
-              value={brandId?.toString() ?? ""}
+              value={brandId?.toString() ?? ''}
               onValueChange={(val) =>
-                setValue("brandId", Number(val), { shouldValidate: true })
+                setValue('brandId', Number(val), { shouldValidate: true })
               }
               options={brands}
               error={errors.brandId?.message}
@@ -193,7 +196,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("code")}
+              {...register('code')}
               placeholder="Product Code"
               className="form-input"
             />
@@ -206,7 +209,7 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
-              {...register("season")}
+              {...register('season')}
               placeholder="Season"
               className="form-input"
             />
@@ -219,11 +222,27 @@ function ProductInfoForm({ onSuccess }: Props) {
 
           <div className="flex flex-col">
             <Input
+              {...register('attributeKeyEn')}
+              placeholder="Attribute Label (English)"
+              className="form-input"
+            />
+          </div>
+          <div className="flex flex-col">
+            <Input
+              {...register('attributeKeyAr')}
+              placeholder="Attribute Label (Arabic)"
+              className="form-input"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <Input
               type="number"
-              {...register("basePrice")}
+              {...register('basePrice')}
               placeholder="Base Price"
               className="form-input"
             />
+
             {errors.basePrice && (
               <span className="text-red-600 text-sm mt-1">
                 {errors.basePrice.message}
@@ -237,13 +256,13 @@ function ProductInfoForm({ onSuccess }: Props) {
             type="submit"
             variant="plain"
             disabled={isSubmitting || !isValid}
-            className={`main-button flex justify-self-end ${(isSubmitting || !isValid) && "cursor-not-allowed"}`}
+            className={`main-button flex justify-self-end ${(isSubmitting || !isValid) && 'cursor-not-allowed'}`}
           >
             {isSubmitting && (
               <span className="h-4 w-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
             )}
             {isSubmitting ? (
-              "Processing..."
+              'Processing...'
             ) : (
               <>
                 Next: Media <ArrowRight />
