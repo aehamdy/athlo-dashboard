@@ -162,7 +162,7 @@ export const productColumns = (
             </Button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent>
+          <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
             <DropdownMenuGroup>
               <DropdownMenuItem className="cursor-pointer">
                 <Link
@@ -210,8 +210,7 @@ export const productColumns = (
               <DropdownMenuItem
                 variant="destructive"
                 className="cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
+                onClick={() => {
                   onDelete(row.original.id);
                 }}
               >
