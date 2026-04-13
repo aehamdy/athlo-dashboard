@@ -6,7 +6,7 @@ type DeleteMutation = {
   status: 'idle' | 'pending' | 'success' | 'error';
 };
 
-export function useProductDelete(deleteMutation: DeleteMutation) {
+function useDeleteProduct(deleteMutation: DeleteMutation) {
   const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   const openDelete = (product: Product) => {
@@ -28,3 +28,5 @@ export function useProductDelete(deleteMutation: DeleteMutation) {
     confirmDelete,
   };
 }
+
+export default useDeleteProduct;

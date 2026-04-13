@@ -9,12 +9,12 @@ import { ROUTE_PATHS } from '@/routes/paths';
 import ConfirmDeleteModal from '@/components/shared/ConfirmDeleteModal';
 import { useDebounce } from '@/features/products/hooks/useDebounce';
 import { useProductsTable } from '@/features/products/hooks/useProductsTable';
-import { useProductDelete } from '@/features/products/hooks/useProductDelete';
 import { useState } from 'react';
 import type { Product } from '../types';
 import DetailsPanel from '@/components/shared/DetailsPanel';
 import ProductDetails from '../components/ProductDetails';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
+import useDeleteProduct from '../hooks/useDeleteProduct';
 
 export default function ProductsPage() {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
@@ -39,7 +39,7 @@ export default function ProductsPage() {
   });
 
   const { productToDelete, setProductToDelete, openDelete, confirmDelete } =
-    useProductDelete(deleteProduct);
+    useDeleteProduct(deleteProduct);
 
   const columns = productColumns((id) => {
     const product = products?.data.find((p) => p.id === id);
