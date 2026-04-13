@@ -13,15 +13,13 @@ function ProductDetails({ productId }: ProductDetailsProps) {
   const { data: product, isLoading: isLoadingProduct } =
     useFetchProductById(productId);
 
-  console.log(product);
-
   if (isLoadingProduct || !product) {
     return <ProductDetailsSkeleton />;
   }
 
   return (
     <section className="">
-      <section className="h-full">
+      <section className="h-full pt-sm">
         <ProductImages images={product.images} productName={product.nameEn} />
 
         <ProductGeneralInfo product={product} />
