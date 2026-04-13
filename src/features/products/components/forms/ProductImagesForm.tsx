@@ -1,12 +1,12 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useRef, useState } from 'react';
 import {
   productImagesSchema,
   type ProductImagesFormType,
-} from "../../products.schema";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+} from '../../products.schema';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   ArrowLeft,
   ArrowRight,
@@ -14,12 +14,12 @@ import {
   ImagePlus,
   Star,
   X,
-} from "lucide-react";
-import Heading from "@/components/shared/Heading";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATHS } from "@/routes/paths";
-import Loading from "@/components/shared/Loading";
-import { useUploadProductImages } from "../../hooks/useUploadProductImages";
+} from 'lucide-react';
+import Heading from '@/components/shared/Heading';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATHS } from '@/routes/paths';
+import Loading from '@/components/shared/Loading';
+import { useUploadProductImages } from '../../hooks/useUploadProductImages';
 
 type Props = {
   productId: number;
@@ -35,11 +35,11 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
     },
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const images = form.watch("images");
+  const images = form.watch('images');
   const navigate = useNavigate();
   const uploadMutation = useUploadProductImages();
   const [activeButton, setActiveButton] = useState<
-    "finish" | "variants" | null
+    'finish' | 'variants' | null
   >(null);
 
   useEffect(() => {
@@ -50,7 +50,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
     };
   }, [images]);
 
-  const handleUpload = async (nextStep: "finish" | "variants") => {
+  const handleUpload = async (nextStep: 'finish' | 'variants') => {
     setActiveButton(nextStep);
 
     const data = form.getValues();
@@ -59,9 +59,9 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
       { productId, data },
       {
         onSuccess: () => {
-          if (nextStep === "finish") {
+          if (nextStep === 'finish') {
             navigate(ROUTE_PATHS.dashboard.products);
-          } else if (nextStep === "variants") {
+          } else if (nextStep === 'variants') {
             onSuccess();
           }
           setActiveButton(null);
@@ -74,7 +74,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="h-full p-compact md:p-2xl bg-white rounded-2xl"
+      className="w-full h-full p-compact md:p-2xl bg-white rounded-2xl"
     >
       <div className="flex flex-col justify-between gap-base h-full">
         <div className="flex flex-col gap-regular items-center p-8 border-4 border-dashed border-accent-focus rounded-md">
@@ -100,7 +100,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
               multiple
               accept=".jpg,.jpeg,.png,.webp"
               onChange={(e) =>
-                form.setValue("images", Array.from(e.target.files || []), {
+                form.setValue('images', Array.from(e.target.files || []), {
                   shouldValidate: true,
                 })
               }
@@ -152,7 +152,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
                     type="button"
                     onClick={() => {
                       const updated = images.filter((_, i) => i !== index);
-                      form.setValue("images", updated, {
+                      form.setValue('images', updated, {
                         shouldValidate: true,
                       });
                     }}
@@ -172,9 +172,9 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
               type="button"
               className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-70 transform-colors duration-normal"
               disabled={uploadMutation.isPending || !images?.length}
-              onClick={() => handleUpload("variants")}
+              onClick={() => handleUpload('variants')}
             >
-              {uploadMutation.isPending && activeButton === "variants" ? (
+              {uploadMutation.isPending && activeButton === 'variants' ? (
                 <div className="flex items-center gap-xs">
                   <Loading />
                   Processing...
@@ -207,9 +207,9 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
               variant="outline"
               className="group w-full hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:opacity-70 transform-colors duration-normal cursor-pointer"
               disabled={uploadMutation.isPending || !images?.length}
-              onClick={() => handleUpload("finish")}
+              onClick={() => handleUpload('finish')}
             >
-              {uploadMutation.isPending && activeButton === "finish" ? (
+              {uploadMutation.isPending && activeButton === 'finish' ? (
                 <div className="flex items-center gap-xs">
                   <Loading />
                   Processing...
