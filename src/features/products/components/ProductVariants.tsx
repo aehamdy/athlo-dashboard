@@ -9,8 +9,16 @@ import { Badge } from '@/components/ui/badge';
 import { STOCK_QUANTITY_RULES } from '../constants';
 import type { ProductVariant } from '../types';
 import ProductVariantCard from './ProductVariantCard';
+import Icon from '@/components/shared/Icon';
 
-function ProductVariants({ variants }: { variants: ProductVariant[] }) {
+type ProductVariantsProps = {
+  variants: ProductVariant[];
+  productId: number;
+};
+
+function ProductVariants({ variants, productId }: ProductVariantsProps) {
+  const hasVariants = variants.length > 0;
+
   return (
     <section className="px-base border-b">
       <Accordion type="single" collapsible>
@@ -26,27 +34,40 @@ function ProductVariants({ variants }: { variants: ProductVariant[] }) {
           </AccordionTrigger>
 
           <AccordionContent>
-            {/* Stock Quantity Badges */}
-            <ul className="flex items-center gap-sm mb-md">
-              {STOCK_QUANTITY_RULES.map((rule) => (
-                <li key={rule.id} className="overflow-hidden">
-                  <Badge
-                    variant={'outline'}
-                    className={`${rule.className} text-xs border-none rounded-sm`}
-                  >
-                    {rule.label}: {rule.limit}
-                  </Badge>
-                </li>
-              ))}
-            </ul>
+            {hasVariants ? (
+              <>
+                {/* Stock Quantity Badges */}
+                <ul className="flex items-center gap-sm mb-md">
+                  {STOCK_QUANTITY_RULES.map((rule) => (
+                    <li key={rule.id} className="overflow-hidden">
+                      <Badge
+                        variant={'outline'}
+                        className={`${rule.className} text-xs border-none rounded-sm`}
+                      >
+                        {rule.label}: {rule.limit}
+                      </Badge>
+                    </li>
+                  ))}
+                </ul>
 
-            <ul className="flex flex-col gap-sm min-h-25 overflow-y-auto">
-              {variants.map((variant) => (
-                <li key={variant.id}>
-                  <ProductVariantCard variant={variant} />
-                </li>
-              ))}
-            </ul>
+                <ul className="flex flex-col gap-sm min-h-25 overflow-y-auto">
+                  {variants.map((variant) => (
+                    <li key={variant.id}>
+                      <ProductVariantCard
+                        variant={variant}
+                        productId={productId}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <div className="flex items-center justify-center gap-sm">
+                <Icon name="AlertCircle" className="text-neutral-muted" />
+
+                <p className="text-neutral-muted">No variants added yet.</p>
+              </div>
+            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

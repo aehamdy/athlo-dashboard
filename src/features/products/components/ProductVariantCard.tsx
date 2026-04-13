@@ -4,13 +4,20 @@ import getStockStatus from '../utils/getStockStatus';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/shared/Icon';
 import Currency from '@/components/shared/Currency';
+import useDeleteProductVariant from '../hooks/useDeleteProductVariant';
 
 type ProductVariantCardProps = {
   variant: ProductVariant;
+  productId: number;
 };
 
-function ProductVariantCard({ variant }: ProductVariantCardProps) {
-  console.log(variant);
+function ProductVariantCard({ variant, productId }: ProductVariantCardProps) {
+  const deleteMutation = useDeleteProductVariant(productId);
+
+  const handleDelete = () => {
+    deleteMutation.mutate(variant.id);
+  };
+
   return (
     <article className="p-sm border rounded-md overflow-hidden">
       <div className="flex justify-between items-stretch gap-xs">
@@ -74,6 +81,21 @@ function ProductVariantCard({ variant }: ProductVariantCardProps) {
               Qty: {variant.stockQuantity}
             </span>
           </footer>
+        </div>
+
+        <div className="flex">
+          <Button
+            variant="plain"
+            size="icon"
+            className="group h-full bg-gray-100"
+            onClick={handleDelete}
+            disabled={deleteMutation.isPending}
+          >
+            <Icon
+              name="Trash2"
+              className="text-gray-500 group-hover:text-red-500 transition-colors duration-normal"
+            />
+          </Button>
         </div>
       </div>
     </article>
