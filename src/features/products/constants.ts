@@ -55,3 +55,14 @@ export const STOCK_QUANTITY_RULES = [
     className: 'bg-green-100 text-green-700',
   },
 ] as const;
+
+export const VARIANTS_TABLE_HEAD = [
+  { id: 1, label: 'Value (EN)' },
+  { id: 2, label: 'Value (AR)' },
+  { id: 3, label: 'Unit' },
+  { id: 4, label: 'Color Label' },
+  { id: 5, label: 'Color Code' },
+  { id: 6, label: 'Price' },
+  { id: 7, label: 'Quantity' },
+  { id: 8, label: 'Actions' },
+];
