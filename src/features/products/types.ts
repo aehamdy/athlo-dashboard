@@ -94,14 +94,11 @@ export interface ProductVariant {
   priceAfterDiscount: number;
   stockQuantity: number;
   inStock: boolean;
-  attributes: {
-    keyEn: string;
-    keyAr: string;
-    type: string;
-    valueEn: string;
-    valueAr: string;
-    colorHex: string;
-  }[];
+  attributeValueEn: string;
+  attributeValueAr: string;
+  colorHex: string;
+  colorLabel: string;
+  unit: string;
 }
 
 export interface ProductForm {
