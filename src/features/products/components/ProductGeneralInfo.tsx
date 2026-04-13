@@ -1,6 +1,7 @@
 import Heading from '@/components/shared/Heading';
 import Icon from '@/components/shared/Icon';
 import type { ProductDetails } from '../types';
+import Currency from '@/components/shared/Currency';
 
 function ProductGeneralInfo({ product }: { product: ProductDetails }) {
   const hasPriceRange = product.maxPrice > product.minPrice;
@@ -36,12 +37,18 @@ function ProductGeneralInfo({ product }: { product: ProductDetails }) {
           >
             {hasPriceRange ? (
               <>
-                <p className="text-md">{product.minPrice} &pound;</p>
+                <p className="text-md">
+                  {product.minPrice} <Currency />
+                </p>
                 <span className="">-</span>
-                <p className="text-md">{product.maxPrice} &pound;</p>
+                <p className="text-md">
+                  {product.maxPrice} <Currency />
+                </p>
               </>
             ) : (
-              <p className="text-md">{product.basePrice} &pound;</p>
+              <p className="text-md">
+                {product.basePrice} <Currency />
+              </p>
             )}
           </div>
 
