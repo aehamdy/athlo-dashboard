@@ -13,6 +13,8 @@ function ProductDetails({ productId }: ProductDetailsProps) {
   const { data: product, isLoading: isLoadingProduct } =
     useFetchProductById(productId);
 
+  console.log(product);
+
   if (isLoadingProduct || !product) {
     return <ProductDetailsSkeleton />;
   }
@@ -24,7 +26,7 @@ function ProductDetails({ productId }: ProductDetailsProps) {
 
         <ProductGeneralInfo product={product} />
 
-        <ProductVariants variants={product.variants} />
+        <ProductVariants variants={product.variants} productId={product.id} />
 
         <ProductReviews productId={product.id} />
       </section>

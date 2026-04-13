@@ -50,12 +50,12 @@ export const API_ENDPOINTS = {
     delete: (id: number) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.product}/${id}`,
     addImages: `${API_VERSION_PATH}/ProductImage/CreateProductImages`,
-    addVariants: `${API_VERSION_PATH}/ProductVariant/CreateRange`,
     updateImages: `${API_VERSION_PATH}/ProductImage/EditProductImage`,
+    addVariants: `${API_VERSION_PATH}/ProductVariant/CreateRange`,
     updateVariants: `${API_VERSION_PATH}/ProductVariant/Edit`,
+    deleteVariant: (id: number) => `${API_VERSION_PATH}/ProductVariant/${id}`,
 
     // deleteImage: `${API_VERSION_PATH}/ProductImage/DeleteProductImage`,
-    // deleteVariant: (id: number) => `${API_VERSION_PATH}/ProductVariant/${id}`,
   },
   brands: {
     getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.brand}/List`,

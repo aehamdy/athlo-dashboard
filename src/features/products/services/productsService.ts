@@ -70,6 +70,16 @@ export const productService = {
     }
   },
 
+  deleteVariant: async (variantId: number): Promise<void> => {
+    try {
+      await http.delete<void>(API_ENDPOINTS.products.deleteVariant(variantId));
+    } catch (error: unknown) {
+      const axiosError = error as { response?: { data: unknown } };
+      console.log('Delete error response:', axiosError.response?.data);
+      throw error;
+    }
+  },
+
   getProductReviews: async (productId: number) => {
     const response = await http.get(
       API_ENDPOINTS.orderReviews.getById(productId),
