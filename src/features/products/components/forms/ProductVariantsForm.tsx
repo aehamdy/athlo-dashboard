@@ -3,22 +3,22 @@ import {
   useFieldArray,
   FormProvider,
   useWatch,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   productVariantsSchema,
   type ProductVariantsFormType,
-} from "../../products.schema";
-import { Button } from "@/components/ui/button";
-import VariantsHeader from "./VariantsHeader";
-import VariantRow from "./VariantRow";
-import Icon from "@/components/shared/Icon";
-import Heading from "@/components/shared/Heading";
-import { toast } from "sonner";
-import { useAddProductVariants } from "../../hooks/useAddProductVariants";
-import { isVariantsComplete } from "../../utils/isVariantsComplete";
-import parseApiError from "../../utils/parseApiError";
-import { useFetchProductById } from "../../hooks/useFetchProductById";
+} from '../../products.schema';
+import { Button } from '@/components/ui/button';
+import VariantsHeader from './VariantsHeader';
+import VariantRow from './VariantRow';
+import Icon from '@/components/shared/Icon';
+import Heading from '@/components/shared/Heading';
+import { toast } from 'sonner';
+import { useAddProductVariants } from '../../hooks/useAddProductVariants';
+import { isVariantsComplete } from '../../utils/isVariantsComplete';
+import parseApiError from '../../utils/parseApiError';
+import { useFetchProductById } from '../../hooks/useFetchProductById';
 
 type Props = {
   productId: number;
@@ -27,7 +27,8 @@ type Props = {
 };
 
 function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
-  const { basePrice } = useFetchProductById(productId);
+  const { data: product } = useFetchProductById(productId);
+  const basePrice = product?.basePrice;
   const { submitVariants } = useAddProductVariants(productId);
 
   const form = useForm<ProductVariantsFormType>({
@@ -35,41 +36,45 @@ function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
     defaultValues: {
       variants: [
         {
-          size: "",
-          color: "",
-          colorCode: "",
-          price: basePrice || 0,
-          stock: 0,
+          attributeValueEn: '',
+          attributeValueAr: '',
+          unit: '',
+          colorCode: '',
+          colorName: '',
+          price: basePrice || 1,
+          stockQuantity: 1,
         },
       ],
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "variants",
+    name: 'variants',
   });
 
-  const variants = useWatch({ control: form.control, name: "variants" });
+  const variants = useWatch({ control: form.control, name: 'variants' });
 
   const allVariantsComplete = isVariantsComplete(variants);
   const { isSubmitting } = form.formState;
 
   const handleAddVariant = () => {
     append({
-      size: "",
-      color: "",
-      colorCode: "",
-      price: basePrice || 0,
-      stock: 0,
+      attributeValueEn: '',
+      attributeValueAr: '',
+      unit: '',
+      price: basePrice || 1,
+      colorCode: '',
+      colorName: '',
+      stockQuantity: 1,
     });
   };
 
   const onSubmit = async (data: ProductVariantsFormType) => {
     try {
       await submitVariants(data);
-      toast.success("Variants added successfully");
+      toast.success('Variants added successfully');
       onSuccess();
     } catch (error) {
       toast.error(parseApiError(error));
@@ -112,7 +117,7 @@ function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
                   index={index}
                   remove={remove}
                   totalRows={fields.length}
-                  basePrice={basePrice}
+                  basePrice={basePrice || 0}
                 />
               ))}
             </div>
