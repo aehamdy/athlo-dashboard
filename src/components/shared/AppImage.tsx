@@ -1,6 +1,7 @@
-import type { ImgHTMLAttributes } from "react";
-import { useState } from "react";
-import clsx from "clsx";
+import type { ImgHTMLAttributes } from 'react';
+import { useState } from 'react';
+import clsx from 'clsx';
+import fallbackimage from '@/assets/images/no_image_placeholder.webp';
 
 type AppImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   src: string;
@@ -14,17 +15,16 @@ function AppImage({
   src,
   alt,
   className,
-  fallbackSrc = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+  fallbackSrc = fallbackimage,
   ...props
 }: AppImageProps) {
   const [imgSrc, setImgSrc] = useState(() => {
     // Handle empty or invalid src on initial render
-    if (!src || src.trim() === "") {
+    if (!src || src.trim() === '') {
       return fallbackSrc;
     }
     return src;
   });
-  const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
 
   const handleError = () => {
@@ -35,7 +35,6 @@ function AppImage({
   };
 
   const handleLoad = () => {
-    setIsLoaded(true);
     setHasError(false);
   };
 
@@ -47,7 +46,7 @@ function AppImage({
       onError={handleError}
       loading="lazy"
       decoding="async"
-      className={clsx("w-full h-full object-cover", className)}
+      className={clsx('w-full h-full object-cover', className)}
       {...props}
     />
   );
