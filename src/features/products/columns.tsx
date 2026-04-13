@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import Icon from '@/components/shared/Icon';
 import AppImage from '@/components/shared/AppImage';
+import Currency from '@/components/shared/Currency';
 
 export const productColumns = (
   onDelete: (id: number) => void,
@@ -102,7 +103,14 @@ export const productColumns = (
           ? `${minPrice.toLocaleString()} ~ ${maxPrice.toLocaleString()}`
           : basePrice;
 
-      return <span className="font-medium">{productPrice} &pound;</span>;
+      return (
+        <div className="flex justify-center items-center gap-xs font-medium">
+          {productPrice}
+          <span className="text-gray-400">
+            <Currency />
+          </span>
+        </div>
+      );
     },
   },
   {
