@@ -68,11 +68,16 @@ export const productVariantsSchema = z.object({
   variants: z
     .array(
       z.object({
-        size: z.string().min(1, 'Size is required'),
-        color: z.string().min(1, 'Color is required'),
-        colorCode: z.string().min(1, 'Color Code is required'),
-        price: z.number().min(1, 'Price must be a number'),
-        stock: z.number().min(1, 'Stock must be a number'),
+        attributeValueEn: z.string().optional(),
+        attributeValueAr: z.string().optional(),
+        unit: z.string().optional(),
+        colorCode: z
+          .string()
+          .regex(/^#([0-9A-Fa-f]{6})$/, 'Invalid HEX color')
+          .optional(),
+        colorName: z.string().optional(),
+        price: z.number().positive('Price is required'),
+        stockQuantity: z.number().positive('Stock is required'),
       }),
     )
     .min(1, 'At least one variant is required'),
