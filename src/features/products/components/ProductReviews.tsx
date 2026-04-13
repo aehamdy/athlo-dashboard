@@ -10,12 +10,15 @@ import ReviewSkeleton from './skeletons/skeleton-components/ReviewSkeleton';
 import ProductReview from './ProductReview';
 import { useState } from 'react';
 import useFetchProductRevviews from '../hooks/useFetchProductReviews';
+import Icon from '@/components/shared/Icon';
 
 function ProductReviews({ productId }: { productId: number }) {
   const [isReviewsOpen, setIsReviewsOpen] = useState(false);
 
   const { data: reviews, isLoading: isLoadingReviews } =
     useFetchProductRevviews(productId, { enabled: isReviewsOpen });
+
+  const hasReviews = reviews && reviews.length > 0;
 
   return (
     <section className="px-base border-b">
@@ -38,16 +41,24 @@ function ProductReviews({ productId }: { productId: number }) {
               <ReviewSkeleton />
             ) : (
               <ProductReviewsList>
-                {reviews?.map((review) => {
-                  return (
-                    <li
-                      key={review.id}
-                      className="flex flex-col gap-sm p-sm border rounded-md"
-                    >
-                      <ProductReview review={review} />
-                    </li>
-                  );
-                })}
+                {hasReviews ? (
+                  reviews.map((review) => {
+                    return (
+                      <li
+                        key={review.id}
+                        className="flex flex-col gap-sm p-sm border rounded-md"
+                      >
+                        <ProductReview review={review} />
+                      </li>
+                    );
+                  })
+                ) : (
+                  <div className="flex items-center justify-center gap-sm">
+                    <Icon name="AlertCircle" className="text-neutral-muted" />
+
+                    <p className="text-neutral-muted">No reviews added yet.</p>
+                  </div>
+                )}
               </ProductReviewsList>
             )}
           </AccordionContent>
