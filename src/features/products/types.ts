@@ -89,11 +89,11 @@ export interface ProductDetails {
 
 export interface ProductVariant {
   id: number;
-  sku: string;
-  price: number;
-  priceAfterDiscount: number;
+  sku?: string;
+  price?: number;
+  priceAfterDiscount?: number;
   stockQuantity: number;
-  inStock: boolean;
+  inStock?: boolean;
   attributeValueEn: string;
   attributeValueAr: string;
   colorHex: string;

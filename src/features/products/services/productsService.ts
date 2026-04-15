@@ -3,6 +3,7 @@ import type {
   PaginatedProductsResponse,
   GetProductsParams,
   ProductForm,
+  ProductVariant,
 } from '../types';
 import { API_ENDPOINTS } from '@/api/endpoints';
 
@@ -69,6 +70,16 @@ export const productService = {
       throw error;
     }
   },
+
+  getVariants: async (productId: number) => {
+    const response = await http.get(
+      API_ENDPOINTS.products.getVariantsToEdit(productId),
+    );
+    return response.data.data;
+  },
+
+  updateVariant: (data: ProductVariant) =>
+    http.put(API_ENDPOINTS.products.updateVariant, data),
 
   deleteVariant: async (variantId: number): Promise<void> => {
     try {
