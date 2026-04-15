@@ -1,6 +1,6 @@
-export type CouponStatus = "Active" | "Scheduled" | "Expired";
+export type CouponStatus = 'Active' | 'Scheduled' | 'Expired';
 
-export type CouponFormMode = "create" | "edit";
+export type CouponFormMode = 'create' | 'edit';
 
 export type CouponTypeOption = {
   value: number;
@@ -16,7 +16,7 @@ export type Coupon = {
   percentage: number;
   startDate: string;
   endDate: string;
-  type: number | "Global" | "ProductSpecific";
+  type: number | 'Global' | 'ProductSpecific';
 };
 
 export type couponFormValue = {

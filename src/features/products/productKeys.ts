@@ -7,6 +7,5 @@ export const productKeys = {
     [...productKeys.all(params), 'list'] as const,
   info: (id: number) => ['products', 'info', id] as const,
   media: (id: number) => ['products', 'media', id] as const,
-  variants: (id: number) => ['products', 'variants', id] as const,
   reviews: (id: number) => ['products', 'reviews', id] as const,
 };

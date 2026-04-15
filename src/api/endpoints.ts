@@ -52,7 +52,9 @@ export const API_ENDPOINTS = {
     addImages: `${API_VERSION_PATH}/ProductImage/CreateProductImages`,
     updateImages: `${API_VERSION_PATH}/ProductImage/EditProductImage`,
     addVariants: `${API_VERSION_PATH}/ProductVariant/CreateRange`,
-    updateVariants: `${API_VERSION_PATH}/ProductVariant/Edit`,
+    getVariantsToEdit: (id: number) =>
+      `${API_VERSION_PATH}/ProductVariant/${id}/To-Edit`,
+    updateVariant: `${API_VERSION_PATH}/ProductVariant/Edit`,
     deleteVariant: (id: number) => `${API_VERSION_PATH}/ProductVariant/${id}`,
 
     // deleteImage: `${API_VERSION_PATH}/ProductImage/DeleteProductImage`,
@@ -90,7 +92,6 @@ export const API_ENDPOINTS = {
       `${API_VERSION_PATH}${CONTROLLER_PATH.orderReview}/product/${productId}`,
   },
   coupons: {
-    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/List`,
     getById: (id: number) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/${id}/To-Edit`,
     create: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/Create`,
