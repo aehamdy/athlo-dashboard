@@ -197,19 +197,6 @@ export const productColumns = (
                   Edit Media
                 </Link>
               </DropdownMenuItem>
-
-              <DropdownMenuItem className="cursor-pointer">
-                <Link
-                  to={ROUTE_PATHS.dashboard.editProduct(
-                    row.original.id,
-                    'variants',
-                  )}
-                  className="flex items-center gap-xs"
-                >
-                  <Icon name="Layers" />
-                  Edit Variants
-                </Link>
-              </DropdownMenuItem>
             </DropdownMenuGroup>
 
             <DropdownMenuSeparator />

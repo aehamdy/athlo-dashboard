@@ -1,12 +1,11 @@
-import { Navigate, useParams } from "react-router-dom";
-import EditProductLayout from "../components/EditProductLayout";
-import type { EditProductTab } from "../types";
-import { ROUTE_PATHS } from "@/routes/paths";
-import { DEFAULT_EDIT_PRODUCT_TAB, EDIT_PRODUCT_TABS } from "../constants";
-import useFetchProductInfo from "../hooks/useFetchProductInfo";
-import EditProductInfoTab from "../components/tabs/EditProductInfoTab";
-import EditProductMediaTab from "../components/tabs/EditProductMediaTab";
-import EditProductVariantsTab from "../components/tabs/EditProductVariantsTab";
+import { Navigate, useParams } from 'react-router-dom';
+import EditProductLayout from '../components/EditProductLayout';
+import type { EditProductTab } from '../types';
+import { ROUTE_PATHS } from '@/routes/paths';
+import { DEFAULT_EDIT_PRODUCT_TAB, EDIT_PRODUCT_TABS } from '../constants';
+import useFetchProductInfo from '../hooks/useFetchProductInfo';
+import EditProductInfoTab from '../components/tabs/EditProductInfoTab';
+import EditProductMediaTab from '../components/tabs/EditProductMediaTab';
 
 function EditProductPage() {
   const { id, tab } = useParams<{
@@ -37,11 +36,8 @@ function EditProductPage() {
 
   return (
     <EditProductLayout product={product} activeTab={currentTab}>
-      {currentTab === "info" && <EditProductInfoTab product={product} />}
-      {currentTab === "media" && <EditProductMediaTab product={product} />}
-      {currentTab === "variants" && (
-        <EditProductVariantsTab product={product} />
-      )}
+      {currentTab === 'info' && <EditProductInfoTab product={product} />}
+      {currentTab === 'media' && <EditProductMediaTab product={product} />}
     </EditProductLayout>
   );
 }
