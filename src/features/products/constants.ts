@@ -17,10 +17,6 @@ export const EDIT_PRODUCT_TABS = [
     key: 'media',
     label: 'Media',
   },
-  {
-    key: 'variants',
-    label: 'Variants',
-  },
 ] as const;
 
 export const DEFAULT_EDIT_PRODUCT_TAB = 'info';
