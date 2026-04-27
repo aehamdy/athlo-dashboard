@@ -1,7 +1,7 @@
 import Error from '@/components/shared/Error';
 import { useOverviewData } from '../hooks/useOverviewData';
 import KpiCard from './KpiCard';
-import KpiCardSkeleton from './KpiCardSkeleton';
+import KpiCardSkeleton from './skeletons/KpiCardSkeleton';
 
 function KpiSection() {
   const { KpiCards, isLoading, isError } = useOverviewData();
