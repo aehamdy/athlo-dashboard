@@ -11,7 +11,7 @@ function OverviewPage() {
 
       <KpiSection />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-base">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-base h-[850px] md:h-[450px]">
         <div className="lg:col-span-8">
           <RevenueChart />
         </div>
