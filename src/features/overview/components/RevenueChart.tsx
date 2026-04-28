@@ -49,14 +49,14 @@ function RevenueChart() {
   }
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Revenue Trends</CardTitle>
         <CardDescription>Last 30 days</CardDescription>
       </CardHeader>
 
-      <CardContent>
-        <ChartContainer config={chartConfig}>
+      <CardContent className="h-full">
+        <ChartContainer config={chartConfig} className="h-full w-full">
           <BarChart accessibilityLayer data={revenueData}>
             <CartesianGrid vertical={false} />
 
