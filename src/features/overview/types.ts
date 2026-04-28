@@ -29,3 +29,11 @@ export type RecentOfflineSale = {
   saleDate: string;
   createdBy: string;
 };
+
+export type TopProductsType = {
+  productId: number;
+  productName: string;
+  imageUrl: string;
+  totalQuantitySold: number;
+  totalRevenue: number;
+};
