@@ -23,7 +23,7 @@ function KpiCard({ stat }: KpiCardProps) {
           <Icon name={icon} size="24" style={{ color: colors.secondary }} />
         </div>
 
-        <p
+        <div
           className={`font-semibold text-3xl`}
           style={{ color: colors.primary }}
         >
@@ -35,7 +35,7 @@ function KpiCard({ stat }: KpiCardProps) {
           ) : (
             value
           )}
-        </p>
+        </div>
 
         <div>
           {details &&

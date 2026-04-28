@@ -2,6 +2,7 @@ import Header from '@/components/shared/Header';
 import KpiSection from '../components/KpiSection';
 import RatingsOverview from '../components/RatingsOverview';
 import RevenueChart from '../components/RevenueChart';
+import OrderStatusChart from '../components/OrderStatusChart';
 
 function OverviewPage() {
   return (
@@ -10,13 +11,13 @@ function OverviewPage() {
 
       <KpiSection />
 
-      <div className="grid grid-cols-10 gap-base">
-        <div className="col-span-10 md:col-span-6 lg:col-span-7">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-base">
+        <div className="lg:col-span-8">
           <RevenueChart />
         </div>
 
-        <div className="col-span-10 md:col-span-4 lg:col-span-3 grid place-items-center bg-white rounded-md">
-          Order Status Placeholder
+        <div className="lg:col-span-4">
+          <OrderStatusChart />
         </div>
       </div>
 
