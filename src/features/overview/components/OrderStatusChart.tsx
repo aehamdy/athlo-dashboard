@@ -5,7 +5,6 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { PieChart, Pie, Label } from 'recharts';
-import { useMemo } from 'react';
 import { useOverviewData } from '../hooks/useOverviewData';
 import Loading from '@/components/shared/Loading';
 import Error from '@/components/shared/Error';
@@ -56,20 +55,16 @@ function OrderStatusChart() {
     );
   }
 
-  const chartData = useMemo<ChartItem[]>(() => {
-    if (!orderStatusData) return [];
+  const chartData: ChartItem[] = orderStatusData.map((item: any) => ({
+    status: item.status,
+    count: item.count,
+    fill: chartConfig[item.status as keyof typeof chartConfig]?.color || '#ccc',
+  }));
 
-    return orderStatusData.map((item: any) => ({
-      status: item.status,
-      count: item.count,
-      fill:
-        chartConfig[item.status as keyof typeof chartConfig]?.color || '#ccc',
-    }));
-  }, [orderStatusData]);
-
-  const totalOrders = useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + (curr.count || 0), 0);
-  }, [chartData]);
+  const totalOrders = chartData.reduce(
+    (acc, curr) => acc + (curr.count || 0),
+    0,
+  );
 
   return (
     <Card className="h-full">
@@ -137,9 +132,8 @@ function OrderStatusChart() {
                 : 0;
 
             return (
-              <div className="flex items-center gap-1">
+              <div key={item.status} className="flex items-center gap-1">
                 <span
-                  key={item.status}
                   className="h-2 w-2 rounded-[0.150rem]"
                   style={{ backgroundColor: item.fill }}
                 />

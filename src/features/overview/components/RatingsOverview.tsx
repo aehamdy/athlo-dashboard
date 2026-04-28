@@ -14,7 +14,7 @@ function RatingsOverview() {
     return <Error title="Ratings Overview" message="Failed to load ratings" />;
 
   return (
-    <div className="py-xl px-md text-[#9D6F34] bg-[#FEF3C7] border border-[#FBBF24] rounded-md">
+    <div className="h-full py-xl px-md text-[#9D6F34] bg-[#FEF3C7] border border-[#FBBF24] rounded-md">
       <div className="flex flex-col gap-sm">
         <div className="flex justify-between items-center">
           <div>Ratings</div>
