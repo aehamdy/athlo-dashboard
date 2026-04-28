@@ -13,6 +13,7 @@ export const useOverviewData = () => {
   const orderStatusData = data?.data?.data?.ordersByStatus;
   const ratings = data?.data?.data?.ratingsOverview;
   const recentOfflineSales = data?.data?.data?.recentPosSales;
+  const recentOrders = data?.data?.data?.recentOrders;
   const topProducts = data?.data?.data?.topProducts;
 
   return {
@@ -21,6 +22,7 @@ export const useOverviewData = () => {
     orderStatusData,
     ratings,
     recentOfflineSales,
+    recentOrders,
     topProducts,
     isLoading,
     isError,

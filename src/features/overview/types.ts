@@ -37,3 +37,11 @@ export type TopProductsType = {
   totalQuantitySold: number;
   totalRevenue: number;
 };
+
+export type RecentOrder = {
+  orderId: number;
+  customerName: string;
+  totalAmount: number;
+  status: 'Pending' | 'Cancelled' | 'Shipped' | 'Paid' | 'Completed';
+  createdAt: string;
+};
