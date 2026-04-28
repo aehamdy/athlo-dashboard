@@ -3,6 +3,7 @@ import KpiSection from '../components/KpiSection';
 import RatingsOverview from '../components/RatingsOverview';
 import RevenueChart from '../components/RevenueChart';
 import OrderStatusChart from '../components/OrderStatusChart';
+import RecentOfflineSalesList from '../components/RecentOfflineSalesList';
 
 function OverviewPage() {
   return (
@@ -21,16 +22,16 @@ function OverviewPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-10 gap-base">
-        <div className="col-span-2">
+      <div className="grid grid-cols-2 lg:grid-cols-12 gap-base h-[550px] md:h-[350px]">
+        <div className="col-span-1 lg:col-span-3">
           <RatingsOverview />
         </div>
 
-        <div className="col-span-3 grid place-items-center bg-white rounded-md">
-          Recent POS Sales Placeholder
+        <div className="col-span-1 lg:col-span-3 grid">
+          <RecentOfflineSalesList />
         </div>
 
-        <div className="col-span-5 grid place-items-center bg-white rounded-md">
+        <div className="col-span-2 lg:col-span-6 grid place-items-center bg-white rounded-md">
           Top Cities Placeholder
         </div>
       </div>

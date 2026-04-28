@@ -20,3 +20,12 @@ export type KpiCardType = {
     secondary: string;
   };
 };
+
+export type RecentOfflineSale = {
+  id: number;
+  saleNumber: string;
+  finalAmount: number;
+  paymentMethod: string;
+  saleDate: string;
+  createdBy: string;
+};

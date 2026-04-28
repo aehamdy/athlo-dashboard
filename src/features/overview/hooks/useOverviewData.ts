@@ -12,12 +12,14 @@ export const useOverviewData = () => {
   const revenueData = data?.data?.data?.revenueChart;
   const orderStatusData = data?.data?.data?.ordersByStatus;
   const ratings = data?.data?.data?.ratingsOverview;
+  const recentOfflineSales = data?.data?.data?.recentPosSales;
 
   return {
     KpiCards,
     revenueData,
     orderStatusData,
     ratings,
+    recentOfflineSales,
     isLoading,
     isError,
   };
