@@ -13,6 +13,7 @@ export const useOverviewData = () => {
   const orderStatusData = data?.data?.data?.ordersByStatus;
   const ratings = data?.data?.data?.ratingsOverview;
   const recentOfflineSales = data?.data?.data?.recentPosSales;
+  const topProducts = data?.data?.data?.topProducts;
 
   return {
     KpiCards,
@@ -20,6 +21,7 @@ export const useOverviewData = () => {
     orderStatusData,
     ratings,
     recentOfflineSales,
+    topProducts,
     isLoading,
     isError,
   };
