@@ -11,10 +11,12 @@ export const useOverviewData = () => {
   console.log(data?.data);
 
   const KpiCards = data ? mapKpiToStatCards(data?.data?.data?.kpiCards) : [];
+  const revenueData = data?.data?.data?.revenueChart;
   const ratings = data?.data?.data?.ratingsOverview;
 
   return {
     KpiCards,
+    revenueData,
     ratings,
     isLoading,
     isError,
