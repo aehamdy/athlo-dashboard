@@ -8,15 +8,15 @@ export const useOverviewData = () => {
     queryFn: () => overviewService.getOverview(),
   });
 
-  console.log(data?.data);
-
   const KpiCards = data ? mapKpiToStatCards(data?.data?.data?.kpiCards) : [];
   const revenueData = data?.data?.data?.revenueChart;
+  const orderStatusData = data?.data?.data?.ordersByStatus;
   const ratings = data?.data?.data?.ratingsOverview;
 
   return {
     KpiCards,
     revenueData,
+    orderStatusData,
     ratings,
     isLoading,
     isError,
