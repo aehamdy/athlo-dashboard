@@ -7,12 +7,12 @@ import RecentOfflineSalesList from '../components/RecentOfflineSalesList';
 
 function OverviewPage() {
   return (
-    <div className="flex flex-col gap-sm md:gap-base lg:gap-base">
+    <div className="flex flex-col gap-regular md:gap-base">
       <Header />
 
       <KpiSection />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-base h-[850px] md:h-[450px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-regular md:gap-base h-[850px] md:h-[450px]">
         <div className="lg:col-span-8">
           <RevenueChart />
         </div>
@@ -22,21 +22,19 @@ function OverviewPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-12 gap-base h-[550px] md:h-[350px]">
+      <div className="grid grid-cols-2 lg:grid-cols-12 gap-regular md:gap-base h-[400px] md:h-[320px]">
         <div className="col-span-1 lg:col-span-3">
           <RatingsOverview />
         </div>
 
-        <div className="col-span-1 lg:col-span-3 grid">
+        <div className="col-span-1 lg:col-span-3">
           <RecentOfflineSalesList />
         </div>
 
-        <div className="col-span-2 lg:col-span-6 grid place-items-center bg-white rounded-md">
-          Top Cities Placeholder
-        </div>
+        <div className="col-span-2 lg:col-span-6">Top Cities Placeholder</div>
       </div>
 
-      <div className="grid grid-cols-10 gap-base">
+      <div className="grid grid-cols-10 gap-regular md:gap-base">
         <div className="col-span-7 h-20 bg-white rounded-md">
           Recent Orders Placeholder
         </div>

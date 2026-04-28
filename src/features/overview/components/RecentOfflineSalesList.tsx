@@ -9,11 +9,11 @@ function RecentOfflineSalesList() {
 
   return (
     <Card className="gap-0">
-      <CardHeader>
-        <h3 className="font-semibold">Recent Offline Sales</h3>
+      <CardHeader className="ps-sm">
+        <h3 className="font-semibold text-sm">Recent Offline Sales</h3>
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="px-sm">
         <ul className="space-y-xs">
           {recentOfflineSales?.map((sale: RecentOfflineSale) => {
             const { date, time } = formatDateTime(sale.saleDate);
