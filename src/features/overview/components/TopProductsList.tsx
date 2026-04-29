@@ -1,15 +1,16 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import Currency from '@/components/shared/Currency';
-import { useOverviewData } from '../hooks/useOverviewData';
-import type { TopProductsType } from '../types';
+import type { TopProductType } from '../types';
 import AppImage from '@/components/shared/AppImage';
 import { Link } from 'react-router-dom';
 import { ROUTE_PATHS } from '@/routes/paths';
 import Icon from '@/components/shared/Icon';
 
-function TopProductsList() {
-  const { topProducts } = useOverviewData();
+type TopProductsListProps = {
+  topProducts: TopProductType[];
+};
 
+function TopProductsList({ topProducts }: TopProductsListProps) {
   return (
     <Card className="gap-sm space-y-xs lg:space-y-regular">
       <CardHeader className="flex justify-between items-center ps-sm">
@@ -29,7 +30,7 @@ function TopProductsList() {
 
       <CardContent className="px-sm">
         <ul className="h-[230px] overflow-auto space-y-sm">
-          {topProducts?.map((sale: TopProductsType) => {
+          {topProducts?.map((sale: TopProductType) => {
             return (
               <li
                 key={sale.productId}

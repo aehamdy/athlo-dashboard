@@ -13,9 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { useOverviewData } from '../hooks/useOverviewData';
-import Loading from '@/components/shared/Loading';
-import Error from '@/components/shared/Error';
+import type { RevenueChartType } from '../types';
 
 const chartConfig = {
   onlineRevenue: {
@@ -23,7 +21,7 @@ const chartConfig = {
     color: '#02a588',
   },
   posRevenue: {
-    label: 'POS Revenue',
+    label: 'Offline Revenue',
     color: '#83c6a1',
   },
   totalRevenue: {
@@ -32,22 +30,11 @@ const chartConfig = {
   },
 };
 
-function RevenueChart() {
-  const { revenueData, isLoading, isError } = useOverviewData();
+type RevenueDataProps = {
+  revenueData: RevenueChartType[];
+};
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (isError) {
-    return (
-      <Error
-        title="Revenue Data Error"
-        message="Failed to load revenue data. Please try again later."
-      />
-    );
-  }
-
+function RevenueChart({ revenueData }: RevenueDataProps) {
   return (
     <Card className="h-full">
       <CardHeader>

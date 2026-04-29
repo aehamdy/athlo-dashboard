@@ -21,7 +21,30 @@ export type KpiCardType = {
   };
 };
 
-export type RecentOfflineSale = {
+export type RevenueChartType = {
+  date: string;
+  onlineRevenue: number;
+  posRevenue: number;
+  totalRevenue: number;
+};
+
+export type OrderStatusChartType = {
+  status: 'Pending' | 'Cancelled' | 'Shipped' | 'Paid' | 'Completed';
+  count: number;
+  percentage: number;
+};
+
+export type RatingsOverviewType = {
+  averageRating: number;
+  totalReviews: number;
+  distribution: {
+    stars: number;
+    count: number;
+    percentage: number;
+  }[];
+};
+
+export type RecentOfflineSales = {
   id: number;
   saleNumber: string;
   finalAmount: number;
@@ -30,12 +53,10 @@ export type RecentOfflineSale = {
   createdBy: string;
 };
 
-export type TopProductsType = {
-  productId: number;
-  productName: string;
-  imageUrl: string;
-  totalQuantitySold: number;
-  totalRevenue: number;
+export type City = {
+  city: string;
+  ordersCount: number;
+  percentage: number;
 };
 
 export type RecentOrder = {
@@ -46,8 +67,10 @@ export type RecentOrder = {
   createdAt: string;
 };
 
-export type City = {
-  city: string;
-  ordersCount: number;
-  percentage: number;
+export type TopProductType = {
+  productId: number;
+  productName: string;
+  imageUrl: string;
+  totalQuantitySold: number;
+  totalRevenue: number;
 };

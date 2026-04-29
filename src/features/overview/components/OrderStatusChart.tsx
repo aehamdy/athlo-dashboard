@@ -5,9 +5,11 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart';
 import { PieChart, Pie, Label } from 'recharts';
-import { useOverviewData } from '../hooks/useOverviewData';
-import Loading from '@/components/shared/Loading';
-import Error from '@/components/shared/Error';
+import type { OrderStatusChartType } from '../types';
+
+type OrderStatusChartProps = {
+  orderStatusData: OrderStatusChartType[];
+};
 
 type ChartItem = {
   status: string;
@@ -23,45 +25,14 @@ const chartConfig = {
   Completed: { label: 'Completed', color: '#88c8a4' },
 };
 
-function OrderStatusChart() {
-  const { orderStatusData, isLoading, isError } = useOverviewData();
-
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Order Status</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Loading />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (isError || !orderStatusData) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Order Status</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Error
-            title="Order Status"
-            message="Failed to load order status data"
-          />
-        </CardContent>
-      </Card>
-    );
-  }
-
-  const chartData: ChartItem[] = orderStatusData.map((item: any) => ({
+function OrderStatusChart({ orderStatusData }: OrderStatusChartProps) {
+  const chartData: ChartItem[] = orderStatusData?.map((item: any) => ({
     status: item.status,
     count: item.count,
     fill: chartConfig[item.status as keyof typeof chartConfig]?.color || '#ccc',
   }));
 
-  const totalOrders = chartData.reduce(
+  const totalOrders = chartData?.reduce(
     (acc, curr) => acc + (curr.count || 0),
     0,
   );
@@ -125,7 +96,7 @@ function OrderStatusChart() {
         </ChartContainer>
 
         <div className="grid grid-cols-2 gap-sm">
-          {chartData.map((item: any) => {
+          {chartData?.map((item: any) => {
             const percentage =
               totalOrders > 0
                 ? ((item.count / totalOrders) * 100).toFixed(1)

@@ -1,15 +1,11 @@
-import { useOverviewData } from '../hooks/useOverviewData';
 import Icon from '@/components/shared/Icon';
-import RatingsOverviewSkeleton from './skeletons/RatingsOverviewSkeleton';
-import Error from '@/components/shared/Error';
+import type { RatingsOverviewType } from '../types';
 
-function RatingsOverview() {
-  const { ratings, isLoading, isError } = useOverviewData();
+type RatingsOverviewProps = {
+  ratings: RatingsOverviewType;
+};
 
-  if (isLoading) return <RatingsOverviewSkeleton />;
-  if (isError)
-    return <Error title="Ratings Overview" message="Failed to load ratings" />;
-
+function RatingsOverview({ ratings }: RatingsOverviewProps) {
   return (
     <div className="h-full space-y-sm py-xl px-md text-warning-text bg-warning-bg-soft border border-warning-border rounded-md">
       <div className="flex flex-col gap-sm">
@@ -17,14 +13,14 @@ function RatingsOverview() {
           <div className="font-semibold">Ratings</div>
 
           <div className="flex items-center gap-xs">
-            {ratings.averageRating.toFixed(1)}
+            {ratings?.averageRating.toFixed(1)}
 
             <Icon name="Star" className="text-warning-text fill-warning-text" />
           </div>
         </div>
 
         <ul className="flex flex-col gap-lg">
-          {ratings.distribution
+          {ratings?.distribution
             ?.slice()
             .reverse()
             .map((distribution: any) =>
@@ -67,7 +63,7 @@ function RatingsOverview() {
         </ul>
 
         <p className="mt-md font-medium text-xs">
-          Based on {ratings.totalReviews} customer reviews
+          Based on {ratings?.totalReviews} customer reviews
         </p>
       </div>
     </div>
