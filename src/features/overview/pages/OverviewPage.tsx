@@ -6,6 +6,7 @@ import OrderStatusChart from '../components/OrderStatusChart';
 import RecentOfflineSalesList from '../components/RecentOfflineSalesList';
 import TopProductsList from '../components/TopProductsList';
 import RecentOrdersTable from '../components/RecentOrdersTable';
+import TopCitiesList from '../components/TopCitiesList';
 
 function OverviewPage() {
   return (
@@ -24,7 +25,7 @@ function OverviewPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-12 gap-regular md:gap-base h-[400px] md:h-[320px]">
+      <div className="grid grid-cols-2 lg:grid-cols-12 gap-regular md:gap-base h-[400px] md:h-[370px]">
         <div className="col-span-1 lg:col-span-3">
           <RatingsOverview />
         </div>
@@ -33,10 +34,12 @@ function OverviewPage() {
           <RecentOfflineSalesList />
         </div>
 
-        <div className="col-span-2 lg:col-span-6">Top Cities Placeholder</div>
+        <div className="col-span-2 lg:col-span-6">
+          <TopCitiesList />
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-regular md:gap-base h-[400px] md:h-[320px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-regular md:gap-base h-[800px] md:h-[320px]">
         <div className="lg:col-span-8">
           <RecentOrdersTable />
         </div>
