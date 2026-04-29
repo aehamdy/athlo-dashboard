@@ -1,10 +1,10 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: "Red Hat Text", sans-serif;
+  font-family: 'Red Hat Text', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -69,7 +69,13 @@
   --color-success: #8bcfb8;
   --color-warning: #ffc107;
   --color-danger: #d38181;
-  /* --color-danger: #FF5252; */
+
+  --color-warning-bg-soft: #fef3c7;
+  --color-warning-bg: #fef08a;
+  --color-warning-border: #fbbf24;
+  --color-warning-fill: #eab308;
+  --color-warning-text: #9d6f34;
+  --color-warning-strong: #9d6f34;
 
   /* Font sizes */
   --text-tiny: 0.625rem; /* 10px */
