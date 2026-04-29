@@ -11,7 +11,7 @@ function TopProductsList() {
   const { topProducts } = useOverviewData();
 
   return (
-    <Card className="gap-0 space-y-xs lg:space-y-regular">
+    <Card className="gap-sm space-y-xs lg:space-y-regular">
       <CardHeader className="flex justify-between items-center ps-sm">
         <h3 className="font-semibold text-sm">Top Products 🔥</h3>
 
@@ -28,12 +28,12 @@ function TopProductsList() {
       </CardHeader>
 
       <CardContent className="px-sm">
-        <ul className="h-[350px] overflow-auto space-y-xs">
+        <ul className="h-[230px] overflow-auto space-y-sm">
           {topProducts?.map((sale: TopProductsType) => {
             return (
               <li
                 key={sale.productId}
-                className="flex justify-between items-start gap-sm py-xs px-sm bg-gray-100 rounded-md"
+                className="flex justify-between items-start gap-sm p-sm bg-light-muted rounded-md"
               >
                 <div className="flex items-start gap-sm">
                   <div className="w-10 h-10 rounded-md overflow-hidden">

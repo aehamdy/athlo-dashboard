@@ -11,26 +11,23 @@ function KpiCard({ stat }: KpiCardProps) {
 
   return (
     <article
-      className="flex flex-col gap-base p-md rounded-md overflow-hidden h-full"
+      className="flex flex-col gap-base h-full p-md rounded-md overflow-hidden"
       style={{ backgroundColor: colors.background }}
     >
       <div className="flex flex-col gap-xs">
         <div className="flex justify-between items-center">
-          <h2 className="" style={{ color: colors.primary }}>
+          <h2 className="font-semibold" style={{ color: colors.primary }}>
             {title}
           </h2>
 
-          <Icon name={icon} size="24" style={{ color: colors.secondary }} />
+          <Icon name={icon} size="26" style={{ color: colors.secondary }} />
         </div>
 
-        <div
-          className={`font-semibold text-3xl`}
-          style={{ color: colors.primary }}
-        >
+        <div className={`font-bold text-3xl`} style={{ color: colors.primary }}>
           {amount ? (
             <div className="flex items-center gap-xs">
               <Currency symbol />
-              {amount}
+              {amount.toLocaleString()}
             </div>
           ) : (
             value
@@ -50,7 +47,7 @@ function KpiCard({ stat }: KpiCardProps) {
                 <p>
                   {detail.amount ? (
                     <span className="flex items-center gap-xs">
-                      <Currency symbol /> {detail.amount}
+                      <Currency symbol /> {detail.amount.toLocaleString()}
                     </span>
                   ) : (
                     <span className="flex items-center gap-xs">

@@ -15,22 +15,22 @@ function OverviewPage() {
 
       <KpiSection />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-regular md:gap-base h-[850px] md:h-[450px]">
-        <div className="lg:col-span-8">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-regular md:gap-base">
+        <div className="md:h-auto md:col-span-7 lg:col-span-8">
           <RevenueChart />
         </div>
 
-        <div className="lg:col-span-4">
+        <div className="md:h-auto md:col-span-5 lg:col-span-4">
           <OrderStatusChart />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-12 gap-regular md:gap-base h-[400px] md:h-[370px]">
-        <div className="col-span-1 lg:col-span-3">
+      <div className="grid grid-cols-2 lg:grid-cols-12 gap-regular md:gap-base">
+        <div className="col-span-2 md:col-span-1 lg:col-span-3">
           <RatingsOverview />
         </div>
 
-        <div className="col-span-1 lg:col-span-3">
+        <div className="col-span-2 md:col-span-1 lg:col-span-3">
           <RecentOfflineSalesList />
         </div>
 
@@ -39,7 +39,7 @@ function OverviewPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-regular md:gap-base h-[800px] md:h-[320px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-regular md:gap-base">
         <div className="lg:col-span-8">
           <RecentOrdersTable />
         </div>
