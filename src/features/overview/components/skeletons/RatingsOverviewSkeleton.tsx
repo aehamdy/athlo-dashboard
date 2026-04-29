@@ -2,27 +2,45 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function RatingsOverviewSkeleton() {
   return (
-    <div className="flex flex-col gap-md py-xl px-md bg-gray-100 rounded-md">
-      <div className="flex justify-between">
-        <Skeleton className="w-[100px] h-3" />
-
-        <Skeleton className="w-[50px] h-3" />
-      </div>
-
+    <div className="h-full space-y-sm py-xl px-md bg-gray-100 rounded-md">
       <div className="flex flex-col gap-sm">
-        {[1, 2, 3].map((index) => (
-          <div key={index} className="flex items-center gap-xs">
-            <Skeleton className="w-3 h-3" />
+        {/* Header */}
+        <div className="flex justify-between items-center">
+          <Skeleton className="h-4 w-20" />
 
-            <Skeleton className="w-14 h-3" />
-
-            <Skeleton className="w-36 h-3" />
+          <div className="flex items-center gap-xs">
+            <Skeleton className="h-4 w-8" />
+            <Skeleton className="h-4 w-4 rounded-full" />
           </div>
-        ))}
-      </div>
+        </div>
 
-      <div className="">
-        <Skeleton className="w-16 h-3" />
+        {/* Distribution (5 rows) */}
+        <ul className="flex flex-col gap-lg">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <li key={index} className="flex items-center gap-xs">
+              {/* Stars label */}
+              <div className="flex items-center gap-xs w-10">
+                <Skeleton className="h-3 w-3" />
+                <Skeleton className="h-3 w-3 rounded-full" />
+              </div>
+
+              {/* Progress bar */}
+              <div className="flex-1 h-2 rounded-md overflow-hidden">
+                <Skeleton className="h-full w-full" />
+              </div>
+
+              {/* Percentage */}
+              <div className="w-10 flex justify-end">
+                <Skeleton className="h-3 w-8" />
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        {/* Footer */}
+        <div className="mt-md">
+          <Skeleton className="h-3 w-40" />
+        </div>
       </div>
     </div>
   );
