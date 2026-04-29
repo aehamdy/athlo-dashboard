@@ -45,3 +45,9 @@ export type RecentOrder = {
   status: 'Pending' | 'Cancelled' | 'Shipped' | 'Paid' | 'Completed';
   createdAt: string;
 };
+
+export type City = {
+  city: string;
+  ordersCount: number;
+  percentage: number;
+};
