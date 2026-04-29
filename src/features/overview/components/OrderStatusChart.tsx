@@ -124,7 +124,7 @@ function OrderStatusChart() {
           </PieChart>
         </ChartContainer>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-sm">
           {chartData.map((item: any) => {
             const percentage =
               totalOrders > 0

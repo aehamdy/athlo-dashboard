@@ -1,8 +1,3 @@
-// Revenue background: #F3E8FF, Stat: #581C87, Icon: #9333EA, Details:#7E22CE
-// Orders background: #DCFCE7, Stat: #14532D, Icon: #16A34A, Details: #15803D
-// Products background: #DBEAFE, Stat: #1E3A8A, Icon: #2563EB, Details: #5A80E4
-// Customers background: #FCE7F3, Stat: #88204B, Icon: #DB2777, Details: #C02064
-
 export const mapKpiToStatCards = (kpi: any) => {
   return [
     {
@@ -36,12 +31,12 @@ export const mapKpiToStatCards = (kpi: any) => {
       details: [
         {
           id: 1,
-          title: 'Avg Value',
+          title: 'Avg. Value',
           amount: kpi.averageOrderValue,
         },
         {
           id: 2,
-          title: 'POS',
+          title: 'Offline',
           value: kpi.totalPosSales,
         },
       ],

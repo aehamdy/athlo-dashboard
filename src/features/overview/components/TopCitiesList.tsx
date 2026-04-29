@@ -6,7 +6,7 @@ function TopCitiesList() {
   const { topCities } = useOverviewData();
 
   return (
-    <Card className="h-full gap-0">
+    <Card className="h-full gap-sm">
       <CardHeader>
         <CardTitle>Top Cities</CardTitle>
       </CardHeader>
@@ -16,7 +16,7 @@ function TopCitiesList() {
           {topCities?.map((city: City, index: number) => (
             <li
               key={city.city}
-              className="flex flex-col gap-xs p-sm rounded-md bg-muted/40"
+              className="flex flex-col gap-xs p-sm rounded-md bg-light-muted"
             >
               <div className="flex justify-between items-center text-sm">
                 <span className="font-medium">
@@ -28,7 +28,7 @@ function TopCitiesList() {
                 </div>
               </div>
 
-              <div className="w-full h-2 bg-muted rounded-md overflow-hidden">
+              <div className="w-full h-2 bg-light-subtle rounded-md overflow-hidden">
                 <div
                   className="h-full bg-accent"
                   style={{ width: `${city.percentage}%` }}

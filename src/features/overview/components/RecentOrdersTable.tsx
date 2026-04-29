@@ -19,7 +19,7 @@ function RecentOrdersTable() {
   };
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col gap-sm">
       <CardHeader className="flex justify-between items-center">
         <CardTitle>Recent Orders</CardTitle>
 
@@ -47,7 +47,7 @@ function RecentOrdersTable() {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="h-[190px] md:h-[200px] overflow-auto">
             {recentOrders?.map((order: RecentOrder) => {
               const { date } = formatDateTime(order.createdAt);
               const customerName =

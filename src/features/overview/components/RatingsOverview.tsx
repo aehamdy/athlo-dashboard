@@ -5,27 +5,25 @@ import Error from '@/components/shared/Error';
 
 function RatingsOverview() {
   const { ratings, isLoading, isError } = useOverviewData();
-  const textColor = '#9D6F34';
-  const progressBackground = '#FEF08A';
-  const progressFill = '#EAB308';
 
   if (isLoading) return <RatingsOverviewSkeleton />;
   if (isError)
     return <Error title="Ratings Overview" message="Failed to load ratings" />;
 
   return (
-    <div className="h-full py-xl px-md text-[#9D6F34] bg-[#FEF3C7] border border-[#FBBF24] rounded-md">
+    <div className="h-full space-y-sm py-xl px-md text-warning-text bg-warning-bg-soft border border-warning-border rounded-md">
       <div className="flex flex-col gap-sm">
         <div className="flex justify-between items-center">
-          <div>Ratings</div>
+          <div className="font-semibold">Ratings</div>
 
           <div className="flex items-center gap-xs">
             {ratings.averageRating.toFixed(1)}
-            <Icon name="Star" style={{ color: textColor, fill: textColor }} />
+
+            <Icon name="Star" className="text-warning-text fill-warning-text" />
           </div>
         </div>
 
-        <ul className="flex flex-col gap-xs">
+        <ul className="flex flex-col gap-lg">
           {ratings.distribution
             ?.slice()
             .reverse()
@@ -37,23 +35,26 @@ function RatingsOverview() {
                 >
                   <div className="flex items-center gap-xs w-10">
                     {distribution.stars}
+
                     <Icon
                       name="Star"
-                      style={{ color: textColor, fill: textColor }}
+                      className="text-warning-text fill-warning-text"
                       size={12}
                     />
                   </div>
 
                   <div
-                    className={`flex-1 bg-[${progressBackground}] h-2 rounded-md overflow-hidden`}
+                    className={`flex-1 h-2 bg-warning-bg rounded-md overflow-hidden`}
                     role="progressbar"
                     aria-valuenow={distribution.percentage}
                     aria-valuemin={0}
                     aria-valuemax={100}
                   >
                     <div
-                      className={`h-full bg-[${progressFill}]`}
-                      style={{ width: `${distribution.percentage}%` }}
+                      className={`h-full bg-warning-fill`}
+                      style={{
+                        width: `${distribution.percentage}%`,
+                      }}
                     />
                   </div>
 
@@ -65,7 +66,7 @@ function RatingsOverview() {
             )}
         </ul>
 
-        <p className="font-medium text-xs">
+        <p className="mt-md font-medium text-xs">
           Based on {ratings.totalReviews} customer reviews
         </p>
       </div>
