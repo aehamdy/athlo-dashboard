@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useOverviewData } from '../hooks/useOverviewData';
 import type { City } from '../types';
 
-function TopCitiesList() {
-  const { topCities } = useOverviewData();
+type TopCitiesListProps = {
+  topCities: City[];
+};
 
+function TopCitiesList({ topCities }: TopCitiesListProps) {
   return (
     <Card className="h-full gap-sm">
       <CardHeader>

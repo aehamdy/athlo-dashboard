@@ -1,12 +1,15 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { useOverviewData } from '../hooks/useOverviewData';
 import Currency from '@/components/shared/Currency';
 import { formatDateTime } from '@/utils/formatDateTime';
-import type { RecentOfflineSale } from '../types';
+import type { RecentOfflineSales } from '../types';
 
-function RecentOfflineSalesList() {
-  const { recentOfflineSales } = useOverviewData();
+type RecentOfflineSalesListProps = {
+  recentOfflineSales: RecentOfflineSales[];
+};
 
+function RecentOfflineSalesList({
+  recentOfflineSales,
+}: RecentOfflineSalesListProps) {
   return (
     <Card className="h-full gap-sm">
       <CardHeader className="ps-sm">
@@ -15,7 +18,7 @@ function RecentOfflineSalesList() {
 
       <CardContent className="px-sm">
         <ul className="space-y-sm">
-          {recentOfflineSales?.map((sale: RecentOfflineSale) => {
+          {recentOfflineSales?.map((sale: RecentOfflineSales) => {
             const { date, time } = formatDateTime(sale.saleDate);
 
             return (

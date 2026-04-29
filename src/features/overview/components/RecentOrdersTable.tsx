@@ -1,21 +1,22 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Currency from '@/components/shared/Currency';
 import { formatDateTime } from '@/utils/formatDateTime';
-import { useOverviewData } from '../hooks/useOverviewData';
 import type { RecentOrder } from '../types';
 import { Link } from 'react-router-dom';
 import Icon from '@/components/shared/Icon';
 import { ROUTE_PATHS } from '@/routes/paths';
 
-function RecentOrdersTable() {
-  const { recentOrders } = useOverviewData();
+type RecentOrdersTableProps = {
+  recentOrders: RecentOrder[];
+};
 
+function RecentOrdersTable({ recentOrders }: RecentOrdersTableProps) {
   const statusStyles: Record<string, string> = {
-    Pending: 'bg-yellow-100 text-yellow-700',
-    Cancelled: 'bg-red-100 text-red-600',
-    Shipped: 'bg-purple-100 text-purple-700',
-    Paid: 'bg-blue-100 text-blue-600',
-    Completed: 'bg-green-100 text-green-700',
+    Pending: 'text-yellow-600 bg-yellow-100 border-yellow-300',
+    Cancelled: 'text-red-600 bg-red-50 border-red-200',
+    Shipped: 'text-purple-600 bg-purple-100 border-purple-300',
+    Paid: 'text-blue-600 bg-blue-100 border-blue-300',
+    Completed: 'text-green-600 bg-green-50 border-green-200',
   };
 
   return (
