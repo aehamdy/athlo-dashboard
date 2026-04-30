@@ -1,15 +1,14 @@
-import Sidebar from "../shared/Sidebar";
-import MainContent from "./MainContent";
+import MainContent from './MainContent';
+import DesktopSidebar from './sidebar/DesktopSidebar';
 
 function AppLayout() {
   return (
-    <section className="h-screen grid grid-cols-12 p-tiny md:p-regular lg:py-sm lg:pe-sm text-light bg-linear-to-tl from-black to-[#074120] overflow-hidden">
-      {/* Sidebar on desktop */}
+    <section className="h-screen grid lg:grid-cols-14 p-tiny md:p-regular lg:py-sm lg:pe-sm text-light bg-linear-to-br from-gradient-from to-gradient-to overflow-hidden">
       <div className="hidden lg:block lg:col-span-2 h-full">
-        <Sidebar />
+        <DesktopSidebar />
       </div>
 
-      <div className="col-span-12 lg:col-span-10 h-full min-h-0">
+      <div className="lg:col-span-12 h-full min-h-0">
         <MainContent />
       </div>
     </section>

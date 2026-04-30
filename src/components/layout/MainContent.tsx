@@ -1,10 +1,13 @@
-import { Outlet } from "react-router-dom";
-import { Toaster } from "../ui/sonner";
+import { Outlet } from 'react-router-dom';
+import { Toaster } from '../ui/sonner';
+import Header from './header/Header';
 
 function MainContent() {
   return (
-    <section className="h-full p-sm md:p-regular lg:p-sm text-dark bg-light-muted rounded-3xl">
-      <main className="flex-1 h-full">
+    <section className="h-full min-h-0  text-dark bg-light-muted rounded-3xl overflow-y-auto">
+      <Header />
+
+      <main className="flex-1 h-full p-sm md:p-regular lg:p-lg">
         <Outlet />
       </main>
 
@@ -13,15 +16,15 @@ function MainContent() {
         closeButton
         richColors
         toastOptions={{
-          className: "font-medium text-sm border rounded-xl !shadow-xl",
+          className: 'font-medium text-sm border rounded-xl !shadow-xl',
           classNames: {
-            success: "!bg-emerald-100 !text-emerald-700 !border-emerald-400",
-            error: "!bg-red-100 !text-red-600 !border-red-400",
-            warning: "!bg-amber-100 !text-amber-600 !border-amber-400",
-            info: "!bg-blue-100 !text-blue-600 !border-blue-400",
+            success: '!bg-emerald-100 !text-emerald-700 !border-emerald-400',
+            error: '!bg-red-100 !text-red-600 !border-red-400',
+            warning: '!bg-amber-100 !text-amber-600 !border-amber-400',
+            info: '!bg-blue-100 !text-blue-600 !border-blue-400',
             actionButton:
-              "!bg-white !text-black !hover:bg-gray-200 !rounded-md !px-3",
-            closeButton: "!text-white !hover:text-gray-200",
+              '!bg-white !text-black !hover:bg-gray-200 !rounded-md !px-3',
+            closeButton: '!text-white !hover:text-gray-200',
           },
         }}
       />

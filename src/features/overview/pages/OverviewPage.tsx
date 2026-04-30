@@ -1,4 +1,3 @@
-import Header from '@/components/shared/Header';
 import KpiSection from '../components/KpiSection';
 import RatingsOverview from '../components/RatingsOverview';
 import RevenueChart from '../components/RevenueChart';
@@ -21,8 +20,6 @@ function OverviewPage() {
 
   return (
     <div className="flex flex-col gap-regular md:gap-base">
-      <Header />
-
       <KpiSection kpiCards={data.KpiCards} />
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-regular md:gap-base">
