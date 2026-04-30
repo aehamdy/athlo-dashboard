@@ -12,10 +12,21 @@ import Icon from '../../shared/Icon';
 import Logo from '../../shared/Logo';
 import NavList from '../navigation/NavList';
 import LogoutButton from '@/features/auth/components/LogoutButton';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 function MobileSidebar() {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  const closeOnNavigate = () => setOpen(false);
+
+  useEffect(() => {
+    closeOnNavigate();
+  }, [location.pathname]);
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           variant="outline"
@@ -36,7 +47,7 @@ function MobileSidebar() {
         </SheetHeader>
 
         <div className="px-base">
-          <NavList />
+          <NavList onNavigate={closeOnNavigate} />
         </div>
 
         <SheetFooter>
