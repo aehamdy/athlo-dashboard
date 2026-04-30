@@ -4,8 +4,8 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   flexRender,
-} from "@tanstack/react-table";
-import type { DataTableProps } from "@/features/products/types";
+} from '@tanstack/react-table';
+import type { DataTableProps } from '@/features/products/types';
 import {
   Table,
   TableBody,
@@ -13,11 +13,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../ui/table";
-import DataTablePagination from "./DataTablePagination";
-import CustomSelect from "../shared/CustomSelect";
-import Error from "../shared/Error";
-import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
+} from '../ui/table';
+import DataTablePagination from './DataTablePagination';
+import CustomSelect from '../shared/CustomSelect';
+import Error from '../shared/Error';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
 
 export function DataTable<TData extends object>({
   data,
@@ -49,7 +49,6 @@ export function DataTable<TData extends object>({
     pageCount,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
     getPaginationRowModel: pagination ? getPaginationRowModel() : undefined,
   });
   const isClickable = !!onRowClick;
@@ -60,11 +59,10 @@ export function DataTable<TData extends object>({
 
   return (
     <div
-      className={`flex flex-col justify-between h-full rounded-xl overflow-hidden ${className ?? ""}`}
+      className={`flex flex-col justify-between h-full rounded-xl overflow-hidden min-w-0 ${className ?? ''}`}
     >
-      <div className="max-h-[78vh] lg:max-h-[71vh] overflow-x-auto">
-        <div className="overflow-y-auto scroll-thin">
-          <Table>
+      <div className="max-h-[78vh] lg:max-h-[71vh] overflow-auto scroll-thin">
+        <Table className="min-w-max">
             <TableHeader className="bg-muted/90">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
@@ -102,27 +100,27 @@ export function DataTable<TData extends object>({
                 table.getRowModel().rows.map((row, rowIndex) => (
                   <TableRow
                     key={row.id}
-                    role={isClickable ? "button" : undefined}
+                    role={isClickable ? 'button' : undefined}
                     tabIndex={isClickable ? 0 : undefined}
-                    aria-label={isClickable ? "View details" : undefined}
+                    aria-label={isClickable ? 'View details' : undefined}
                     onClick={() => onRowClick?.(row.original)}
                     onKeyDown={(e) => {
                       if (!onRowClick) return;
 
-                      if (e.key === "Enter" || e.key === " ") {
+                      if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
                         onRowClick(row.original);
                       }
                     }}
                     className={`
                     hover:bg-muted/50
-                    ${rowIndex % 2 === 0 ? "bg-background" : "bg-muted/20"} focus-visible:outline-accent transition-colors cursor-pointer
+                    ${rowIndex % 2 === 0 ? 'bg-background' : 'bg-muted/20'} focus-visible:outline-accent transition-colors cursor-pointer
                   `}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell
                         key={cell.id}
-                        className="py-regular px-sm text-xs md:text-sm first:text-start last:text-end text-center"
+                        className="py-regular px-sm text-xs md:text-sm first:text-start last:text-end text-center whitespace-nowrap"
                       >
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -145,34 +143,39 @@ export function DataTable<TData extends object>({
               )}
             </TableBody>
           </Table>
-        </div>
       </div>
 
       <div className="flex justify-between items-center px-compact md:px-regular lg:px-sm">
-        {data.length > 0 && pagination && pageSizeOptions && onPaginationChange && (
-          <div className="flex items-center gap-sm">
-            <CustomSelect<number>
-              label="Items per page"
-              placeholder="Items per page"
-              value={pagination?.pageSize ?? DEFAULT_PAGE_SIZE_OPTIONS[0]}
-              onChange={(value) =>
-                onPaginationChange?.({
-                  pageIndex: 0,
-                  pageSize: value,
-                })
-              }
-              options={pageSizeOptions}
-            />
-          </div>
-        )}
+        {data.length > 0 &&
+          pagination &&
+          pageSizeOptions &&
+          onPaginationChange && (
+            <div className="flex items-center gap-sm">
+              <CustomSelect<number>
+                label="Items per page"
+                placeholder="Items per page"
+                value={pagination?.pageSize ?? DEFAULT_PAGE_SIZE_OPTIONS[0]}
+                onChange={(value) =>
+                  onPaginationChange?.({
+                    pageIndex: 0,
+                    pageSize: value,
+                  })
+                }
+                options={pageSizeOptions}
+              />
+            </div>
+          )}
 
-        {data.length > 0 && pagination && onPaginationChange && table.getPageCount() > 1 && (
-          <DataTablePagination
-            table={table}
-            pagination={pagination}
-            pageCount={table.getPageCount()}
-          />
-        )}
+        {data.length > 0 &&
+          pagination &&
+          onPaginationChange &&
+          table.getPageCount() > 1 && (
+            <DataTablePagination
+              table={table}
+              pagination={pagination}
+              pageCount={table.getPageCount()}
+            />
+          )}
       </div>
     </div>
   );

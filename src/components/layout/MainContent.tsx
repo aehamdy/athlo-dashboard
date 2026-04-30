@@ -4,10 +4,10 @@ import Header from './header/Header';
 
 function MainContent() {
   return (
-    <section className="h-full min-h-0  text-dark bg-light-muted rounded-3xl overflow-y-auto">
+    <section className="h-full min-h-0 min-w-0 text-dark bg-light-muted rounded-3xl overflow-y-auto">
       <Header />
 
-      <main className="flex-1 h-full p-sm md:p-regular lg:p-lg">
+      <main className="flex-1 h-full min-w-0 p-xs md:p-xs lg:p-lg">
         <Outlet />
       </main>
 

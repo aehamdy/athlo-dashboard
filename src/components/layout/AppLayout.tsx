@@ -8,7 +8,7 @@ function AppLayout() {
         <DesktopSidebar />
       </div>
 
-      <div className="lg:col-span-12 h-full min-h-0">
+      <div className="lg:col-span-12 h-full min-h-0 min-w-0">
         <MainContent />
       </div>
     </section>
