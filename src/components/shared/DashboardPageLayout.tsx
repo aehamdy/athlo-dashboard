@@ -33,7 +33,7 @@ function DashboardPageLayout({
   onOpenChange,
 }: DashboardPageLayoutProps) {
   return (
-    <section className="flex flex-col gap-tiny h-full bg-light rounded-xl">
+    <section className="flex flex-col gap-tiny h-full min-w-0 bg-light rounded-xl">
       {/* Top Row */}
       <div className="flex items-center justify-between p-compact md:p-regular lg:p-sm">
         <Heading as="h2" className="text-2xl font-semibold">
@@ -64,7 +64,7 @@ function DashboardPageLayout({
       )}
 
       {/* Main Content */}
-      <div className="h-full overflow-hidden rounded-lg">{children}</div>
+      <div className="h-full min-w-0 overflow-auto rounded-lg">{children}</div>
     </section>
   );
 }
