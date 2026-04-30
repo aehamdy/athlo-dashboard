@@ -2,10 +2,16 @@ import { NavLink } from 'react-router-dom';
 import type { NavItemType } from './navItems';
 import Icon from '@/components/shared/Icon';
 
-function NavItem({ item }: { item: NavItemType }) {
+type NavItemProps = {
+  item: NavItemType;
+  onNavigate?: () => void;
+};
+
+function NavItem({ item, onNavigate }: NavItemProps) {
   return (
     <NavLink
       to={item.href}
+      onClick={onNavigate}
       className={({ isActive }) =>
         `flex items-center gap-2 w-full py-compact px-base font-medium ${
           isActive
