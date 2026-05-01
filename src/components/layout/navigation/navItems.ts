@@ -1,53 +1,68 @@
+import { ROUTE_PATHS } from '@/routes/paths';
 import type * as Icons from 'lucide-react';
 
 export interface NavItemType {
   id: number;
   label: string;
-  href: string;
+  href?: string;
   icon: keyof typeof Icons;
+  children?: NavItemType[];
 }
 
 const navItems: NavItemType[] = [
   {
     id: 1,
     label: 'Overview',
-    href: '/overview',
+    href: ROUTE_PATHS.dashboard.overview,
     icon: 'LayoutDashboard',
   },
   {
     id: 2,
     label: 'Products',
-    href: '/products',
+    href: ROUTE_PATHS.dashboard.products,
     icon: 'Shirt',
   },
   {
     id: 3,
     label: 'Categories',
-    href: '/categories',
+    href: ROUTE_PATHS.dashboard.categories,
     icon: 'ListTodo',
   },
   {
     id: 4,
     label: 'Brands',
-    href: '/brands',
+    href: ROUTE_PATHS.dashboard.brands,
     icon: 'Tags',
   },
   {
     id: 5,
     label: 'Orders',
-    href: '/orders',
-    icon: 'ShoppingCart',
-  },
-  {
-    id: 6,
-    label: 'Coupons',
-    href: '/coupons',
-    icon: 'BadgePercent',
+    icon: 'ShoppingBag',
+    children: [
+      {
+        id: 51,
+        label: 'E-Commerce',
+        href: ROUTE_PATHS.dashboard.orders.eCommerce,
+        icon: 'ShoppingCart',
+      },
+      {
+        id: 52,
+        label: 'In-Store',
+        href: ROUTE_PATHS.dashboard.orders.inStore,
+        icon: 'ShoppingBasket',
+      },
+    ],
   },
   {
     id: 7,
+    label: 'Coupons',
+    href: ROUTE_PATHS.dashboard.coupons,
+    icon: 'BadgePercent',
+  },
+  {
+    id: 8,
     label: 'Users',
-    href: '/users',
+    href: ROUTE_PATHS.dashboard.users,
     icon: 'UsersRound',
   },
 ];
