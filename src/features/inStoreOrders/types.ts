@@ -32,7 +32,7 @@ export interface InStoreOrderItem {
   totalPrice: number;
 }
 
-export interface InStoreOrderDetails {
+export interface InStoreOrderDetailsT {
   id: number;
 
   saleNumber: string;
