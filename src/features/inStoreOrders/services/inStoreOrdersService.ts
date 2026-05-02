@@ -7,6 +7,11 @@ const inStoreOrdersService = {
     return response.data.data;
   },
 
+  getById: async (id: number) => {
+    const response = await http.get(API_ENDPOINTS.inStoreOrders.getById(id));
+    return response.data.data;
+  },
+
   delete: async (id: number) => {
     await http.delete(API_ENDPOINTS.inStoreOrders.delete(id));
   },

@@ -5,9 +5,13 @@ import Currency from '@/components/shared/Currency';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/shared/Icon';
 
-const inStoreOrdersColumns = (
-  setOrderToDelete: (order: InStoreOrderListItem) => void,
-): ColumnDef<InStoreOrderListItem>[] => [
+type Props = {
+  setOrderToDelete: (order: InStoreOrderListItem) => void;
+};
+
+const inStoreOrdersColumns = ({
+  setOrderToDelete,
+}: Props): ColumnDef<InStoreOrderListItem>[] => [
   {
     accessorKey: 'saleNumber',
     header: 'Order No.',
