@@ -54,6 +54,7 @@ function InStoreOrdersPage() {
           onRowClick={handleRowClick}
           pagination={pagination}
           onPaginationChange={setPagination}
+          pageSizeOptions={DEFAULT_PAGE_SIZE_OPTIONS}
         />
       </div>
 
