@@ -5,7 +5,9 @@ import Currency from '@/components/shared/Currency';
 import { Button } from '@/components/ui/button';
 import Icon from '@/components/shared/Icon';
 
-const inStoreOrdersColumns = (): ColumnDef<InStoreOrderListItem>[] => [
+const inStoreOrdersColumns = (
+  setOrderToDelete: (order: InStoreOrderListItem) => void,
+): ColumnDef<InStoreOrderListItem>[] => [
   {
     accessorKey: 'saleNumber',
     header: 'Order No.',
@@ -73,11 +75,14 @@ const inStoreOrdersColumns = (): ColumnDef<InStoreOrderListItem>[] => [
   {
     accessorKey: 'actions',
     header: 'Actions',
-    cell: () => (
+    cell: ({ row }) => (
       <div className="flex justify-end">
         <Button
           variant="icon"
           className="p-sm text-gray-500 hover:text-red-400 bg-gray-100"
+          onClick={() => {
+            setOrderToDelete(row.original);
+          }}
         >
           <Icon name="Trash2" className="text-current" />
         </Button>
