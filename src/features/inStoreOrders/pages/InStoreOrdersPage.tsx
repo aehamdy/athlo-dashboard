@@ -8,6 +8,8 @@ import ConfirmDeleteModal from '@/components/shared/ConfirmDeleteModal';
 import useDeleteInStoreOrder from '../hooks/useDeleteInStoreOrder';
 import DetailsPanel from '@/components/shared/DetailsPanel';
 import InStoreOrderDetails from '../components/InStoreOrderDetails';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
+import type { PaginationState } from '@tanstack/react-table';
 
 function InStoreOrdersPage() {
   const [selectedOrder, setSelectedOrder] =
@@ -15,6 +17,10 @@ function InStoreOrdersPage() {
   const [isDetailsOpen, setIsDetailsOpen] = useState<boolean>(false);
   const [orderToDelete, setOrderToDelete] =
     useState<InStoreOrderListItem | null>(null);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: DEFAULT_PAGE_SIZE_OPTIONS[1],
+  });
 
   const {
     data: inStoreOrders,
@@ -46,6 +52,8 @@ function InStoreOrdersPage() {
           error={isError}
           columns={columns}
           onRowClick={handleRowClick}
+          pagination={pagination}
+          onPaginationChange={setPagination}
         />
       </div>
 
