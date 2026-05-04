@@ -65,26 +65,6 @@ function SelectedItemsList({ selectedItems, setSelectedItems }: Props) {
                     {item.productName}
                   </span>
 
-                  {/* <div className="flex items-center gap-1 ms-xs text-sm text-gray-400">
-                    {item.attributeValueEn && (
-                      <span className="">{item.attributeValueEn}</span>
-                    )}
-
-                    {item.attributeValueEn &&
-                      (item.unit || item.colorLabel) && (
-                        <span className="">/</span>
-                      )}
-
-                    {item.unit && <span className="">{item.unit}</span>}
-
-                    {item.unit && item.colorLabel && (
-                      <span className="">/</span>
-                    )}
-
-                    {item.colorLabel && (
-                      <span className="">{item.colorLabel}</span>
-                    )}
-                  </div> */}
                   <ProductVariantAttributes
                     attributeValueEn={item.attributeValueEn}
                     unit={item.unit}
