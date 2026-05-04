@@ -10,6 +10,9 @@ import DetailsPanel from '@/components/shared/DetailsPanel';
 import InStoreOrderDetails from '../components/InStoreOrderDetails';
 import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
 import type { PaginationState } from '@tanstack/react-table';
+import { Link } from 'react-router-dom';
+import { ROUTE_PATHS } from '@/routes/paths';
+import Icon from '@/components/shared/Icon';
 
 function InStoreOrdersPage() {
   const [selectedOrder, setSelectedOrder] =
@@ -44,7 +47,18 @@ function InStoreOrdersPage() {
   };
 
   return (
-    <DashboardPageLayout title="In-Store Orders">
+    <DashboardPageLayout
+      title="In-Store Orders"
+      action={
+        <Link
+          to={ROUTE_PATHS.dashboard.orders.addInStoreOrder}
+          className="main-link flex items-center gap-sm"
+        >
+          <Icon name="Plus" />
+          New Order
+        </Link>
+      }
+    >
       <div className="flex flex-col gap-base h-full">
         <DataTable
           data={inStoreOrders ?? []}
