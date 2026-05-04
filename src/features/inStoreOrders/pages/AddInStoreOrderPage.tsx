@@ -19,6 +19,7 @@ function AddInStoreOrderPage() {
     <section className="grid lg:grid-cols-12 gap-compact w-full">
       <section className="lg:col-span-8 space-y-regular md:p-compact bg-light rounded-md h-full">
         <ProductSearchAndResults
+          isLoading={isLoading}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           setSelectedItems={setSelectedItems}

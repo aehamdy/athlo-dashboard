@@ -7,13 +7,19 @@ import type { ProductWithVariants } from '@/features/inStoreOrders/types';
 
 import React from 'react';
 import ProductVariantAttributes from '../ProductVariantAttributes';
+import Loading from '@/components/shared/Loading';
 
 interface Props {
   product: ProductWithVariants;
   setSelectedItems: React.Dispatch<React.SetStateAction<ProductVariant[]>>;
+  isLoading: boolean;
 }
 
-function ProductResultsTable({ product, setSelectedItems }: Props) {
+function ProductResultsTable({ product, setSelectedItems, isLoading }: Props) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
   const handleAddItem = (variant: ProductVariant) => {
     setSelectedItems((prev: ProductVariant[]) => {
       const existingItem = prev.find((item) => item.id === variant.id);
@@ -64,22 +70,6 @@ function ProductResultsTable({ product, setSelectedItems }: Props) {
                     {product?.name}
                   </div>
 
-                  {/* <div className="flex items-center gap-tiny ms-tiny font-medium text-xs">
-                    {variant?.attributeValueEn && (
-                      <span className="">{variant?.attributeValueEn}</span>
-                    )}
-
-                    {variant?.attributeValueEn &&
-                      (variant?.colorLabel || variant?.unit) && <span>/</span>}
-
-                    {variant?.colorLabel && (
-                      <span className="">{variant?.colorLabel}</span>
-                    )}
-
-                    {variant?.colorLabel && variant?.unit && <span>/</span>}
-
-                    {variant?.unit && <span className="">{variant?.unit}</span>}
-                  </div> */}
                   <ProductVariantAttributes
                     attributeValueEn={variant.attributeValueEn}
                     unit={variant.unit}

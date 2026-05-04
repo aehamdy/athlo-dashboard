@@ -8,6 +8,7 @@ interface Props {
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   setSelectedItems: React.Dispatch<React.SetStateAction<ProductVariant[]>>;
   product: ProductWithVariants;
+  isLoading: boolean;
 }
 
 function ProductSearchAndResults({
@@ -15,6 +16,7 @@ function ProductSearchAndResults({
   setSearchQuery,
   setSelectedItems,
   product,
+  isLoading,
 }: Props) {
   return (
     <div>
@@ -24,6 +26,7 @@ function ProductSearchAndResults({
       />
 
       <ProductResultsTable
+        isLoading={isLoading}
         setSelectedItems={setSelectedItems}
         product={product}
       />
