@@ -15,11 +15,14 @@ function AddInStoreOrderPage() {
 
   const { data: product, isLoading, isError } = useFetchVariants(searchQuery);
 
+  console.log({ product });
+
   return (
     <section className="grid lg:grid-cols-12 gap-compact w-full">
       <section className="lg:col-span-8 space-y-regular md:p-compact bg-light rounded-md h-full">
         <ProductSearchAndResults
           isLoading={isLoading}
+          isError={isError}
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           setSelectedItems={setSelectedItems}
