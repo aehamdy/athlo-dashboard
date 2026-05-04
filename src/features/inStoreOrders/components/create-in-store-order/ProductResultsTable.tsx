@@ -8,16 +8,48 @@ import type { ProductWithVariants } from '@/features/inStoreOrders/types';
 import React from 'react';
 import ProductVariantAttributes from '../ProductVariantAttributes';
 import Loading from '@/components/shared/Loading';
+import Error from '@/components/shared/Error';
 
 interface Props {
   product: ProductWithVariants;
   setSelectedItems: React.Dispatch<React.SetStateAction<ProductVariant[]>>;
   isLoading: boolean;
+  isError: boolean;
 }
 
-function ProductResultsTable({ product, setSelectedItems, isLoading }: Props) {
+function ProductResultsTable({
+  product,
+  setSelectedItems,
+  isLoading,
+  isError,
+}: Props) {
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (!product) {
+    return (
+      <p className="text-center text-gray-400 py-md">
+        Search for a product by code
+      </p>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Error
+        title="Error"
+        message="Failed to fetch products, please try again"
+      />
+    );
+  }
+
+  if (product.variants?.length === 0) {
+    return (
+      <p className="text-center text-gray-400 py-md">
+        No variants found for this product
+      </p>
+    );
   }
 
   const handleAddItem = (variant: ProductVariant) => {

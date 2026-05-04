@@ -9,6 +9,7 @@ interface Props {
   setSelectedItems: React.Dispatch<React.SetStateAction<ProductVariant[]>>;
   product: ProductWithVariants;
   isLoading: boolean;
+  isError: boolean;
 }
 
 function ProductSearchAndResults({
@@ -17,6 +18,7 @@ function ProductSearchAndResults({
   setSelectedItems,
   product,
   isLoading,
+  isError,
 }: Props) {
   return (
     <div>
@@ -27,6 +29,7 @@ function ProductSearchAndResults({
 
       <ProductResultsTable
         isLoading={isLoading}
+        isError={isError}
         setSelectedItems={setSelectedItems}
         product={product}
       />
