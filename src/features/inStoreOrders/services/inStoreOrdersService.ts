@@ -12,6 +12,11 @@ const inStoreOrdersService = {
     return response.data.data;
   },
 
+  getVariantsByCode: async (code: string) => {
+    const response = await http.get(API_ENDPOINTS.products.getVariants(code));
+    return response.data.data;
+  },
+
   delete: async (id: number) => {
     await http.delete(API_ENDPOINTS.inStoreOrders.delete(id));
   },

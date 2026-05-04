@@ -1,3 +1,5 @@
+import type { ProductVariant } from '../products/types';
+
 export type InStorePaymentMethod = 1 | 2;
 
 export type InStoreOrderStatusValue = '0' | '1' | '2';
@@ -61,4 +63,24 @@ export interface CreateInStoreOrderPayload {
 export interface CreateInStoreOrderItem {
   productVariantId: number;
   quantity: number;
+}
+
+export interface ProductWithVariants {
+  id: number;
+  code: string;
+  name: string;
+  description: string;
+  season: string | null;
+  brandName: string;
+  categoryName: string;
+  basePrice: number;
+  minPrice: number;
+  maxPrice: number;
+  hasVariants: boolean;
+  priceAfterDiscount: number;
+  minPriceAfterDiscount: number;
+  maxPriceAfterDiscount: number;
+  attributeKey: string;
+  images: string[];
+  variants: ProductVariant[];
 }
