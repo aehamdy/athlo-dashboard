@@ -65,12 +65,12 @@ function ProductResultsTable({
       }
 
       return [
-        ...prev,
         {
           ...variant,
           productName: product?.name,
           requestedQuantity: 1,
         },
+        ...prev,
       ];
     });
   };

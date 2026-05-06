@@ -4,6 +4,7 @@ import type { ProductVariant } from '@/features/products/types';
 import { paymentMethods } from '../constants';
 import OrderSummary from '../components/create-in-store-order/OrderSummary';
 import ProductSearchAndResults from '../components/create-in-store-order/ProductSearchAndResults';
+import InStoreOrderInvoice from '../components/InStoreOrderInvoice';
 
 function AddInStoreOrderPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -12,10 +13,9 @@ function AddInStoreOrderPage() {
     Number(paymentMethods[0].value),
   );
   const [notes, setNotes] = useState('');
+  const [invoice, setInvoice] = useState<number | null>(null);
 
   const { data: product, isLoading, isError } = useFetchVariants(searchQuery);
-
-  console.log({ product });
 
   return (
     <section className="grid lg:grid-cols-12 gap-compact w-full">
@@ -38,8 +38,13 @@ function AddInStoreOrderPage() {
           setPaymentMethod={setPaymentMethod}
           notes={notes}
           setNotes={setNotes}
+          setInvoice={setInvoice}
         />
       </section>
+
+      {invoice && (
+        <InStoreOrderInvoice invoice={invoice} setInvoice={setInvoice} />
+      )}
     </section>
   );
 }
