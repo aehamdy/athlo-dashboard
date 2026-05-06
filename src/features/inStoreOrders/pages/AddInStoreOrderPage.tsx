@@ -17,6 +17,13 @@ function AddInStoreOrderPage() {
 
   const { data: product, isLoading, isError } = useFetchVariants(searchQuery);
 
+  const handleResetOrder = () => {
+    setSearchQuery('');
+    setSelectedItems([]);
+    setPaymentMethod(Number(paymentMethods[0].value));
+    setNotes('');
+  };
+
   return (
     <section className="grid lg:grid-cols-12 gap-compact w-full">
       <section className="lg:col-span-8 space-y-regular md:p-compact bg-light rounded-md h-full">
@@ -39,6 +46,7 @@ function AddInStoreOrderPage() {
           notes={notes}
           setNotes={setNotes}
           setInvoice={setInvoice}
+          resetOrder={handleResetOrder}
         />
       </section>
 
