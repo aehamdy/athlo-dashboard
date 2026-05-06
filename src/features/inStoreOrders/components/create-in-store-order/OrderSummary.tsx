@@ -17,6 +17,7 @@ interface OrderSummaryProps {
   notes: string;
   setNotes: React.Dispatch<React.SetStateAction<string>>;
   setInvoice: React.Dispatch<React.SetStateAction<number | null>>;
+  resetOrder: () => void;
 }
 
 function OrderSummary({
@@ -27,6 +28,7 @@ function OrderSummary({
   notes,
   setNotes,
   setInvoice,
+  resetOrder,
 }: OrderSummaryProps) {
   const [isLoadingOrder, setIsLoadingOrder] = useState(false);
 
@@ -54,6 +56,7 @@ function OrderSummary({
 
       setInvoice(order.data.data);
       toast.success('Order created successfully');
+      resetOrder();
     } catch (err) {
       toast.error('Failed to create order');
     } finally {
