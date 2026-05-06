@@ -40,6 +40,7 @@ function PaymentsAndNotes({
           >
             {paymentMethods.map((method) => (
               <FieldLabel
+                key={method.id}
                 htmlFor={method.label}
                 className="flex flex-1 cursor-pointer"
               >

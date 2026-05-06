@@ -6,6 +6,7 @@ function useFetchInStoreOrder(id: number) {
   const query = useQuery({
     queryKey: inStoreOrderKeys.detail(id),
     queryFn: () => inStoreOrdersService.getById(id),
+    enabled: !!id,
   });
 
   return query;

@@ -6,6 +6,8 @@ import type { ProductVariant } from '@/features/products/types';
 import { API_ENDPOINTS } from '@/api/endpoints';
 import http from '@/api/http';
 import { toast } from 'sonner';
+import { useState } from 'react';
+import Loading from '@/components/shared/Loading';
 
 interface OrderSummaryProps {
   selectedItems: ProductVariant[];
@@ -14,6 +16,7 @@ interface OrderSummaryProps {
   setPaymentMethod: React.Dispatch<React.SetStateAction<number>>;
   notes: string;
   setNotes: React.Dispatch<React.SetStateAction<string>>;
+  setInvoice: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 function OrderSummary({
@@ -23,7 +26,10 @@ function OrderSummary({
   setPaymentMethod,
   notes,
   setNotes,
+  setInvoice,
 }: OrderSummaryProps) {
+  const [isLoadingOrder, setIsLoadingOrder] = useState(false);
+
   const buildPayload = () => {
     return {
       paymentMethod,
@@ -39,11 +45,19 @@ function OrderSummary({
     const payload = buildPayload();
 
     try {
-      await http.post(API_ENDPOINTS.inStoreOrders.create, payload);
+      setIsLoadingOrder(true);
 
+      const order = await http.post(
+        API_ENDPOINTS.inStoreOrders.create,
+        payload,
+      );
+
+      setInvoice(order.data.data);
       toast.success('Order created successfully');
     } catch (err) {
       toast.error('Failed to create order');
+    } finally {
+      setIsLoadingOrder(false);
     }
   };
 
@@ -69,11 +83,19 @@ function OrderSummary({
         <OrderTotals selectedItems={selectedItems} />
 
         <Button
-          className="w-full disabled:bg-gray-300"
-          disabled={selectedItems?.length === 0 || !paymentMethod}
+          className="flex items-start w-full disabled:bg-gray-300"
+          disabled={
+            isLoadingOrder || selectedItems?.length === 0 || !paymentMethod
+          }
           onClick={handleCreateOrder}
         >
-          Complete Order
+          {isLoadingOrder ? (
+            <div className="flex items-center gap-xs">
+              <Loading /> Adding Order
+            </div>
+          ) : (
+            'Add Order'
+          )}
         </Button>
       </div>
     </section>
