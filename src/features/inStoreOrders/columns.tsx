@@ -84,7 +84,8 @@ const inStoreOrdersColumns = ({
         <Button
           variant="icon"
           className="p-sm text-gray-500 hover:text-red-400 bg-gray-100"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setOrderToDelete(row.original);
           }}
         >
