@@ -16,6 +16,7 @@ export const ROUTE_PATHS = {
       root: '/orders',
       eCommerce: '/orders/e-commerce',
       inStore: '/orders/in-store',
+      addInStoreOrder: '/orders/in-store/add',
     },
     coupons: '/coupons',
     users: '/users',

@@ -16,6 +16,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import EditProductPage from './features/products/pages/EditProductPage';
 import { AuthProvider } from './features/auth/providers/AuthProvider';
 import InStoreOrdersPage from './features/inStoreOrders/pages/InStoreOrdersPage';
+import AddInStoreOrderPage from './features/inStoreOrders/pages/AddInStoreOrderPage';
 
 function App() {
   return (
@@ -68,6 +69,10 @@ function App() {
             <Route
               path={ROUTE_PATHS.dashboard.orders.inStore}
               element={<InStoreOrdersPage />}
+            />
+            <Route
+              path={ROUTE_PATHS.dashboard.orders.addInStoreOrder}
+              element={<AddInStoreOrderPage />}
             />
             <Route
               path={ROUTE_PATHS.dashboard.coupons}
