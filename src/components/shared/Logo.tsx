@@ -1,9 +1,16 @@
-import Heading from "./Heading";
+import Heading from './Heading';
 
-function Logo() {
+type LogoProps = {
+  dark?: boolean;
+};
+
+function Logo({ dark = false }: LogoProps) {
   return (
-    <Heading as="h1" className="text-4xl lg:text-3xl text-light italic">
-      Logo
+    <Heading
+      as="h2"
+      className={`${dark ? 'text-dark' : 'text-light'} italic text-4xl lg:text-3xl`}
+    >
+      Athlo
     </Heading>
   );
 }
