@@ -1,7 +1,7 @@
-import type { ApiResponse } from "@/types";
-import http from "@/api/http";
-import { useEffect, useState } from "react";
-import type { AxiosError } from "axios";
+import type { ApiResponse } from '@/types';
+import http from '@/api/http';
+import { useEffect, useState } from 'react';
+import type { AxiosError } from 'axios';
 
 function useFetchAll<T>(endpoint: string) {
   const [data, setData] = useState<T | null>(null);
@@ -18,16 +18,14 @@ function useFetchAll<T>(endpoint: string) {
 
         setData(response.data.data);
       } catch (error: unknown) {
-        if (error && typeof error === "object" && "response" in error) {
+        if (error && typeof error === 'object' && 'response' in error) {
           const axiosError = error as AxiosError<ApiResponse<unknown>>;
-          const errorMessage =
-            axiosError.response?.data?.message ||
-            (axiosError.message as string) ||
-            "API request failed";
 
-          setError(new Error(errorMessage));
+          setError(
+            JSON.stringify(axiosError.response?.data) || axiosError.message,
+          );
         } else {
-          setError(new Error("An unknown error occurred"));
+          setError(new Error('An unknown error occurred'));
         }
       } finally {
         setLoading(false);
