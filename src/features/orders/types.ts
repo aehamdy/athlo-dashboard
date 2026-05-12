@@ -20,6 +20,7 @@ export type OrderDetails = {
   paymentMethod: string;
   paidAt: string | null;
   totalQuantity: number;
+
   shipmentInfo: {
     fullName: string;
     city: string;
@@ -35,6 +36,7 @@ export type OrderDetails = {
     shippingMethod: string;
     shipmentStatus: string;
   };
+
   items: {
     productVariantId: number;
     productName: string;

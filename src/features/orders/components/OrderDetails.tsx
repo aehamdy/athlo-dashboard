@@ -1,10 +1,10 @@
-import Loading from "@/components/shared/Loading";
-import useFetchOrder from "../hooks/useFetchOrder";
-import OrderDetailsCoreInfo from "./OrderDetailsCoreInfo";
-import OrderDetailsCustomerInfo from "./OrderDetailsCustomerInfo";
-import Error from "@/components/shared/Error";
-import OrderDetailsShippingInfo from "./OrderDetailsShippingInfo";
-import OrderDetailsProducts from "./OrderDetailsProducts";
+import Loading from '@/components/shared/Loading';
+import useFetchOrder from '../hooks/useFetchOrder';
+import OrderDetailsCoreInfo from './OrderDetailsCoreInfo';
+import OrderDetailsCustomerInfo from './OrderDetailsCustomerInfo';
+import Error from '@/components/shared/Error';
+import OrderDetailsShippingInfo from './OrderDetailsShippingInfo';
+import OrderDetailsProducts from './OrderDetailsProducts';
 
 type OrderDetailsProps = {
   orderId: number;
@@ -23,16 +23,16 @@ function OrderDetails({ orderId }: OrderDetailsProps) {
   return (
     <section className="h-full p-regular space-y-md overflow-y-auto">
       <OrderDetailsCoreInfo
-        createdAt={order?.createdAt || ""}
+        createdAt={order?.createdAt || ''}
         total={order?.totalAmount || 0}
         quantity={order?.totalQuantity || 0}
         orderId={order?.id || 0}
-        orderStatus={order?.status || ""}
+        orderStatus={order?.status || ''}
       />
 
       <OrderDetailsCustomerInfo
-        customerName={order?.userName || ""}
-        email={order?.userEmail || ""}
+        customerName={order?.userName || ''}
+        email={order?.userEmail || ''}
       />
 
       <OrderDetailsShippingInfo
@@ -50,7 +50,7 @@ function OrderDetails({ orderId }: OrderDetailsProps) {
         notes={order?.shipmentInfo?.notes}
       />
 
-      <OrderDetailsProducts products={order?.items || []} />
+      <OrderDetailsProducts order={order} />
     </section>
   );
 }

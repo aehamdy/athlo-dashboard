@@ -136,7 +136,7 @@ function InStoreOrderDetails({ orderId }: InStoreOrderDetailsProps) {
         )}
       </div>
 
-      <InStoreOrderDetailsItemsList items={order.items} />
+      <InStoreOrderDetailsItemsList order={order} />
     </section>
   );
 }

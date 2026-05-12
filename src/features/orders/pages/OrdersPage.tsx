@@ -1,16 +1,16 @@
-import Error from "@/components/shared/Error";
-import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
-import { DataTable } from "@/components/data-table/DataTable";
-import useFetchAllOrders from "../hooks/useFetchAllOrders";
-import ordersColumns from "../columns";
-import type { Order } from "../types";
-import { useMemo, useState } from "react";
-import DetailsPanel from "@/components/shared/DetailsPanel";
-import OrderDetails from "../components/OrderDetails";
-import type { PaginationState } from "@tanstack/react-table";
-import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
-import useUpdateOrderStatus from "../hooks/useUpdateOrderStatus";
-import useUpdatePaymentStatus from "../hooks/useUpdatePaymentStatus";
+import Error from '@/components/shared/Error';
+import DashboardPageLayout from '@/components/shared/DashboardPageLayout';
+import { DataTable } from '@/components/data-table/DataTable';
+import useFetchAllOrders from '../hooks/useFetchAllOrders';
+import ordersColumns from '../columns';
+import type { Order } from '../types';
+import { useMemo, useState } from 'react';
+import DetailsPanel from '@/components/shared/DetailsPanel';
+import OrderDetails from '../components/OrderDetails';
+import type { PaginationState } from '@tanstack/react-table';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
+import useUpdateOrderStatus from '../hooks/useUpdateOrderStatus';
+import useUpdatePaymentStatus from '../hooks/useUpdatePaymentStatus';
 
 function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -27,7 +27,7 @@ function OrdersPage() {
 
   const columns = useMemo(
     () => ordersColumns(updateOrderStatus, updatePaymentStatus),
-    [updateOrderStatus, updatePaymentStatus]
+    [updateOrderStatus, updatePaymentStatus],
   );
 
   if (isError) {
@@ -40,7 +40,7 @@ function OrdersPage() {
   };
 
   return (
-    <DashboardPageLayout title="Orders">
+    <DashboardPageLayout title="E-Commerce Orders">
       <div className="flex flex-col gap-base h-full">
         <DataTable
           data={orders ?? []}
