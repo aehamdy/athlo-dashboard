@@ -37,8 +37,6 @@ export function useLogin() {
           'An error occurred. Please try again.',
       );
       return false;
-    } finally {
-      setIsLoading(false);
     }
   };
 
