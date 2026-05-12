@@ -1,7 +1,7 @@
-import axios from "axios";
-import Cookies from "js-cookie";
-import { AUTH } from "@/constants/auth";
-import { ROUTE_PATHS } from "@/routes/paths";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { AUTH } from '@/constants/auth';
+import { ROUTE_PATHS } from '@/routes/paths';
 
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -10,15 +10,15 @@ const http = axios.create({
 /* Refresh Token Function */
 export async function refreshToken() {
   const refreshToken = Cookies.get(AUTH.COOKIE.REFRESH_TOKEN);
-  if (!refreshToken) throw new Error("No refresh token available");
+  if (!refreshToken) throw new Error('No refresh token available');
 
-  const response = await http.post("/Api/V1/Authentication/Refresh-Token", {
+  const response = await http.post('/Api/V1/Authentication/Refresh-Token', {
     token: refreshToken,
   });
 
   // Save new access token
   Cookies.set(AUTH.COOKIE.ACCESS_TOKEN, response.data.accessToken, {
-    path: "/",
+    path: '/',
     expires: 1,
   });
 

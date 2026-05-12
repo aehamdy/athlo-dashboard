@@ -14,78 +14,72 @@ import CouponsPage from './features/coupons/pages/CouponsPage';
 import UsersPage from './features/users/pages/UsersPage';
 import NotFoundPage from './pages/NotFoundPage';
 import EditProductPage from './features/products/pages/EditProductPage';
-import { AuthProvider } from './features/auth/providers/AuthProvider';
 import InStoreOrdersPage from './features/inStoreOrders/pages/InStoreOrdersPage';
 import AddInStoreOrderPage from './features/inStoreOrders/pages/AddInStoreOrderPage';
 
 function App() {
   return (
-    <AuthProvider>
-      <Routes>
-        {/* Public routes (no auth required) */}
-        <Route element={<PublicRoute />}>
-          <Route path={ROUTE_PATHS.login} element={<LoginPage />} />
-        </Route>
+    <Routes>
+      {/* Public routes (no auth required) */}
+      <Route element={<PublicRoute />}>
+        <Route path={ROUTE_PATHS.login} element={<LoginPage />} />
+      </Route>
 
-        {/* Protected routes (auth required) */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<AppLayout />}>
-            <Route
-              index
-              element={<Navigate to={ROUTE_PATHS.dashboard.overview} replace />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.overview}
-              element={<OverviewPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.products}
-              element={<ProductsPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.addProduct}
-              element={<AddProductPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.editProductPath}
-              element={<Navigate to="info" replace />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.editProductTabPath}
-              element={<EditProductPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.categories}
-              element={<CategoriesPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.brands}
-              element={<BrandsPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.orders.eCommerce}
-              element={<OrdersPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.orders.inStore}
-              element={<InStoreOrdersPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.orders.addInStoreOrder}
-              element={<AddInStoreOrderPage />}
-            />
-            <Route
-              path={ROUTE_PATHS.dashboard.coupons}
-              element={<CouponsPage />}
-            />
-            <Route path={ROUTE_PATHS.dashboard.users} element={<UsersPage />} />
-          </Route>
+      {/* Protected routes (auth required) */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<AppLayout />}>
+          <Route
+            index
+            element={<Navigate to={ROUTE_PATHS.dashboard.overview} replace />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.overview}
+            element={<OverviewPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.products}
+            element={<ProductsPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.addProduct}
+            element={<AddProductPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.editProductPath}
+            element={<Navigate to="info" replace />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.editProductTabPath}
+            element={<EditProductPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.categories}
+            element={<CategoriesPage />}
+          />
+          <Route path={ROUTE_PATHS.dashboard.brands} element={<BrandsPage />} />
+          <Route
+            path={ROUTE_PATHS.dashboard.orders.eCommerce}
+            element={<OrdersPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.orders.inStore}
+            element={<InStoreOrdersPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.orders.addInStoreOrder}
+            element={<AddInStoreOrderPage />}
+          />
+          <Route
+            path={ROUTE_PATHS.dashboard.coupons}
+            element={<CouponsPage />}
+          />
+          <Route path={ROUTE_PATHS.dashboard.users} element={<UsersPage />} />
         </Route>
+      </Route>
 
-        {/* 404 route */}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </AuthProvider>
+      {/* 404 route */}
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 
