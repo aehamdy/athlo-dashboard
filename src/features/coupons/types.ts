@@ -9,14 +9,17 @@ export type CouponTypeOption = {
 
 export type Coupon = {
   id: number;
-  code: string;
+  code?: string;
   name?: string;
   nameEn?: string;
   nameAr?: string;
   percentage: number;
   startDate: string;
   endDate: string;
-  type: number | 'Global' | 'ProductSpecific';
+  type?: 'Global' | 'ProductSpecific' | number;
+  status?: 'Upcoming' | 'Active' | 'Expired';
+  daysRemaining?: number;
+  productsCount: number;
 };
 
 export type couponFormValue = {

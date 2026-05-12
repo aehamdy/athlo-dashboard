@@ -1,32 +1,32 @@
-import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
-import { couponSchema, type CouponFormValues } from "../coupons.schema";
-import { COUPON_TYPE_OPTIONS } from "../constants";
-import useCreateCoupon from "../hooks/useCreateCoupon";
-import useUpdateCoupon from "../hooks/useUpdateCoupon";
-import Icon from "@/components/shared/Icon";
-import Loading from "@/components/shared/Loading";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Field } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
+import { useEffect, useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { format } from 'date-fns';
+import { couponSchema, type CouponFormValues } from '../coupons.schema';
+import { COUPON_TYPE_OPTIONS } from '../constants';
+import useCreateCoupon from '../hooks/useCreateCoupon';
+import useUpdateCoupon from '../hooks/useUpdateCoupon';
+import Icon from '@/components/shared/Icon';
+import Loading from '@/components/shared/Loading';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
+import { Field } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { DialogClose } from "@/components/ui/dialog";
-import type { Coupon, CouponFormMode } from "../types";
-import type { DateRange } from "react-day-picker";
+} from '@/components/ui/select';
+import { DialogClose } from '@/components/ui/dialog';
+import type { Coupon, CouponFormMode } from '../types';
+import type { DateRange } from 'react-day-picker';
 
 type CouponFormProps = {
   mode: CouponFormMode;
@@ -39,7 +39,7 @@ today.setHours(0, 0, 0, 0);
 
 function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
   const [date, setDate] = useState<DateRange | undefined>(() => {
-    if (mode === "edit" && coupon) {
+    if (mode === 'edit' && coupon) {
       return {
         from: new Date(coupon.startDate),
         to: new Date(coupon.endDate),
@@ -62,9 +62,9 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
   } = useForm<CouponFormValues>({
     resolver: zodResolver(couponSchema),
     defaultValues: {
-      code: "",
-      nameEn: "",
-      nameAr: "",
+      code: '',
+      nameEn: '',
+      nameAr: '',
       percentage: 0,
       type: undefined,
     },
@@ -72,7 +72,7 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
 
   // Prefill when editing
   useEffect(() => {
-    if (mode !== "edit" || !coupon) return;
+    if (mode !== 'edit' || !coupon) return;
 
     reset({
       code: coupon.code,
@@ -80,9 +80,9 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
       nameAr: coupon.nameAr,
       percentage: coupon.percentage,
       type:
-        typeof coupon.type === "number"
+        typeof coupon.type === 'number'
           ? coupon.type
-          : coupon.type === "Global"
+          : coupon.type === 'Global'
             ? 0
             : 1,
       startDate: new Date(coupon.startDate),
@@ -90,12 +90,12 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
     });
   }, [coupon, mode, reset]);
 
-  const typeValue = getValues("type");
+  const typeValue = getValues('type');
 
   const isSubmitDisabled = !date?.from || !date?.to || typeValue === undefined;
 
   const onSubmit = (data: CouponFormValues) => {
-    if (mode === "create") {
+    if (mode === 'create') {
       createCoupon.mutate(data, {
         onSuccess: () => {
           reset();
@@ -105,7 +105,7 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
       });
     }
 
-    if (mode === "edit" && coupon) {
+    if (mode === 'edit' && coupon) {
       const payload = {
         id: coupon.id,
         code: data.code,
@@ -126,7 +126,7 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
   };
 
   const isPending =
-    mode === "create" ? createCoupon.isPending : updateCoupon.isPending;
+    mode === 'create' ? createCoupon.isPending : updateCoupon.isPending;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-md">
@@ -136,8 +136,9 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
           <Input
             placeholder="Enter coupon code"
             className="form-input"
-            {...register("code")}
+            {...register('code')}
           />
+
           {errors.code && (
             <p className="text-xs text-red-500">{errors.code.message}</p>
           )}
@@ -148,8 +149,9 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
             type="number"
             placeholder="Enter value (%)"
             className="form-input"
-            {...register("percentage", { valueAsNumber: true })}
+            {...register('percentage', { valueAsNumber: true })}
           />
+
           {errors.percentage && (
             <p className="text-xs text-red-500">{errors.percentage.message}</p>
           )}
@@ -162,7 +164,7 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
           <Input
             placeholder="Name in English"
             className="form-input"
-            {...register("nameEn")}
+            {...register('nameEn')}
           />
         </div>
 
@@ -170,7 +172,7 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
           <Input
             placeholder="Name in Arabic"
             className="form-input"
-            {...register("nameAr")}
+            {...register('nameAr')}
           />
         </div>
       </div>
@@ -183,7 +185,7 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
             control={control}
             render={({ field }) => (
               <Select
-                value={field.value?.toString() ?? ""}
+                value={field.value?.toString() ?? ''}
                 onValueChange={(v) => field.onChange(Number(v))}
               >
                 <SelectTrigger className="form-input w-full">
@@ -213,11 +215,11 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
                 <Icon name="CalendarIcon" className="mr-2" />
 
                 {date?.from && date?.to
-                  ? `${format(date.from, "dd/MM/yyyy")} - ${format(
+                  ? `${format(date.from, 'dd/MM/yyyy')} - ${format(
                       date.to,
-                      "dd/MM/yyyy",
+                      'dd/MM/yyyy',
                     )}`
-                  : "Pick date range"}
+                  : 'Pick date range'}
               </Button>
             </PopoverTrigger>
 
@@ -230,8 +232,8 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
                 onSelect={(range) => {
                   setDate(range);
 
-                  if (range?.from) setValue("startDate", range.from);
-                  if (range?.to) setValue("endDate", range.to);
+                  if (range?.from) setValue('startDate', range.from);
+                  if (range?.to) setValue('endDate', range.to);
                 }}
               />
             </PopoverContent>
@@ -245,12 +247,12 @@ function CouponForm({ mode, coupon, onSuccess }: CouponFormProps) {
           {isPending ? (
             <span className="flex items-center gap-sm">
               <Loading />
-              {mode === "create" ? "Adding coupon..." : "Updating coupon..."}
+              {mode === 'create' ? 'Adding coupon...' : 'Updating coupon...'}
             </span>
-          ) : mode === "create" ? (
-            "Add Coupon"
+          ) : mode === 'create' ? (
+            'Add Coupon'
           ) : (
-            "Update Coupon"
+            'Update Coupon'
           )}
         </Button>
 
