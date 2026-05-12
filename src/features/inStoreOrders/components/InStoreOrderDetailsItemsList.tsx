@@ -1,4 +1,4 @@
-import type { InStoreOrderItem } from '../types';
+import type { InStoreOrderDetailsT, InStoreOrderItem } from '../types';
 import Icon from '@/components/shared/Icon';
 import Heading from '@/components/shared/Heading';
 import Currency from '@/components/shared/Currency';
@@ -12,7 +12,7 @@ import {
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 
 type InStoreOrderDetailsItemsListProps = {
-  order: InStoreOrderItem[];
+  order: InStoreOrderDetailsT;
 };
 
 function InStoreOrderDetailsItemsList({

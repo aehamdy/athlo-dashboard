@@ -3,9 +3,10 @@ import { Button } from '../ui/button';
 import InvoiceDocument from './InvoiceDocument';
 import { mapOrderToInvoice } from './utils/mapOrderToInvoice';
 import type { OrderDetails } from '@/features/orders/types';
+import type { InStoreOrderDetailsT } from '@/features/inStoreOrders/types';
 
 type InvoiceProps = {
-  order: OrderDetails;
+  order: OrderDetails | InStoreOrderDetailsT;
 };
 
 function Invoice({ order }: InvoiceProps) {
