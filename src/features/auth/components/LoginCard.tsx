@@ -32,6 +32,9 @@ function LoginCard() {
     },
   });
 
+  const [username, password] = form.watch(['username', 'password']);
+  const isFormFilled = username.trim().length > 0 && password.trim().length > 0;
+
   const onSubmit = (data: LoginFormData) => {
     login(data.username, data.password);
   };
@@ -101,7 +104,7 @@ function LoginCard() {
         <Button
           type="submit"
           form="login-form"
-          disabled={isLoading}
+          disabled={isLoading || !isFormFilled}
           className="w-full font-semibold"
         >
           {isLoading ? (
