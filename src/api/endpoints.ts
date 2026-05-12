@@ -2,10 +2,12 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const API_VERSION_PATH = `${BASE_URL}/Api/V1`;
 const CONTROLLER_PATH = {
   authentication: '/Authentication',
+  overview: '/DashboardOverview',
   product: '/Product',
   brand: '/Brand',
   category: '/Category',
   order: '/Order',
+  inStoreOrder: '/PosSale',
   orderReview: '/Review',
   coupon: '/Discount',
   productCoupon: '/Product_Discount',
@@ -17,6 +19,9 @@ export const API_ENDPOINTS = {
     login: `${API_VERSION_PATH}${CONTROLLER_PATH.authentication}/SignIn`,
     refreshToken: `${API_VERSION_PATH}${CONTROLLER_PATH.authentication}/Refresh-Token`,
     validateToken: `${API_VERSION_PATH}${CONTROLLER_PATH.authentication}/Validate-Token`,
+  },
+  overview: {
+    getOverview: `${API_VERSION_PATH}${CONTROLLER_PATH.overview}/Overview`,
   },
   products: {
     getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.product}/List`,
@@ -57,6 +62,8 @@ export const API_ENDPOINTS = {
     updateVariant: `${API_VERSION_PATH}/ProductVariant/Edit`,
     deleteVariant: (id: number) => `${API_VERSION_PATH}/ProductVariant/${id}`,
 
+    getVariants: (query: string) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.product}/code/${query}/With-Variants`,
     // deleteImage: `${API_VERSION_PATH}/ProductImage/DeleteProductImage`,
   },
   brands: {
@@ -87,11 +94,20 @@ export const API_ENDPOINTS = {
     userOrder: (userId: string) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.order}/user/${userId}`,
   },
+  inStoreOrders: {
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.inStoreOrder}/List`,
+    getById: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.inStoreOrder}/GetById/${id}`,
+    create: `${API_VERSION_PATH}${CONTROLLER_PATH.inStoreOrder}/Create`,
+    delete: (id: number) =>
+      `${API_VERSION_PATH}${CONTROLLER_PATH.inStoreOrder}/Cancel/${id}`,
+  },
   orderReviews: {
     getById: (productId: number) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.orderReview}/product/${productId}`,
   },
   coupons: {
+    getAll: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/GetAll`,
     getById: (id: number) =>
       `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/${id}/To-Edit`,
     create: `${API_VERSION_PATH}${CONTROLLER_PATH.coupon}/Create`,
