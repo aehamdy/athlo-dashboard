@@ -1,37 +1,37 @@
-import { DataTable } from "@/components/data-table/DataTable";
-import DashboardPageLayout from "@/components/shared/DashboardPageLayout";
-import couponsColumns from "../columns";
-import useFetchAllCoupons from "../hooks/useFetchAllCoupons";
-import type { Coupon } from "../types";
-import { useState } from "react";
-import ConfirmDeleteModal from "@/components/shared/ConfirmDeleteModal";
-import useDeleteCoupon from "../hooks/useDeleteCoupon";
-import DetailsPanel from "@/components/shared/DetailsPanel";
-import CouponDetails from "../components/CouponDetails";
-import { Button } from "@/components/ui/button";
-import Icon from "@/components/shared/Icon";
-import CouponForm from "../components/CouponForm";
+import { DataTable } from '@/components/data-table/DataTable';
+import DashboardPageLayout from '@/components/shared/DashboardPageLayout';
+import couponsColumns from '../columns';
+import useFetchAllCoupons from '../hooks/useFetchAllCoupons';
+import type { Coupon } from '../types';
+import { useState } from 'react';
+import ConfirmDeleteModal from '@/components/shared/ConfirmDeleteModal';
+import useDeleteCoupon from '../hooks/useDeleteCoupon';
+import DetailsPanel from '@/components/shared/DetailsPanel';
+import CouponDetails from '../components/CouponDetails';
+import { Button } from '@/components/ui/button';
+import Icon from '@/components/shared/Icon';
+import CouponForm from '../components/CouponForm';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import useFetchCoupon from "../hooks/useFetchCoupon";
-import Loading from "@/components/shared/Loading";
-import { useQueryClient } from "@tanstack/react-query";
-import { couponKeys } from "../couponKeys";
-import { couponsService } from "../services/couponsService";
-import DataTableToolbar from "@/components/data-table/DataTableToolbar";
-import type { PaginationState } from "@tanstack/react-table";
-import { DEFAULT_PAGE_SIZE_OPTIONS } from "@/constants/ui";
+} from '@/components/ui/dialog';
+import useFetchCoupon from '../hooks/useFetchCoupon';
+import Loading from '@/components/shared/Loading';
+import { useQueryClient } from '@tanstack/react-query';
+import { couponKeys } from '../couponKeys';
+import { couponsService } from '../services/couponsService';
+import DataTableToolbar from '@/components/data-table/DataTableToolbar';
+import type { PaginationState } from '@tanstack/react-table';
+import { DEFAULT_PAGE_SIZE_OPTIONS } from '@/constants/ui';
 
 function CouponsPage() {
   const [selectedCoupon, setSelectedCoupon] = useState<Coupon | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: DEFAULT_PAGE_SIZE_OPTIONS[1],
@@ -76,7 +76,7 @@ function CouponsPage() {
     setSelectedCoupon(coupon);
     setIsDetailsOpen(true);
 
-    if (coupon.type === "ProductSpecific") {
+    if (coupon.type === 'ProductSpecific') {
       queryClient.prefetchQuery({
         queryKey: couponKeys.applicableProducts(coupon.id),
         queryFn: () =>
@@ -120,13 +120,15 @@ function CouponsPage() {
       }
     >
       <div className="flex flex-col gap-xs h-full">
-        {coupons && coupons.length > 0 && (<div className="md:w-1/4">
-          <DataTableToolbar
-            search={search}
-            onSearchChange={handleSearchChange}
-            placeholder="Search coupons..."
-          />
-        </div>)}
+        {coupons && coupons.length > 0 && (
+          <div className="md:w-1/4">
+            <DataTableToolbar
+              search={search}
+              onSearchChange={handleSearchChange}
+              placeholder="Search coupons..."
+            />
+          </div>
+        )}
 
         <DataTable
           data={coupons ?? []}
@@ -146,7 +148,7 @@ function CouponsPage() {
           item={couponToDelete}
           setItem={setCouponToDelete}
           itemLabel="coupon"
-          getDisplayName={(coupon) => coupon.code}
+          getDisplayName={(coupon) => coupon?.code || ''}
           onConfirm={handleConfirmDelete}
           isPending={deleteCoupon.isPending}
         />
@@ -175,10 +177,10 @@ function CouponsPage() {
             <DialogHeader>
               <DialogTitle>Edit Coupon</DialogTitle>
               <DialogDescription className="text-xs">
-                Edit and update{" "}
+                Edit and update{' '}
                 <span className="font-semibold text-accent">
                   {couponDetails?.nameEn ?? couponDetails?.name}
-                </span>{" "}
+                </span>{' '}
                 coupon
               </DialogDescription>
             </DialogHeader>
