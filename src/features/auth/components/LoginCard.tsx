@@ -37,13 +37,13 @@ function LoginCard() {
   };
 
   return (
-    <Card className="w-9/10 md:w-3/4 lg:w-3/10">
+    <Card className="w-full">
       <CardHeader className="flex flex-col items-center">
-        <CardTitle>Athlo Dashboard</CardTitle>
+        <CardTitle className="py-xs px-sm font-semibold text-md text-accent-strong">
+          Welcome to Athlo!
+        </CardTitle>
 
-        <CardDescription className="text-center">
-          Log in to your account to access your dashboard.
-        </CardDescription>
+        <CardDescription>Your dashboard is waiting for you.</CardDescription>
       </CardHeader>
 
       <Separator />
@@ -102,7 +102,7 @@ function LoginCard() {
           type="submit"
           form="login-form"
           disabled={isLoading}
-          className="w-full"
+          className="w-full font-semibold"
         >
           {isLoading ? (
             <div className="flex items-center gap-sm">
@@ -111,7 +111,7 @@ function LoginCard() {
               <span>Logging in...</span>
             </div>
           ) : (
-            'Login'
+            "Let's Go"
           )}
         </Button>
       </CardFooter>
