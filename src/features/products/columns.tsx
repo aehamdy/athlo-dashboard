@@ -24,7 +24,7 @@ export const productColumns = (
     header: 'Product',
     cell: ({ row }) => (
       <div className="flex items-center gap-compact font-medium text-foreground">
-        <div className="w-16 h-16 rounded-md overflow-hidden">
+        <div className="w-16 max-w-[200px] h-16 rounded-md overflow-hidden">
           <AppImage
             src={row.original.images[0]}
             alt={row.original.name || 'Product image'}
