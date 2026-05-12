@@ -1,6 +1,6 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Controller, useForm } from 'react-hook-form';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,18 +8,18 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@/components/ui/spinner";
-import { useLogin } from "../hooks/useLogin";
-import { loginSchema, type LoginFormData } from "../auth.schema";
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
+import { useLogin } from '../hooks/useLogin';
+import { loginSchema, type LoginFormData } from '../auth.schema';
 
 function LoginCard() {
   const { login, isLoading, error } = useLogin();
@@ -27,8 +27,8 @@ function LoginCard() {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: 'ahmed',
+      password: 'Ahmed.10',
     },
   });
 
@@ -40,6 +40,7 @@ function LoginCard() {
     <Card className="w-9/10 md:w-3/4 lg:w-3/10">
       <CardHeader className="flex flex-col items-center">
         <CardTitle>Athlo Dashboard</CardTitle>
+
         <CardDescription className="text-center">
           Log in to your account to access your dashboard.
         </CardDescription>
@@ -110,7 +111,7 @@ function LoginCard() {
               <span>Logging in...</span>
             </div>
           ) : (
-            "Login"
+            'Login'
           )}
         </Button>
       </CardFooter>

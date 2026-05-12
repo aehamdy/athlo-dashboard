@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
-import { ROUTE_PATHS } from "@/routes/paths";
-import { loginRequest } from "../api/authApi";
-import { saveAuthTokens } from "../services/authService";
+import { useState } from 'react';
+import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { ROUTE_PATHS } from '@/routes/paths';
+import { loginRequest } from '../api/authApi';
+import { saveAuthTokens } from '../services/authService';
 
 export function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,7 +18,7 @@ export function useLogin() {
       const response = await loginRequest({ username, password });
 
       if (!response.data.succeeded) {
-        setError(response.data.message || "Login failed");
+        setError(response.data.message || 'Login failed');
         return false;
       }
 
@@ -34,7 +34,7 @@ export function useLogin() {
       const axiosError = err as AxiosError<{ message?: string }>;
       setError(
         axiosError.response?.data?.message ||
-          "An error occurred. Please try again.",
+          'An error occurred. Please try again.',
       );
       return false;
     } finally {

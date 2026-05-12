@@ -1,10 +1,12 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { ROUTE_PATHS } from "./paths";
-import { useAuth } from "@/features/auth/providers/AuthProvider";
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { ROUTE_PATHS } from './paths';
+import Cookies from 'js-cookie';
+import { AUTH } from '@/constants/auth';
 
 function ProtectedRoute() {
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+
+  const isAuthenticated = !!Cookies.get(AUTH.COOKIE.ACCESS_TOKEN);
 
   if (!isAuthenticated) {
     return (

@@ -1,14 +1,14 @@
-import Cookies from "js-cookie";
-import { AUTH } from "@/constants/auth";
+import Cookies from 'js-cookie';
+import { AUTH } from '@/constants/auth';
 
 export const saveAuthTokens = (accessToken: string, refreshToken: string) => {
   Cookies.set(AUTH.COOKIE.ACCESS_TOKEN, accessToken, {
-    path: "/",
+    path: '/',
     expires: 1,
   });
 
   Cookies.set(AUTH.COOKIE.REFRESH_TOKEN, refreshToken, {
-    path: "/",
+    path: '/',
     expires: 7,
   });
 };
