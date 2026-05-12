@@ -99,6 +99,8 @@ export interface ProductVariant {
   colorHex: string;
   colorLabel: string;
   unit: string;
+  requestedQuantity?: number;
+  productName?: string;
 }
 
 export interface ProductForm {
