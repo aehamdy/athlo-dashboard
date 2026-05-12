@@ -1,19 +1,26 @@
 import type { InStoreOrderItem } from '../types';
 import Icon from '@/components/shared/Icon';
 import Heading from '@/components/shared/Heading';
-import { Button } from '@/components/ui/button';
 import Currency from '@/components/shared/Currency';
+import Invoice from '@/components/invoice/Invoice';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 
 type InStoreOrderDetailsItemsListProps = {
-  items: InStoreOrderItem[];
+  order: InStoreOrderItem[];
 };
 
 function InStoreOrderDetailsItemsList({
-  items,
+  order,
 }: InStoreOrderDetailsItemsListProps) {
   return (
     <div className="flex flex-col gap-sm">
-      <div className="flex justify-between items-center border-b">
+      <div className="flex justify-between items-center pb-sm border-b">
         <div className="flex items-center gap-sm">
           <Icon name="Package" className="text-gray-400" />
 
@@ -25,20 +32,26 @@ function InStoreOrderDetailsItemsList({
           </Heading>
         </div>
 
-        <div className="p-compact">
-          <Button
-            variant="ghost"
-            size="sm"
-            disabled
-            className="w-full text-tiny cursor-not-allowed"
-          >
-            Download Invoice
-          </Button>
-        </div>
+        <Dialog>
+          <DialogTrigger className="py-1 px-2 text-xs bg-light hover:bg-accent-soft border border-accent-soft rounded-md duration-normal cursor-pointer">
+            Preview Invoice
+          </DialogTrigger>
+
+          <DialogContent className="sm:max-w-[700px] p-0 m-0">
+            <DialogHeader>
+              <DialogTitle></DialogTitle>
+              <DialogDescription></DialogDescription>
+            </DialogHeader>
+
+            <div className="w-9/10 my-5 mx-auto">
+              <Invoice order={order} />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <ul className="py-sm space-y-sm max-h-[470px] lg:max-h-61 overflow-y-auto">
-        {items.map((product: InStoreOrderItem) => (
+        {order.items.map((product: InStoreOrderItem) => (
           <li
             key={product.productVariantId + product.sku}
             className="flex flex-col gap-sm p-compact bg-gray-50 hover:bg-gray-100 border rounded-md transition-colors duration-normal"
