@@ -25,7 +25,7 @@ function RecentOrdersTable({ recentOrders }: RecentOrdersTableProps) {
         <CardTitle>Recent Orders</CardTitle>
 
         <Link
-          to={ROUTE_PATHS.dashboard.orders}
+          to={ROUTE_PATHS.dashboard.orders.eCommerce}
           className="group flex items-center gap-tiny font-medium text-xs text-accent-strong hover:text-accent"
         >
           View All Orders
