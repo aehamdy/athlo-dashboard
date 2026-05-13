@@ -1,15 +1,17 @@
+import { lazy, Suspense } from 'react';
 import type { InStoreOrderDetailsT, InStoreOrderItem } from '../types';
 import Icon from '@/components/shared/Icon';
 import Heading from '@/components/shared/Heading';
 import Currency from '@/components/shared/Currency';
-import Invoice from '@/components/invoice/Invoice';
+import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
+// Lazy-load Invoice so @react-pdf/renderer is only fetched when the dialog opens
+const Invoice = lazy(() => import('@/components/invoice/Invoice'));
 
 type InStoreOrderDetailsItemsListProps = {
   order: InStoreOrderDetailsT;
@@ -44,7 +46,15 @@ function InStoreOrderDetailsItemsList({
             </DialogHeader>
 
             <div className="w-9/10 my-5 mx-auto">
-              <Invoice order={order} />
+              <Suspense
+                fallback={
+                  <div className="flex items-center justify-center h-[500px]">
+                    <div className="w-8 h-8 rounded-full border-4 border-accent border-t-transparent animate-spin" />
+                  </div>
+                }
+              >
+                <Invoice order={order} />
+              </Suspense>
             </div>
           </DialogContent>
         </Dialog>
