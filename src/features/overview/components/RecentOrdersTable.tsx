@@ -1,23 +1,48 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Currency from '@/components/shared/Currency';
-import { formatDateTime } from '@/utils/formatDateTime';
 import type { RecentOrder } from '../types';
 import { Link } from 'react-router-dom';
 import Icon from '@/components/shared/Icon';
 import { ROUTE_PATHS } from '@/routes/paths';
+import { memo, useMemo } from 'react';
+
+const statusStyles: Record<string, string> = {
+  Pending: 'text-yellow-600 bg-yellow-100 border-yellow-300',
+  Cancelled: 'text-red-600 bg-red-50 border-red-200',
+  Shipped: 'text-purple-600 bg-purple-100 border-purple-300',
+  Paid: 'text-blue-600 bg-blue-100 border-blue-300',
+  Completed: 'text-green-600 bg-green-50 border-green-200',
+};
+
+function formatCustomerName(name: string) {
+  const [first, last] = name.split('.');
+  return (
+    first.charAt(0).toUpperCase() +
+    first.slice(1) +
+    ' ' +
+    last.charAt(0).toUpperCase() +
+    last.slice(1)
+  );
+}
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString();
+}
 
 type RecentOrdersTableProps = {
   recentOrders: RecentOrder[];
 };
 
 function RecentOrdersTable({ recentOrders }: RecentOrdersTableProps) {
-  const statusStyles: Record<string, string> = {
-    Pending: 'text-yellow-600 bg-yellow-100 border-yellow-300',
-    Cancelled: 'text-red-600 bg-red-50 border-red-200',
-    Shipped: 'text-purple-600 bg-purple-100 border-purple-300',
-    Paid: 'text-blue-600 bg-blue-100 border-blue-300',
-    Completed: 'text-green-600 bg-green-50 border-green-200',
-  };
+  const visibleOrders = useMemo(() => {
+    return recentOrders.slice(0, 5).map((order) => ({
+      orderId: order.orderId,
+      status: order.status,
+      totalAmount: order.totalAmount,
+      date: formatDate(order.createdAt),
+      customerName: formatCustomerName(order.customerName),
+    }));
+  }, [recentOrders]);
 
   return (
     <Card className="h-full flex flex-col gap-sm">
@@ -48,43 +73,33 @@ function RecentOrdersTable({ recentOrders }: RecentOrdersTableProps) {
             </tr>
           </thead>
 
-          <tbody className="h-[190px] md:h-[200px] overflow-auto">
-            {recentOrders?.map((order: RecentOrder) => {
-              const { date } = formatDateTime(order.createdAt);
-              const customerName =
-                order.customerName.split('.')[0].charAt(0).toUpperCase() +
-                order.customerName.split('.')[0].slice(1) +
-                ' ' +
-                order.customerName.split('.')[1].charAt(0).toUpperCase() +
-                order.customerName.split('.')[1].slice(1);
+          <tbody>
+            {visibleOrders.map((order) => (
+              <tr
+                key={order.orderId}
+                className="border-b last:border-0 text-center hover:bg-gray-50 transition"
+              >
+                <td className="py-2 font-semibold">#{order.orderId}</td>
 
-              return (
-                <tr
-                  key={order.orderId}
-                  className="border-b last:border-0 text-center hover:bg-gray-50 transition"
-                >
-                  <td className="py-2 font-semibold">#{order.orderId}</td>
+                <td className="py-2 font-semibold">{order.customerName}</td>
 
-                  <td className="py-2 font-semibold">{customerName}</td>
+                <td className="py-2 text-muted-foreground">{order.date}</td>
 
-                  <td className="py-2 text-muted-foreground">{date}</td>
+                <td className="py-2">
+                  <span
+                    className={`px-2 py-1 rounded-md text-xs font-medium ${
+                      statusStyles[order.status]
+                    }`}
+                  >
+                    {order.status}
+                  </span>
+                </td>
 
-                  <td className="py-2">
-                    <span
-                      className={`px-2 py-1 rounded-md text-xs font-medium ${
-                        statusStyles[order.status]
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
-
-                  <td className="py-2 text-right font-semibold">
-                    <Currency symbol /> {order.totalAmount.toLocaleString()}
-                  </td>
-                </tr>
-              );
-            })}
+                <td className="py-2 text-right font-semibold">
+                  <Currency symbol /> {order.totalAmount.toLocaleString()}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </CardContent>
@@ -92,4 +107,4 @@ function RecentOrdersTable({ recentOrders }: RecentOrdersTableProps) {
   );
 }
 
-export default RecentOrdersTable;
+export default memo(RecentOrdersTable);
