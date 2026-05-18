@@ -1,5 +1,6 @@
 import KpiCard from './KpiCard';
 import type { KpiCardType } from '../types';
+import { memo } from 'react';
 
 type KpiSectionProps = {
   kpiCards: KpiCardType[];
@@ -15,4 +16,4 @@ function KpiSection({ kpiCards }: KpiSectionProps) {
   );
 }
 
-export default KpiSection;
+export default memo(KpiSection);
