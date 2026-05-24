@@ -126,16 +126,16 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
                 Uploaded Images
               </Heading>
             </div>
-            <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-3 md:grid-cols-6">
               {images.map((file, index) => (
                 <div
                   key={index}
-                  className="relative border rounded-md overflow-hidden"
+                  className="relative w-40 h-40 bg-red-500 border rounded-md overflow-hidden"
                 >
                   <img
                     src={URL.createObjectURL(file)}
                     alt={`Preview ${index}`}
-                    className="w-full h-34 object-cover"
+                    className="w-full h-full object-cover"
                   />
 
                   {index === 0 && (
@@ -191,7 +191,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
           <div className="col-span-6 md:col-start-1 md:col-end-3 md:order-1 w-full">
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               className="w-full text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
               disabled={uploadMutation.isPending}
               onClick={onBack}

@@ -26,7 +26,7 @@ const chartConfig = {
 };
 
 function OrderStatusChart({ orderStatusData }: OrderStatusChartProps) {
-  const chartData: ChartItem[] = orderStatusData?.map((item: any) => ({
+  const chartData: ChartItem[] = orderStatusData?.map((item) => ({
     status: item.status,
     count: item.count,
     fill: chartConfig[item.status as keyof typeof chartConfig]?.color || '#ccc',
@@ -46,7 +46,7 @@ function OrderStatusChart({ orderStatusData }: OrderStatusChartProps) {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px]"
+          className="mx-auto aspect-square max-h-62.5"
         >
           <PieChart>
             <ChartTooltip
@@ -96,7 +96,7 @@ function OrderStatusChart({ orderStatusData }: OrderStatusChartProps) {
         </ChartContainer>
 
         <div className="grid grid-cols-2 gap-sm">
-          {chartData?.map((item: any) => {
+          {chartData?.map((item) => {
             const percentage =
               totalOrders > 0
                 ? ((item.count / totalOrders) * 100).toFixed(1)

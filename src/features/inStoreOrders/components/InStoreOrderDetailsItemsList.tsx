@@ -39,7 +39,7 @@ function InStoreOrderDetailsItemsList({
             Preview Invoice
           </DialogTrigger>
 
-          <DialogContent className="sm:max-w-[700px] p-0 m-0">
+          <DialogContent className="sm:max-w-175 p-0 m-0">
             <DialogHeader>
               <DialogTitle></DialogTitle>
               <DialogDescription></DialogDescription>
@@ -48,7 +48,7 @@ function InStoreOrderDetailsItemsList({
             <div className="w-9/10 my-5 mx-auto">
               <Suspense
                 fallback={
-                  <div className="flex items-center justify-center h-[500px]">
+                  <div className="flex items-center justify-center h-125">
                     <div className="w-8 h-8 rounded-full border-4 border-accent border-t-transparent animate-spin" />
                   </div>
                 }
@@ -60,7 +60,7 @@ function InStoreOrderDetailsItemsList({
         </Dialog>
       </div>
 
-      <ul className="py-sm space-y-sm max-h-[470px] lg:max-h-61 overflow-y-auto">
+      <ul className="py-sm space-y-sm max-h-117.5 lg:max-h-80 overflow-y-auto">
         {order.items.map((product: InStoreOrderItem) => (
           <li
             key={product.productVariantId + product.sku}

@@ -1,13 +1,13 @@
-import Icon from "@/components/shared/Icon";
-import Loading from "@/components/shared/Loading";
-import { Button } from "@/components/ui/button";
+import Icon from '@/components/shared/Icon';
+import Loading from '@/components/shared/Loading';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 type ConfirmDeleteModalProps<T> = {
   item: T | null;
@@ -39,7 +39,7 @@ function ConfirmDeleteModal<T>({
 
   return (
     <Dialog open={!!item} onOpenChange={(open) => !open && setItem(null)}>
-      <DialogContent className="max-w-[390px] sm:max-w-[400px]">
+      <DialogContent className="max-w-97.5 sm:max-w-100">
         <DialogHeader>
           <DialogTitle>
             <div className="relative flex flex-col items-center gap-regular pt-6 pb-2">
@@ -58,10 +58,10 @@ function ConfirmDeleteModal<T>({
         </DialogHeader>
 
         <DialogDescription className="mb-2 text-center">
-          Do you really want to delete{" "}
+          Do you really want to delete{' '}
           <span className="font-semibold text-accent">
-            {item ? getDisplayName(item) : ""}
-          </span>{" "}
+            {item ? getDisplayName(item) : ''}
+          </span>{' '}
           ?
         </DialogDescription>
 
@@ -78,7 +78,7 @@ function ConfirmDeleteModal<T>({
                 Deleting...
               </div>
             ) : (
-              "Yes, Delete!"
+              'Yes, Delete!'
             )}
           </Button>
 
