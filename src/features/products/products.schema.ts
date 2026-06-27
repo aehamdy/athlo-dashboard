@@ -71,10 +71,10 @@ export const productVariantsSchema = z.object({
         attributeValueEn: z.string().optional(),
         attributeValueAr: z.string().optional(),
         unit: z.string().optional(),
-        colorCode: z
-          .string()
-          .regex(/^#([0-9A-Fa-f]{6})$/, 'Invalid HEX color')
-          .optional(),
+        colorCode: z.union([
+          z.literal(''),
+          z.string().regex(/^#([0-9A-Fa-f]{6})$/, 'Invalid HEX color'),
+        ]),
         colorName: z.string().optional(),
         price: z.number().positive('Price is required'),
         stockQuantity: z.number().positive('Stock is required'),
