@@ -17,11 +17,11 @@ const statusStyles: Record<string, string> = {
 function formatCustomerName(name: string) {
   const [first, last] = name.split('.');
   return (
-    first.charAt(0).toUpperCase() +
-    first.slice(1) +
+    first?.charAt(0).toUpperCase() +
+    first?.slice(1) +
     ' ' +
-    last.charAt(0).toUpperCase() +
-    last.slice(1)
+    last?.charAt(0).toUpperCase() +
+    last?.slice(1)
   );
 }
 
