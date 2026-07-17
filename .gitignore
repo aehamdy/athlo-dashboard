@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 .env
+PROJECT_BREAKDOWN.md
+PORTFOLIO_CASE_STUDY.md
