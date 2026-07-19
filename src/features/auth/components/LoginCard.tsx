@@ -27,8 +27,8 @@ function LoginCard() {
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: 'ahmed',
-      password: 'Ahmed.10',
+      username: 'mostafa',
+      password: 'Mostafa.10',
     },
   });
 
