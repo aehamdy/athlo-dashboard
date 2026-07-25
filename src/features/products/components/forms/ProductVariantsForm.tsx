@@ -72,8 +72,6 @@ function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
   };
 
   const onSubmit = async (data: ProductVariantsFormType) => {
-    console.log('Submitted', data);
-
     try {
       await submitVariants(data);
       toast.success('Variants added successfully');
@@ -86,9 +84,7 @@ function ProductVariantsForm({ productId, onBack, onSuccess }: Props) {
   return (
     <FormProvider {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit, (errors) => {
-          console.log('Validation errors:', errors);
-        })}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-md h-full min-h-0 p-compact md:p-2xl bg-light rounded-2xl"
       >
         <div className="flex flex-col gap-base flex-1 min-h-0">
