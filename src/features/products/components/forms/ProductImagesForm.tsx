@@ -7,19 +7,12 @@ import {
 } from '../../products.schema';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  ArrowLeft,
-  ArrowRight,
-  CircleCheck,
-  ImagePlus,
-  Star,
-  X,
-} from 'lucide-react';
 import Heading from '@/components/shared/Heading';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE_PATHS } from '@/routes/paths';
 import Loading from '@/components/shared/Loading';
 import { useUploadProductImages } from '../../hooks/useUploadProductImages';
+import Icon from '@/components/shared/Icon';
 
 type Props = {
   productId: number;
@@ -80,7 +73,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
         <div className="flex flex-col gap-regular items-center p-8 border-4 border-dashed border-accent-focus rounded-md">
           <div className="flex flex-col items-center gap-regular">
             <div className="p-4 bg-accent/25 rounded-full">
-              <ImagePlus className="text-accent-strong" />
+              <Icon name="ImagePlus" className="text-accent-strong" />
             </div>
 
             <Heading as="h3" className="text-zinc-700">
@@ -113,7 +106,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
               className="flex items-center gap-2 p-4 text-black bg-accent hover:bg-accent-soft hover:scale-105 transition duration-normal rounded-md cursor-pointer"
               onClick={() => fileInputRef.current?.click()}
             >
-              <ImagePlus className="w-4 h-4" />
+              <Icon name="ImagePlus" className="w-4 h-4" />
               Select Files
             </Button>
           </div>
@@ -140,7 +133,10 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
 
                   {index === 0 && (
                     <div className="absolute top-sm start-sm flex justify-between items-center gap-tiny p-tiny bg-accent-strong rounded-md">
-                      <Star className="w-regular h-regular fill-dark" />
+                      <Icon
+                        name="Star"
+                        className="w-regular h-regular fill-dark"
+                      />
 
                       <span className="hidden lg:block font-semibold text-tiny text-dark/80 tracking-[0.2rem] uppercase">
                         Primary
@@ -158,7 +154,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
                     }}
                     className="absolute top-tiny end-tiny text-xs bg-black/60 text-white rounded-full cursor-pointer"
                   >
-                    <X />
+                    <Icon name="X" />
                   </Button>
                 </div>
               ))}
@@ -166,8 +162,21 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
           </div>
         )}
 
-        <div className="grid grid-cols-12 gap-compact">
-          <div className="col-span-12 md:col-start-10 md:col-end-13 md:order-3">
+        <div className="flex justify-between items-center gap-compact">
+          <div className="">
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
+              disabled={uploadMutation.isPending}
+              onClick={onBack}
+            >
+              <Icon name="ArrowLeft" />
+              Previous
+            </Button>
+          </div>
+
+          <div className="">
             <Button
               type="button"
               className="w-full text-dark bg-accent hover:bg-accent-soft active:bg-accent-strong border border-accent disabled:bg-gray-200 disabled:border-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-70 transform-colors duration-normal"
@@ -182,26 +191,13 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
               ) : (
                 <>
                   Continue to Variants
-                  <ArrowRight />
+                  <Icon name="ArrowRight" />
                 </>
               )}
             </Button>
           </div>
 
-          <div className="col-span-6 md:col-start-1 md:col-end-3 md:order-1 w-full">
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full text-dark/80 hover:text-dark active:text-dark hover:bg-accent active:bg-accent border border-accent hover:border-accent active:border-accent"
-              disabled={uploadMutation.isPending}
-              onClick={onBack}
-            >
-              <ArrowLeft />
-              Previous
-            </Button>
-          </div>
-
-          <div className="col-span-6 md:col-start-7 md:col-end-10 md:order-2 w-full">
+          {/* <div className="col-span-6 md:col-start-7 md:col-end-10 md:order-2 w-full">
             <Button
               type="button"
               variant="outline"
@@ -221,7 +217,7 @@ function ProductImagesForm({ productId, onBack, onSuccess }: Props) {
                 </div>
               )}
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </form>
